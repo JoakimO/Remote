@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.50" >
+
+        <se.newbie.remote.gui.standard.StandardRemoteButton
+            android:id="@+id/button1"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:text="@string/remote_up" />
+
+        <se.newbie.remote.gui.standard.StandardRemoteButton
+            android:id="@+id/button3"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button1"
+            android:layout_below="@+id/button1"
+            android:text="@string/remote_select" />
+
+        <se.newbie.remote.gui.standard.StandardRemoteButton
+            android:id="@+id/button4"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button1"
+            android:layout_toRightOf="@+id/button1"
+            android:text="@string/remote_right" />
+
+        <se.newbie.remote.gui.standard.StandardRemoteButton
+            android:id="@+id/button2"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/button3"
+            android:layout_alignBottom="@+id/button3"
+            android:layout_toLeftOf="@+id/button3"
+            android:text="@string/remote_left" />
+
+        <se.newbie.remote.gui.standard.StandardRemoteButton
+            android:id="@+id/button5"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button3"
+            android:layout_below="@+id/button3"
+            android:text="@string/remote_down" />
+
+        <se.newbie.remote.gui.standard.StandardRemoteButton
+            android:id="@+id/button6"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/button5"
+            android:layout_below="@+id/button5"
+            android:layout_marginTop="30dp"
+            android:text="@string/remote_back" />
+
+    </RelativeLayout>
+
+</LinearLayout>
