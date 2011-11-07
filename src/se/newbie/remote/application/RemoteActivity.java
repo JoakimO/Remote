@@ -144,17 +144,26 @@ public class RemoteActivity extends Activity {
         super.onPause();
     }
     
+    
+    private boolean displayFragmentAdded = false;
     @Override
     public void onResume() {
     	Log.v(TAG, "onResume");
     	remoteApplication.getRemoteDeviceFactory().resume();
     	//TODO fragment is added again which causes a crash on tablet when switching from settings
+    	
         RemoteDisplay remoteDisplay = remoteApplication.getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
-        if (remoteDisplay != null && remoteDisplay.getFragment() != null) {
+        if (!displayFragmentAdded && remoteDisplay != null && remoteDisplay.getFragment() != null) {
         	FragmentManager fragmentManager = getFragmentManager();
+        	
         	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         	fragmentTransaction.add(R.id.fragment_panel, remoteDisplay.getFragment());
+        	
+        	remoteDisplay = remoteApplication.getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
+        	fragmentTransaction.add(R.id.browser_panel, remoteDisplay.getFragment());
+        	
         	fragmentTransaction.commit();
+        	displayFragmentAdded = true;
         }
     	super.onResume();
     }	    

@@ -3,12 +3,14 @@ package se.newbie.remote.boxee;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Client;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
+import se.newbie.remote.util.jsonrpc2.JSONRPC2ResponseHandler;
 import android.util.Log;
 
 public class BoxeeRemoteDeviceConnection {
 	BoxeeRemoteDevice boxeeRemoteDevice;
 	//private boolean isKeepAlive;
 	private JSONRPC2Client jsonRPC2Client;
+	private boolean isConnected = false;
 	
 	public BoxeeRemoteDeviceConnection(BoxeeRemoteDevice remoteDevice) {
 		this.boxeeRemoteDevice = remoteDevice;
@@ -29,9 +31,44 @@ public class BoxeeRemoteDeviceConnection {
 		thread.start();
 	}
 	
+	public void sendRequest(JSONRPC2Request request, JSONRPC2ResponseHandler handler) {
+		BoxeeRemoteDeviceSendRequestThread thread = new BoxeeRemoteDeviceSendRequestThread(request, handler);
+		thread.start();
+	}
+	
+	public JSONRPC2Request createJSONRPC2Request(String method) {
+		return jsonRPC2Client.createJSONRPC2Request(method);
+	}	
+	
+	private class BoxeeRemoteDeviceSendRequestThread extends Thread {
+		private static final String TAG = "BoxeeRemoteDeviceSendRequestThread"; 
+		
+		private JSONRPC2Request request;
+		private JSONRPC2ResponseHandler handler;
+		
+		public BoxeeRemoteDeviceSendRequestThread(JSONRPC2Request request, JSONRPC2ResponseHandler handler) {
+			this.request = request;
+			this.handler = handler;
+		}
+		
+		@Override
+        public void run() {
+			while (!isConnected) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					Log.v(TAG, e.getMessage());
+				}
+			}
+			Log.v(TAG, "SendRequest: " + request.serialize());
+			jsonRPC2Client.sendRequest(request, handler);
+		}
+	}
+	
 	private class BoxeeRemoteDeviceDisconnectThread extends Thread {
 		@Override
         public void run() {
+			isConnected = false;
 			jsonRPC2Client.disconnect();
 		}
 	}
@@ -50,6 +87,7 @@ public class BoxeeRemoteDeviceConnection {
 					request.setParam("deviceid", "android");
 					jsonRPC2Client.sendRequest(request, null);
 				}
+				isConnected = true;
 			} catch (Exception innerException) {
 				Log.e(TAG, innerException.getMessage()); 
 			}

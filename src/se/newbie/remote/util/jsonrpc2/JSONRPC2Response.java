@@ -1,5 +1,6 @@
 package se.newbie.remote.util.jsonrpc2;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,4 +44,12 @@ public class JSONRPC2Response extends JSONRPC2Message {
 			return null;
 		}		
 	}	
+	
+	public JSONArray getJSONArrayResult(String key) {
+		try {
+			return super.getArrayData(key);
+		} catch (JSONException e) {
+			return null;
+		}	
+	}
 }

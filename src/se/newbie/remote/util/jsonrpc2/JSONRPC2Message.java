@@ -1,5 +1,6 @@
 package se.newbie.remote.util.jsonrpc2;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,6 +82,12 @@ public abstract class JSONRPC2Message {
 		return null;
 	}
 
+	protected JSONArray getArrayData(String key) throws JSONException {
+		if (jsonData != null) {
+			return jsonData.getJSONArray(key);
+		}
+		return null;
+	}	
 	
 	protected void setStringData(String key, String value) throws JSONException {
 		if (jsonData != null) {

@@ -201,7 +201,7 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     	HttpRequestTaskHandler httpRequestTaskHandler = new HttpRequestTaskHandler(){
     		public void onSuccess(InputStream in) {
     			String content = getContent(in);
-    			Log.v(TAG, content);    			
+    			//Log.v(TAG, content);    			
     			if (content.contains("Nothing Playing")) {
     				rootPanel.removeAllViews();
     			} else if (content.contains("Changed")) { 				

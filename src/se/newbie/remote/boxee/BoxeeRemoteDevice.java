@@ -19,7 +19,7 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 	
 	public BoxeeRemoteDevice(BoxeeRemoteDeviceDetails details) {
 		this.details = details;
-		connection = new BoxeeRemoteDeviceConnection(this);
+		this.connection = new BoxeeRemoteDeviceConnection(this);
 	}
 	
 	public String getIdentifier() {
@@ -107,16 +107,20 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 	}
 
 	public void pause() {
-		connection.pause();
+		getConnection().pause();
 		
 	}
 
 	public void resume() {
-		connection.resume();
+		getConnection().resume();
 		
 	}
 	
 	public void addNotificationListener(JSONRPC2NotificationListener listener) {
-		connection.addNotificationListener(listener);
+		getConnection().addNotificationListener(listener);
+	}
+
+	public BoxeeRemoteDeviceConnection getConnection() {
+		return connection;
 	}
 }
