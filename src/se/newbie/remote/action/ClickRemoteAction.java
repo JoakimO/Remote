@@ -17,4 +17,8 @@ public class ClickRemoteAction implements RemoteAction {
 	public String getDevice() {
 		return this.device;
 	}
+
+	public RemoteActionType getRemoteActionType() {
+		return RemoteActionType.Click;
+	}
 }

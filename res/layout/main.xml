@@ -7,7 +7,7 @@
         android:id="@+id/main_panel"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.00"
+        android:layout_weight="1.00"
         android:orientation="vertical" >
     </LinearLayout>    
 </LinearLayout>

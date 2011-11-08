@@ -1,13 +1,12 @@
 package se.newbie.remote.gui;
 
-import android.content.Context;
 
 /**
  * 
  */
 public abstract class AbstractRemoteGUIFactory implements RemoteGUIFactory{
 	
-	private Context context;
+	/*private Context context;
 	
 	protected AbstractRemoteGUIFactory(Context context) {
 		this.context = context;
@@ -15,5 +14,5 @@ public abstract class AbstractRemoteGUIFactory implements RemoteGUIFactory{
 	
 	public Context getContext() {
 		return this.context;
-	}
+	}*/
 }

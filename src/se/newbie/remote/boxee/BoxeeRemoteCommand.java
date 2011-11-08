@@ -1,9 +1,8 @@
 package se.newbie.remote.boxee;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import se.newbie.remote.command.RemoteCommand;
+import se.newbie.remote.command.RemoteCommandArguments;
+import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
 import android.util.Log;
 //http://192.168.0.101:8800/xbmcCmds/xbmcHttp?command=SendKey%28271%29
 public class BoxeeRemoteCommand implements RemoteCommand {
@@ -11,35 +10,30 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 
 	
 	public enum Command {
-		select("SendKey", "256")
-		,back("SendKey", "275")
-		,up("SendKey", "270")
-		,down("SendKey", "271")
-		,left("SendKey", "272")
-		,right("SendKey", "273")
-		,mute("Mute", "")
-		,pause("Pause", "")
-		,stop("Stop", "")
-		,playNext("PlayNext","")
-		,playPrev("PlayPrev","");
+		select("Input.Select")
+		,back("Input.Back")
+		,up("Input.Up")
+		,down("Input.Down")
+		,left("Input.Left")
+		,right("Input.Right")
+		,home("Input.Home")
+		,mute("Mute")
+		,pause("Pause")
+		,stop("Stop")
+		,playNext("PlayNext")
+		,playPrev("PlayPrev")
+		,seek("VideoPlayer.SeekPercentage")
+		;
 		
 		
 		private String method;
-		private Set<String> arguments = new HashSet<String>();
 		
-		Command(String method, String ... arguments) {
+		Command(String method) {
 			this.method = method;
-			for (String argument : arguments) {
-				this.arguments.add(argument);
-			}
 		}
 		
 		String getMethod() {
 			return method;
-		}
-		
-		Set<String> getArguments() {
-			return arguments;
 		}
 	}
 	
@@ -55,8 +49,20 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 		return command.name();
 	}
 
-	public int execute() {
+	public int execute(RemoteCommandArguments arguments) {
 		Log.v(TAG, "execute: " + getIdentifier());
-		return boxeeRemoteDevice.sendCommand(command);
+		
+		
+		JSONRPC2Request request;
+		switch (command) {
+			case seek:
+				request = boxeeRemoteDevice.getConnection().createJSONRPC2Request(command.getMethod());
+				request.setParam("value", arguments.getIntArgument("value"));
+				break;
+			default:
+				request = boxeeRemoteDevice.getConnection().createJSONRPC2Request(command.getMethod());
+				break;
+		}
+		return boxeeRemoteDevice.sendCommand(request);
 	}
 }

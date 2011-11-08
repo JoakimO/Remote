@@ -14,7 +14,7 @@ public class RemoteApplication {
 	private static final String TAG = "RemoteApplication";
 	
 	// This variable is only true while developing.
-	private static final boolean emulator = false;
+	private static final boolean emulator = true;
 	
 	private static RemoteApplication remoteApplication;
 	
@@ -66,7 +66,7 @@ public class RemoteApplication {
 	
 	private void createGUIFactory() {
         Log.v(TAG, "Create Remote GUI Factory");
-        StandardRemoteGUIFactory remoteGUIFactory = new StandardRemoteGUIFactory(context);
+        StandardRemoteGUIFactory remoteGUIFactory = new StandardRemoteGUIFactory();
         this.remoteModel.setRemoteGUIFactory(remoteGUIFactory);	
 	}
 	

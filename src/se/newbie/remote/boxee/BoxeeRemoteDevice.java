@@ -1,13 +1,12 @@
 package se.newbie.remote.boxee;
 
-import java.io.InputStream;
-
 import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceDetails;
 import se.newbie.remote.util.HttpRequestTask;
 import se.newbie.remote.util.HttpRequestTaskHandler;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
+import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -37,7 +36,7 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 	public RemoteDeviceDetails getRemoteDeviceDetails() {
 		return details;
 	}
-
+/*
 	public int sendKey(int key) {
 		sendHttpRequestTask(String.format("http://%s:%s/xbmcCmds/xbmcHttp?command=SendKey(%s)", details.getHost(), details.getPort(), key), null);
 		return 1;
@@ -47,29 +46,9 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 		sendHttpRequestTask(String.format("http://%s:%s/xbmcCmds/xbmcHttp?command=%s(%s)", details.getHost(), details.getPort(), command, argument), null);
 		return 1;	
 	}
-	
-	public int sendCommand(final BoxeeRemoteCommand.Command command) {
-		String value = "";
-		for (String argument : command.getArguments()) {
-			if (!value.equals("") && !value.endsWith(",")) {
-				value += ",";
-			}
-			if (!argument.equals("")) {
-				value += argument;
-			}
-		}
-		
-		HttpRequestTaskHandler handler = new HttpRequestTaskHandler() {
-			public void onSuccess(InputStream out) {
-			}		
-		};
-		
-		
-		sendHttpRequestTask(String.format("http://%s:%s/xbmcCmds/xbmcHttp?command=%s(%s)", details.getHost(), details.getPort(), command.getMethod(), value), handler);
-		
-		
-		
-
+	*/
+	public int sendCommand(final JSONRPC2Request request) {
+		this.connection.sendRequest(request, null);
 		return 1;	
 	}	
 	

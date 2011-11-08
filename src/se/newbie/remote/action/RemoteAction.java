@@ -1,13 +1,23 @@
 package se.newbie.remote.action;
 
 public interface RemoteAction {
+	
+	public enum RemoteActionType {
+		Click, Seek
+	}
+	
 	/**
 	 * Returns the string value of the command about to be executed.
 	 */
-	String getCommand();
+	public String getCommand();
 
 	/**
 	 * Optional remote device if action targets a specifically device.
 	 */
-	String getDevice();
+	public String getDevice();
+	
+	/**
+	 * This method returns the action type.
+	 */
+	public RemoteActionType getRemoteActionType();
 }

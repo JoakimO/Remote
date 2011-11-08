@@ -30,10 +30,10 @@ public class DeviceRemoteCommand implements RemoteCommand, RemoteModelListener {
 		this.commandMap.put(device, command);
 	}
 
-	public int execute() {
+	public int execute(RemoteCommandArguments arguments) {
 		int status = 1;
 		if (commandMap.containsKey(selectedDevice)) {
-			status = commandMap.get(selectedDevice).execute();
+			status = commandMap.get(selectedDevice).execute(arguments);
 		}
 		return status;
 	}

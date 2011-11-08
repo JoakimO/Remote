@@ -6,11 +6,7 @@ import android.content.Context;
  * 
  */
 public interface RemoteGUIFactory {
+	public RemoteButton createButton(Context context, String text);			
 	
-	/**
-	 * Holds the application context object.
-	 */
-	public Context getContext();
-
-	public RemoteButton createButton(String text);			
+	public RemoteSeekBar createSeekBar(Context context);
 }

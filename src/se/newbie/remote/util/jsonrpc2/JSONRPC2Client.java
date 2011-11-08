@@ -157,6 +157,7 @@ public class JSONRPC2Client {
 						if (socket.isConnected()) {
 							String s = buf.readLine();
 							if (s != null) {
+								Log.v(TAG, "Received: " + s);
 								JSONObject jsonObject = new JSONObject(s);
 								if (jsonObject.has("id")) {
 									JSONRPC2Response response = new JSONRPC2Response(jsonObject);

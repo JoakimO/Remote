@@ -32,7 +32,7 @@ public abstract class JSONRPC2Message {
 		jsonObject = new JSONObject(json);
 		if (type == JSONRPC2MessageType.RESPONSE) {
 			if (jsonObject.has("result")) {
-				jsonData = jsonObject.getJSONObject("result");
+				jsonData = jsonObject.optJSONObject("result");
 				//jsonObject.remove("result");
 			}
 		}
@@ -42,12 +42,12 @@ public abstract class JSONRPC2Message {
 		jsonObject = json;
 		if (type == JSONRPC2MessageType.NOTIFICATION) {
 			if (jsonObject.has("params")) {
-				jsonData = jsonObject.getJSONObject("params");
+				jsonData = jsonObject.optJSONObject("params");
 				//jsonObject.remove("params");
 			}			
 		} else if (type == JSONRPC2MessageType.RESPONSE) {
 			if (jsonObject.has("result")) {
-				jsonData = jsonObject.getJSONObject("result");
+				jsonData = jsonObject.optJSONObject("result");
 				//jsonObject.remove("result");
 			}
 		}

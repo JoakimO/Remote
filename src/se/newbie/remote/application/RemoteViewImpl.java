@@ -5,6 +5,8 @@ import java.util.List;
 
 import se.newbie.remote.R;
 import se.newbie.remote.action.RemoteAction;
+import se.newbie.remote.action.SeekRemoteAction;
+import se.newbie.remote.command.RemoteCommandArguments;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.main.RemoteModel;
@@ -60,7 +62,18 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
 	public void actionPerformed(RemoteAction action) {
 		Log.v(TAG, "actionPerformed: " + action.getCommand() + ", " + action.getDevice() + " to " + listeners.size() + " listeners");
 		for (RemoteViewListener listener : listeners) {
-			listener.executeCommand(action.getCommand(), action.getDevice());
+			switch (action.getRemoteActionType()) {
+				case Click:
+					listener.executeCommand(action.getCommand(), action.getDevice(), null);
+					break;
+				case Seek:
+					RemoteCommandArguments arguments = new RemoteCommandArguments();
+					arguments.setArgument("value", ((SeekRemoteAction)action).getValue());
+					listener.executeCommand(action.getCommand(), action.getDevice(), arguments);
+					break;
+				default :
+					break;
+			}
 		}
 	}
 
@@ -82,6 +95,8 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
 		return this;
 	}
 	
+	float startXValue;
+	
     @Override
     public View onCreateView(LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -102,7 +117,6 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
 			rootView.setOnTouchListener(new OnTouchListener() {
 				public boolean onTouch(View rootView, MotionEvent event) {
 					detector.onTouchEvent(event);
-				//	Log.v(TAG, "MotionEvent: " + event.getRawX() + "," + event.getRawY());
 					return true;
 				}
 			}); 
