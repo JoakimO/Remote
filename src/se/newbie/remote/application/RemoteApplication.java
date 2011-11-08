@@ -14,7 +14,7 @@ public class RemoteApplication {
 	private static final String TAG = "RemoteApplication";
 	
 	// This variable is only true while developing.
-	private static final boolean emulator = true;
+	private static final boolean emulator = false;
 	
 	private static RemoteApplication remoteApplication;
 	

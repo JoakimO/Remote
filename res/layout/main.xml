@@ -3,31 +3,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-
-
     <LinearLayout
-        android:id="@+id/fragment_panel"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:id="@+id/main_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_weight="0.00"
         android:orientation="vertical" >
-
     </LinearLayout>    
-    <LinearLayout
-        android:id="@+id/browser_panel"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_weight="0.00"
-        android:orientation="vertical" >
-
-    </LinearLayout>     
-    <LinearLayout
-        android:id="@+id/panel"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_weight="0.00"
-        android:orientation="vertical" >
-    </LinearLayout>
-
 </LinearLayout>
