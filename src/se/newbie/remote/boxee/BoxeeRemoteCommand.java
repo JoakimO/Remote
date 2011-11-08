@@ -1,7 +1,7 @@
 package se.newbie.remote.boxee;
 
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.command.RemoteCommand;
-import se.newbie.remote.command.RemoteCommandArguments;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
 import android.util.Log;
 //http://192.168.0.101:8800/xbmcCmds/xbmcHttp?command=SendKey%28271%29
@@ -49,7 +49,7 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 		return command.name();
 	}
 
-	public int execute(RemoteCommandArguments arguments) {
+	public int execute() {
 		Log.v(TAG, "execute: " + getIdentifier());
 		
 		
@@ -57,7 +57,8 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 		switch (command) {
 			case seek:
 				request = boxeeRemoteDevice.getConnection().createJSONRPC2Request(command.getMethod());
-				request.setParam("value", arguments.getIntArgument("value"));
+				request.setParam("value", RemoteApplication.getInstance().getRemoteModel()
+						.getIntDeviceParameter(boxeeRemoteDevice.getIdentifier(), command.name()));
 				break;
 			default:
 				request = boxeeRemoteDevice.getConnection().createJSONRPC2Request(command.getMethod());

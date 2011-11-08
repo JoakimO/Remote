@@ -7,5 +7,5 @@ package se.newbie.remote.command;
 public interface RemoteCommand {
 	public String getIdentifier();
 
-	public int execute(RemoteCommandArguments arguments);
+	public int execute();
 }

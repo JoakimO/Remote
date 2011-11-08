@@ -3,8 +3,9 @@ package se.newbie.remote.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.newbie.remote.action.ClickRemoteAction;
 import se.newbie.remote.action.RemoteActionListener;
-import se.newbie.remote.action.SeekRemoteAction;
+import se.newbie.remote.main.RemoteModelListener;
 import android.content.Context;
 import android.util.Log;
 import android.widget.SeekBar;
@@ -12,7 +13,7 @@ import android.widget.SeekBar;
 /**
  *
  */
-public abstract class RemoteSeekBar extends SeekBar implements RemoteGUIComponent {
+public abstract class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, RemoteModelListener  {
 	private static final String TAG = "RemoteSeekBar";
 	
 	String command;
@@ -28,9 +29,9 @@ public abstract class RemoteSeekBar extends SeekBar implements RemoteGUIComponen
 		this.listeners.add(listener);
 	}
 
-	protected void actionPerformed(SeekRemoteAction action) {
+	protected void actionPerformed(ClickRemoteAction action) {
 		
-		Log.v(TAG, "actionPerformed: " + action.getCommand() + ", " + action.getDevice() + ", " + action.getValue() );
+		Log.v(TAG, "actionPerformed: " + action.getCommand() + ", " + action.getDevice());
 		for (RemoteActionListener listener : listeners) {
 			listener.actionPerformed(action);
 		}

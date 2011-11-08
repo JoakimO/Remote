@@ -1,12 +1,14 @@
 package se.newbie.remote.gui.standard;
 
-import se.newbie.remote.action.SeekRemoteAction;
+import se.newbie.remote.action.ClickRemoteAction;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.gui.RemoteSeekBar;
+import se.newbie.remote.main.RemoteModel;
 import android.content.Context;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class StandardSeekBar extends RemoteSeekBar implements OnSeekBarChangeListener {
+public class StandardSeekBar extends RemoteSeekBar implements OnSeekBarChangeListener   {
 
 	public StandardSeekBar(Context context) {
 		super(context);
@@ -27,8 +29,15 @@ public class StandardSeekBar extends RemoteSeekBar implements OnSeekBarChangeLis
 	}
 	
 	private void seekPerformed(int value) {
-		SeekRemoteAction action = new SeekRemoteAction(getCommand(), getDevice(), value);
+		RemoteApplication.getInstance().getRemoteModel().setDeviceParameter(getDevice(), getCommand(), new Integer(value));
+		ClickRemoteAction action = new ClickRemoteAction(getCommand(), getDevice());
 		actionPerformed(action);
+	}
+
+	public void update(RemoteModel model) {
+		//TODO!!!
+		//model.getIntDeviceParameter(getDevice(), getCommand());
+		
 	}	
 
 }

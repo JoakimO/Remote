@@ -31,13 +31,13 @@ public class SwitchRemoteCommand implements RemoteCommand {
 		this.commands.remove(command);
 	}
 	
-	public int execute(RemoteCommandArguments arguments) {
+	public int execute() {
 		int status = 1;
 		if (commands.size() > 0) {
 			if (commandIndex >= commands.size()) {
 				commandIndex = 0;
 			}	
-			status = this.commands.get(commandIndex).execute(arguments);
+			status = this.commands.get(commandIndex).execute();
 			if (status > 0) {
 				commandIndex = commandIndex++;
 			}

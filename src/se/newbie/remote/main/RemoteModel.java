@@ -21,4 +21,8 @@ public interface RemoteModel {
 	
 	public void setRemoteGUIFactory(RemoteGUIFactory remoteGUIFactory);
 	public RemoteGUIFactory getRemoteGUIFactory();
+	
+	public void setDeviceParameter(String device, String key, Object value);
+	public int getIntDeviceParameter(String device, String key);
+	public String getStringDeviceParameter(String device, String key);
 }

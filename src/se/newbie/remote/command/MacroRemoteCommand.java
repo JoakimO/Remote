@@ -25,10 +25,10 @@ public class MacroRemoteCommand implements RemoteCommand {
 		this.commands.remove(command);
 	}
 
-	public int execute(RemoteCommandArguments arguments) {
+	public int execute() {
 		int status = 1;
 		for (RemoteCommand command : commands) {
-			status &= command.execute(arguments);
+			status &= command.execute();
 		}
 		return status;
 	}

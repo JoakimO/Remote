@@ -1,7 +1,6 @@
 package se.newbie.remote.application;
 
 import se.newbie.remote.command.RemoteCommand;
-import se.newbie.remote.command.RemoteCommandArguments;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.main.RemoteController;
 import se.newbie.remote.main.RemoteModel;
@@ -22,12 +21,12 @@ public class RemoteControllerImpl implements RemoteController, RemoteViewListene
 		this.model.addListener(this.view);
 	}
 
-	public void executeCommand(String command, String device, RemoteCommandArguments arguments) {
+	public void executeCommand(String command, String device) {
 		Log.v(TAG, "executeCommand: " + command + ", " + device);
 		RemoteApplication remoteApplication = RemoteApplication.getInstance();
 		RemoteCommand remoteCommand = remoteApplication.getRemoteCommandFactory().getRemoteCommand(command, device);
 		if (remoteCommand != null) {
-			remoteCommand.execute(arguments);
+			remoteCommand.execute();
 		} else {
 			Log.w(TAG, "No command found " + command + ", " + device);
 		}

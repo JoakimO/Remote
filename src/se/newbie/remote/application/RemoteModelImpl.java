@@ -1,7 +1,9 @@
 package se.newbie.remote.application;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceListener;
@@ -22,6 +24,8 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	private RemoteDevice selectedRemoteDevice;
 	private List<RemoteDevice> remoteDevices = new ArrayList<RemoteDevice>();
 	private RemoteGUIFactory remoteGUIFactory;
+	
+	private Map<String, Map<String, Object>> deviceParameters = new HashMap<String, Map<String, Object>>();
 	
 	private boolean isBroadcast;
 	
@@ -76,5 +80,28 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 		Log.v(TAG, "Add remote device: " + device.getIdentifier());
 		this.remoteDevices.add(device);
 		this.notifyObservers();
+	}
+
+	public void setDeviceParameter(String device, String key, Object value) {
+		getDeviceParameterMap(device).put(key,  value);
+		this.notifyObservers();
+	}
+
+	public int getIntDeviceParameter(String device, String key) {
+		return (Integer)getDeviceParameterMap(device).get(key);
+	}
+
+	public String getStringDeviceParameter(String device, String key) {
+		return (String)getDeviceParameterMap(device).get(key);
+	}
+	
+	private Map<String, Object> getDeviceParameterMap(String device) {
+		if (deviceParameters.containsKey(device)) {
+			return deviceParameters.get(device);
+		} else {
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			deviceParameters.put(device,  parameters);
+			return parameters;
+		}		
 	}
 }
