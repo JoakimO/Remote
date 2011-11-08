@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import se.newbie.remote.application.RemoteActivity;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.boxee.BoxeeRemoteDeviceDiscoverer;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -125,7 +125,7 @@ public class RemoteDeviceFactory {
 		Set<String> remoteDeviceSet = this.remoteDevices.keySet();
 		String remoteDeviceSerialized = details.serialize();
 		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteActivity.getRemoteApplication().getContext());
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
 		SharedPreferences.Editor editor = preferences.edit();
 
 		editor.putStringSet(REMOTE_DEVICE_IDENTITY_SET_PROPERTY, remoteDeviceSet);
@@ -144,7 +144,7 @@ public class RemoteDeviceFactory {
 		Log.v(TAG, "Remote Device Factory Starting");
 		discoverers.add(new BoxeeRemoteDeviceDiscoverer(this));
 		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteActivity.getRemoteApplication().getContext());
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
 		Set<String> remoteDevices = preferences.getStringSet(REMOTE_DEVICE_IDENTITY_SET_PROPERTY, null);
 		if (remoteDevices != null) {
 			for (String remoteDeviceIdentity : remoteDevices) {

@@ -10,7 +10,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import se.newbie.remote.application.RemoteActivity;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.util.HttpRequestTask;
 import se.newbie.remote.util.HttpRequestTaskHandler;
@@ -113,7 +113,7 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     private void sendHttpRequestTask(String url, HttpRequestTaskHandler httpRequestTaskHandler) {
     	HttpRequestTask request = new HttpRequestTask(); 
 
-    	SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteActivity.getRemoteApplication().getContext());
+    	SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
 		if (preferences.contains(boxeeRemoteDevice.getIdentifier() + ".user")) {
 			request.setCredentials(preferences.getString(boxeeRemoteDevice.getIdentifier() + ".user", "")
 					, preferences.getString(boxeeRemoteDevice.getIdentifier() + ".password", ""));

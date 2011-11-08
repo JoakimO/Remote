@@ -16,6 +16,8 @@ public class RemoteApplication {
 	// This variable is only true while developing.
 	private static final boolean emulator = true;
 	
+	private static RemoteApplication remoteApplication;
+	
 	private Context context;
 	private RemoteModel remoteModel;
 	private RemoteView remoteView;
@@ -24,16 +26,36 @@ public class RemoteApplication {
 	private RemoteCommandFactory remoteCommandFactory;
 	private RemoteDisplayFactory remoteDisplayFactory;
 	
-	public RemoteApplication(Context context) {
-		Log.v(TAG, "Starting");
+	protected RemoteApplication() {
+	}
+	
+	public static RemoteApplication getInstance() {
+		if (remoteApplication == null) {
+			remoteApplication = new RemoteApplication();
+		}
+		return remoteApplication;
+	}
+
+	public void init(Context context) {
+		Log.v(TAG, "Initializing...");
 		this.context = context;
 		
-		createMVCModel(context);
+		createMVCModel(context); 
 		createRemoteCommandFactory();
 		createRemoteDisplayFactory();
 		createRemoteDeviceFactory();		
 		createGUIFactory();
 	}
+
+	public void pause() {
+		remoteDeviceFactory.pause();
+	}
+
+	public void resume() {
+		remoteDeviceFactory.resume();
+	}	
+	
+	
 	
 	private void createMVCModel(Context context) {
         Log.v(TAG, "Create MVC instances");

@@ -30,6 +30,11 @@ public class JSONRPC2Client {
 	private Map<Integer, JSONRPC2ResponseHandler> handlers;
 	private List<JSONRPC2NotificationListener> notificationListeners = new ArrayList<JSONRPC2NotificationListener>();
 	
+	
+	public boolean isConnected() {
+		return socket.isConnected();
+	}
+	
 	/**
 	 * Opens a JSON RPC 2 connection to the given host and port.
 	 * @throws IOException 

@@ -2,7 +2,7 @@ package se.newbie.remote.boxee;
 
 import java.io.InputStream;
 
-import se.newbie.remote.application.RemoteActivity;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceDetails;
 import se.newbie.remote.util.HttpRequestTask;
@@ -76,7 +76,7 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 	private void sendHttpRequestTask(String url, HttpRequestTaskHandler handler) {
 		HttpRequestTask request = new HttpRequestTask();
 		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteActivity.getRemoteApplication().getContext());
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
 		
 		if (preferences.contains(getIdentifier() + ".user")) {
 			request.setCredentials(preferences.getString(getIdentifier() + ".user", "")

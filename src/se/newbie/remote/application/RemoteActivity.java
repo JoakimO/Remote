@@ -18,25 +18,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class RemoteActivity extends Activity {
-	
 	private static final String TAG = "RemoteActivity";
-	
-	static private RemoteApplication remoteApplication; 
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	
     	Log.v(TAG, "Activity start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Context context = this.getApplicationContext();
-                
-        remoteApplication = new RemoteApplication(context);  
-        
-        remoteApplication.getRemoteDeviceFactory().create();
-        
-        RemoteGUIFactory remoteGUIFactory = remoteApplication.getRemoteModel().getRemoteGUIFactory();
+        RemoteApplication.getInstance().init(context);
+        RemoteApplication.getInstance().getRemoteDeviceFactory().create();
+         
+        RemoteGUIFactory remoteGUIFactory = RemoteApplication.getInstance().getRemoteModel().getRemoteGUIFactory();
 
         Log.v(TAG, "Create Test GUI");
         RemoteButton leftButton = remoteGUIFactory.createButton("Left");
@@ -49,32 +43,32 @@ public class RemoteActivity extends Activity {
         leftButton.setId(1);
         leftButton.setCommand("left");
         leftButton.setDevice("Boxee-boxeebox");
-        leftButton.addListener(remoteApplication.getRemoteView());
+        leftButton.addListener(RemoteApplication.getInstance().getRemoteView());
         
         rightButton.setId(2);
         rightButton.setCommand("right");
         rightButton.setDevice("Boxee-boxeebox");
-        rightButton.addListener(remoteApplication.getRemoteView());
+        rightButton.addListener(RemoteApplication.getInstance().getRemoteView());
         
         upButton.setId(3);
         upButton.setCommand("up");
         upButton.setDevice("Boxee-boxeebox");
-        upButton.addListener(remoteApplication.getRemoteView());
+        upButton.addListener(RemoteApplication.getInstance().getRemoteView());
         
         downButton.setId(4);
         downButton.setCommand("down");
         downButton.setDevice("Boxee-boxeebox");         
-        downButton.addListener(remoteApplication.getRemoteView());
+        downButton.addListener(RemoteApplication.getInstance().getRemoteView());
         
         stopButton.setId(5);
         stopButton.setCommand("back");
         stopButton.setDevice("Boxee-boxeebox");        
-        stopButton.addListener(remoteApplication.getRemoteView());
+        stopButton.addListener(RemoteApplication.getInstance().getRemoteView());
         
         playButton.setId(6);
         playButton.setCommand("select");
         playButton.setDevice("Boxee-boxeebox");        
-        playButton.addListener(remoteApplication.getRemoteView());
+        playButton.addListener(RemoteApplication.getInstance().getRemoteView());
         
         LinearLayout container = (LinearLayout)findViewById(R.id.panel);
         
@@ -140,26 +134,27 @@ public class RemoteActivity extends Activity {
     @Override
     public void onPause() {
     	Log.v(TAG, "onPause");
-    	remoteApplication.getRemoteDeviceFactory().pause();
+    	RemoteApplication.getInstance().pause();
         super.onPause();
     }
     
     
     private boolean displayFragmentAdded = false;
+    
     @Override
     public void onResume() {
     	Log.v(TAG, "onResume");
-    	remoteApplication.getRemoteDeviceFactory().resume();
+    	RemoteApplication.getInstance().resume();
     	//TODO fragment is added again which causes a crash on tablet when switching from settings
     	
-        RemoteDisplay remoteDisplay = remoteApplication.getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
+        RemoteDisplay remoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
         if (!displayFragmentAdded && remoteDisplay != null && remoteDisplay.getFragment() != null) {
         	FragmentManager fragmentManager = getFragmentManager();
         	
         	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         	fragmentTransaction.add(R.id.fragment_panel, remoteDisplay.getFragment());
         	
-        	remoteDisplay = remoteApplication.getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
+        	remoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
         	fragmentTransaction.add(R.id.browser_panel, remoteDisplay.getFragment());
         	
         	fragmentTransaction.commit();
@@ -189,8 +184,4 @@ public class RemoteActivity extends Activity {
     	}
     	return false;
     }     
-    
-    public static RemoteApplication getRemoteApplication() {
-    	return remoteApplication;
-    }
 }

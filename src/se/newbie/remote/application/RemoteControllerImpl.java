@@ -1,12 +1,12 @@
 package se.newbie.remote.application;
 
-import android.util.Log;
 import se.newbie.remote.command.RemoteCommand;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.main.RemoteController;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteView;
 import se.newbie.remote.main.RemoteViewListener;
+import android.util.Log;
 
 public class RemoteControllerImpl implements RemoteController, RemoteViewListener {
 	private static final String TAG = "RemoteControllerImpl";
@@ -23,7 +23,7 @@ public class RemoteControllerImpl implements RemoteController, RemoteViewListene
 
 	public void executeCommand(String command, String device) {
 		Log.v(TAG, "executeCommand: " + command + ", " + device);
-		RemoteApplication remoteApplication = RemoteActivity.getRemoteApplication();
+		RemoteApplication remoteApplication = RemoteApplication.getInstance();
 		RemoteCommand remoteCommand = remoteApplication.getRemoteCommandFactory().getRemoteCommand(command, device);
 		if (remoteCommand != null) {
 			remoteCommand.execute();
@@ -34,7 +34,7 @@ public class RemoteControllerImpl implements RemoteController, RemoteViewListene
 
 	public void setSelectedRemoteDevice(String device) {
 		Log.v(TAG, "setSelectedRemoteDevice: " + device);
-		RemoteApplication remoteApplication = RemoteActivity.getRemoteApplication();
+		RemoteApplication remoteApplication = RemoteApplication.getInstance();
 		RemoteDevice remoteDevice = remoteApplication.getRemoteDeviceFactory().getRemoteDevice(device);
 		this.model.setSelectedRemoteDevice(remoteDevice);
 	}

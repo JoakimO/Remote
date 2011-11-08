@@ -3,7 +3,7 @@ package se.newbie.remote.boxee;
 import java.util.List;
 
 import se.newbie.remote.R;
-import se.newbie.remote.application.RemoteActivity;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDevice.RemoteDeviceType;
 import android.content.Context;
@@ -23,7 +23,7 @@ public class BoxeePreferenceFragment extends PreferenceFragment {
 		PreferenceScreen root = this.getPreferenceScreen();
 		
 		//TODO add some way to determine type of remoteDevices.
-		List<RemoteDevice> remoteDevices = RemoteActivity.getRemoteApplication().getRemoteModel().getRemoteDevices();
+		List<RemoteDevice> remoteDevices = RemoteApplication.getInstance().getRemoteModel().getRemoteDevices();
 		if (remoteDevices != null) {
 			Context context = this.getActivity();
 			for (RemoteDevice remoteDevice : remoteDevices) {

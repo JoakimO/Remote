@@ -45,6 +45,12 @@ public class BoxeeRemoteDeviceConnection {
 		
 		private JSONRPC2Request request;
 		private JSONRPC2ResponseHandler handler;
+		private long timeout = 3000L;
+		private static final long threadSleep = 100L;
+
+		public void setTimeout(long timeout) {
+			this.timeout = timeout;
+		}		
 		
 		public BoxeeRemoteDeviceSendRequestThread(JSONRPC2Request request, JSONRPC2ResponseHandler handler) {
 			this.request = request;
@@ -53,12 +59,18 @@ public class BoxeeRemoteDeviceConnection {
 		
 		@Override
         public void run() {
-			while (!isConnected) {
+			long runTime = 0L;
+			while (!isConnected && !jsonRPC2Client.isConnected()) {
 				try {
-					Thread.sleep(100);
+					Thread.sleep(threadSleep);
 				} catch (InterruptedException e) {
 					Log.v(TAG, e.getMessage());
 				}
+				runTime += threadSleep;
+				if (runTime > timeout) {
+					Log.w(TAG, "Request Timed out:" + request.serialize());
+					return;
+				}				
 			}
 			Log.v(TAG, "SendRequest: " + request.serialize());
 			jsonRPC2Client.sendRequest(request, handler);

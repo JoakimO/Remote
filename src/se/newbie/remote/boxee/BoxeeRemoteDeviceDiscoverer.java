@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.newbie.remote.application.RemoteActivity;
 import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.command.RemoteCommand;
 import se.newbie.remote.device.RemoteDevice;
@@ -44,7 +43,7 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 	public BoxeeRemoteDeviceDiscoverer(RemoteDeviceFactory remoteDeviceFactory) {
 		this.remoteDeviceFactory = remoteDeviceFactory;
 		
-		Context context = RemoteActivity.getRemoteApplication().getContext();
+		Context context = RemoteApplication.getInstance().getContext();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
 		preferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -96,7 +95,7 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 			for (BoxeeRemoteCommand.Command command : BoxeeRemoteCommand.Command.values()) {
 				commands.add(new BoxeeRemoteCommand(device, command));
 			}
-			RemoteApplication remoteApplication = RemoteActivity.getRemoteApplication();
+			RemoteApplication remoteApplication = RemoteApplication.getInstance();
 			remoteApplication.getRemoteCommandFactory().registerCommands(device.getIdentifier(), commands);
 			
 			RemoteDisplayFactory displayFactory = remoteApplication.getRemoteDisplayFactory();
@@ -121,13 +120,13 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 	
 	private InetAddress getBroadcastInetAddress() {
 	    try {
-	    	if (RemoteActivity.getRemoteApplication().isEmulator()) {
+	    	if (RemoteApplication.getInstance().isEmulator()) {
 	    		byte[] quads = new byte[]{(byte)192, (byte)168, (byte)0, (byte)101};
 	    		//byte[] quads = new byte[]{(byte)192, (byte)168, (byte)0, (byte)159};
 	    		//byte[] quads = new byte[]{(byte)192, (byte)168, (byte)0, (byte)4};
-	    		return InetAddress.getByAddress(quads);
+	    		return InetAddress.getByAddress(quads); 
 	    	} else {
-	    	    WifiManager wifi = (WifiManager)RemoteActivity.getRemoteApplication().getContext().getSystemService(Context.WIFI_SERVICE);
+	    	    WifiManager wifi = (WifiManager)RemoteApplication.getInstance().getContext().getSystemService(Context.WIFI_SERVICE);
 	    	    DhcpInfo dhcp = wifi.getDhcpInfo();
 
 	    	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
@@ -194,7 +193,7 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 	 * @return
 	 */
 	protected boolean isBroadcast() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteActivity.getRemoteApplication().getContext());
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
 		boolean b = preferences.getBoolean("is_boxee_broadcast", true);
 		b &= preferences.getBoolean("is_broadcast", true);
 		return b;

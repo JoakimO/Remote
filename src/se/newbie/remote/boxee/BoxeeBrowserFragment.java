@@ -74,7 +74,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 								getDirectory();
 								
 							} else {
-								startMedia(detail.get("file"));
+								playMedia(detail.get("file"));
 							}
 						} 
 						i++;
@@ -88,7 +88,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
     	return listView;
     }
     
-    private void startMedia(String file) {
+    private void playMedia(String file) {
     	BoxeeRemoteDeviceConnection connection = device.getConnection();
 		//{"jsonrpc": "2.0", "method": "XBMC.Play","params":{"file": "smb://192.168.0.1/share/Movies/HD/Blade.Runner.1982.FiNAL.CUT.720p.HDDVD.x264-SiNNERS/Blade.Runner.1982.FiNAL.CUT.720p.HDDVD.x264-SiNNERS.mkv"}, "id": 1}
 		JSONRPC2Request request = connection.createJSONRPC2Request("XBMC.Play");
@@ -144,16 +144,6 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
     		String[] array = new String[files.keySet().size()];
     		array = files.keySet().toArray(array);
     		listView.setAdapter(new ArrayAdapter<String>(this.getActivity().getApplicationContext(), R.layout.boxee_browser_list_item, R.id.boxee_browser_text_view, array));
-    		//listView.setAdapter(new ArrayAdapter<String>(array));
-    		
-    		//for (String key : files.keySet()) {
-    			
-    		//	listView.setAdapter(new ArrayAdapter<String>( , lv_arr));
-    			
-	    		//TextView child = new TextView(this.getActivity().getApplicationContext());
-	    		//child.setText(key);
-	    		//listView.addView(child);
-    		//}
     	}    	
     }
     
