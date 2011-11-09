@@ -12,6 +12,11 @@ public class StandardSeekBar extends RemoteSeekBar implements OnSeekBarChangeLis
 
 	public StandardSeekBar(Context context) {
 		super(context);
+		
+		
+		//this.setBackgroundResource(R.drawable.standard_seek_bar);
+		//this.setSecondaryProgress(R.drawable.standard_seek_bar);
+		
 		this.setMax(100);
 		this.setOnSeekBarChangeListener(this);
 	}

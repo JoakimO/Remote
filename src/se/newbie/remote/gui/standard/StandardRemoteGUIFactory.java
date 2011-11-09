@@ -15,7 +15,9 @@ public class StandardRemoteGUIFactory extends AbstractRemoteGUIFactory{
 	}
 	
 	public RemoteButton createButton(Context context, String text) {
-		return new StandardRemoteButton(context, text);
+		RemoteButton remoteButton = new StandardRemoteButton(context, text);
+		
+		return remoteButton;
 	}
 	
 	public RemoteSeekBar createSeekBar(Context context) {

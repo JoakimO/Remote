@@ -1,21 +1,34 @@
 package se.newbie.remote.application;
 
+import java.util.List;
+
+import se.newbie.remote.R;
+import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.gui.RemoteButton;
 import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.gui.RemoteSeekBar;
+import se.newbie.remote.universal.RemoteDeviceBaseAdapter;
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 public class RemoteFragment extends Fragment {
+	private final static String TAG = "RemoteFragment";
 	
     @Override
     public View onCreateView(LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
+    	
+    	
     	
     	RemoteApplication remoteApplication = RemoteApplication.getInstance();
     	RemoteGUIFactory remoteGUIFactory = remoteApplication.getRemoteModel().getRemoteGUIFactory();
@@ -28,6 +41,9 @@ public class RemoteFragment extends Fragment {
         RemoteButton playButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select");
         
         RemoteSeekBar seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext());
+        
+        Spinner spinner = new Spinner(getActivity().getApplicationContext());
+        spinner.setId(8);
         
         leftButton.setId(1);
         leftButton.setCommand("left");
@@ -67,44 +83,52 @@ public class RemoteFragment extends Fragment {
         DisplayMetrics metrics = getActivity().getApplicationContext().getResources().getDisplayMetrics();
         
         
-        int widthDP = (int)(90F * metrics.density);
-        int heightDP = (int)(60F * metrics.density);
-        //px = dp * (dpi / 160)
+        Resources res = getResources();
         
+        int selectorWidth = (int)res.getDimension(R.dimen.standard_device_selector_width);
+        int selectorHeight = (int)res.getDimension(R.dimen.standard_device_selector_height);        
+        int buttonWidth = (int)res.getDimension(R.dimen.standard_button_width);
+        int buttonHeight = (int)res.getDimension(R.dimen.standard_button_height);
+        int seekHeight = (int)res.getDimension(R.dimen.standard_seek_height);
         
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthDP, heightDP);
-        //params.addRule(RelativeLayout.ABOVE, playButton.getId());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(selectorWidth, selectorHeight);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        upButton.setLayoutParams(params);
+        spinner.setLayoutParams(params);
         
-        params = new RelativeLayout.LayoutParams(widthDP, heightDP);
+        
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
+        params.addRule(RelativeLayout.BELOW, spinner.getId());
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        upButton.setLayoutParams(params);        
+        
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
         //params.addRule(RelativeLayout.CENTER_IN_PARENT);
         params.addRule(RelativeLayout.BELOW, upButton.getId());
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         playButton.setLayoutParams(params);
         
-        params = new RelativeLayout.LayoutParams(widthDP, heightDP);
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
         params.addRule(RelativeLayout.BELOW, playButton.getId());
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         downButton.setLayoutParams(params);
         
-        params = new RelativeLayout.LayoutParams(widthDP, heightDP);
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
         params.addRule(RelativeLayout.LEFT_OF, playButton.getId());
         params.addRule(RelativeLayout.BELOW, upButton.getId());
         leftButton.setLayoutParams(params);
         
-        params = new RelativeLayout.LayoutParams(widthDP, heightDP);
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
         params.addRule(RelativeLayout.RIGHT_OF, playButton.getId());
         params.addRule(RelativeLayout.BELOW, upButton.getId());
         rightButton.setLayoutParams(params);
         
-        params = new RelativeLayout.LayoutParams(widthDP, heightDP);
-        params.addRule(RelativeLayout.BELOW, downButton.getId());
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
+        params.addRule(RelativeLayout.BELOW, leftButton.getId());
+        params.addRule(RelativeLayout.LEFT_OF, downButton.getId());
         stopButton.setLayoutParams(params);
         
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, heightDP);
-        params.addRule(RelativeLayout.BELOW, stopButton.getId());
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, seekHeight);
+        params.addRule(RelativeLayout.BELOW, downButton.getId());
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
         seekBar.setLayoutParams(params);
         
@@ -122,6 +146,34 @@ public class RemoteFragment extends Fragment {
         layout.addView(stopButton);
         layout.addView(seekBar);
     	
+        
+        List<RemoteDevice> list = RemoteApplication.getInstance().getRemoteModel().getRemoteDevices();
+        RemoteDeviceBaseAdapter adapter = new RemoteDeviceBaseAdapter(this.getActivity(), list, R.layout.standard_device_spinner_item);
+
+        
+        spinner.setAdapter(adapter);
+        spinner.setBackgroundResource(R.drawable.standard_spinner);
+        //spinner.setSelection(position);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+        	public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+        	{
+        		RemoteDevice remoteDevice = (RemoteDevice)parent.getItemAtPosition(position);
+        		Log.v(TAG, "Selected Device:" + remoteDevice.getIdentifier());
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+				Log.v(TAG, "onNothingSelected");
+			}
+        });
+        
+        
+        
+        
+        layout.addView(spinner);        
+        
+        layout.setBackgroundResource(R.drawable.standard_remote);
+        
     	return layout;
     }
 

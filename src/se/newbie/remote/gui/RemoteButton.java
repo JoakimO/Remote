@@ -3,11 +3,11 @@ package se.newbie.remote.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.newbie.remote.action.RemoteAction;
+import se.newbie.remote.action.RemoteActionListener;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Button;
-import se.newbie.remote.action.RemoteAction;
-import se.newbie.remote.action.RemoteActionListener;
 
 /**
  *
