@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
+
 public class RemoteCommandFactory {
 	private static final String TAG = "RemoteCommandFactory";
 	private Map<String, List<RemoteCommand>> commands;
@@ -32,11 +34,13 @@ public class RemoteCommandFactory {
 	}
 	
 	public void registerCommand(String device, RemoteCommand remoteCommand) {
+		Log.v(TAG, "registerCommand: " + device + ", " + remoteCommand.getIdentifier());
 		List<RemoteCommand> list = getDeviceCommands(device);
 		list.add(remoteCommand);
 	}
 	
 	public void registerCommands(String device, List<RemoteCommand> commands) {
+		Log.v(TAG, "registerCommands: " + device + ", " + commands.size());
 		List<RemoteCommand> list = getDeviceCommands(device);
 		list.addAll(commands);
 	}

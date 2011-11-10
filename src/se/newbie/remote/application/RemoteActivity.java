@@ -25,14 +25,16 @@ public class RemoteActivity extends Activity {
         Context context = this.getApplicationContext();
         RemoteApplication.getInstance().init(context);
         RemoteApplication.getInstance().getRemoteDeviceFactory().create();
-         
+        
         RemoteView remoteView = RemoteApplication.getInstance().getRemoteView();
     	FragmentManager fragmentManager = getFragmentManager();
     	
     	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
     	fragmentTransaction.add(R.id.main_panel, remoteView.getFragment());
     	
-    	fragmentTransaction.commit();        
+    	fragmentTransaction.commit();
+    	
+    	
     }
     
     @Override

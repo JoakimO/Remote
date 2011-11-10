@@ -1,7 +1,7 @@
 package se.newbie.remote.boxee;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +12,7 @@ import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Response;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2ResponseHandler;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,8 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 	private final static String TAG = "BoxeeBrowserFragment";
@@ -30,10 +32,11 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 	private Handler handler;
 	//private JSONRPC2ResponseHandler responseHandler;
 	private String directory = "smb://192.168.0.1/share";
-	private Map<String, Map<String,String>> files = new HashMap<String, Map<String,String>>();
-
+	//private Map<String, Map<String,String>> files = new HashMap<String, Map<String,String>>();
+	private List<BoxeeBrowserFile> files = new ArrayList<BoxeeBrowserFile>();
 	private ListView listView;
 	
+
 	
 	public BoxeeBrowserFragment(BoxeeRemoteDevice device) {
 		this.device = device;
@@ -61,26 +64,17 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
         };	    	
     	
     	listView = new ListView(this.getActivity().getApplicationContext());
+    	listView.setBackgroundResource(R.drawable.standard_boxee_browser);
     	listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (files != null) {
-					
-					int i = 0;
-					for (String key : files.keySet()) {
-						if (i == position) {
-							Map<String, String> detail = files.get(key);
-							if (detail.get("filetype").equals("directory")) {
-								directory = detail.get("file");
-								getDirectory();
-								
-							} else {
-								playMedia(detail.get("file"));
-							}
-						} 
-						i++;
-					}
-					handler.sendEmptyMessage(0);
-				}				
+				BoxeeBrowserFile file = (BoxeeBrowserFile)parent.getItemAtPosition(position);
+				if (file.getFileType() == BoxeeBrowserFile.FileType.directory) {
+					directory = file.getFile();
+					getDirectory();					
+				} else {
+					playMedia(file.getFile());
+				}
+				handler.sendEmptyMessage(0);
 			}
     	});
     	
@@ -106,18 +100,23 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 
 			public void onResponse(JSONRPC2Response response) {
 				Log.v(TAG, response.serialize());
-				
 				try {
+					List<BoxeeBrowserFile> list = new ArrayList<BoxeeBrowserFile>();
 					files.clear();
 					JSONArray array = response.getJSONArrayResult("files");
 					for (int i = 0; i < array.length(); i++) {
 						JSONObject object = array.getJSONObject(i);
-						String label = object.getString("label");
-						Map<String, String> details = new HashMap<String, String>();
-						files.put(label, details);
-						details.put("filetype", object.getString("filetype"));
-						details.put("file", object.getString("file"));
-					}
+						
+						BoxeeBrowserFile file;
+						if (object.getString("filetype").equals("directory")) {
+							file = new BoxeeBrowserFile(BoxeeBrowserFile.FileType.directory
+									, object.getString("label"), object.getString("file"));
+						} else {
+							file = new BoxeeBrowserFile(BoxeeBrowserFile.FileType.file
+									, object.getString("label"), object.getString("file"));							
+						}
+						files.add(file);
+					}					
 				} catch (Exception e) {
 					Log.e(TAG, e.getMessage());
 				}
@@ -139,12 +138,10 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
     }
     
     private void updateList() {
-    	if (listView != null && files != null) {
-    		Log.v(TAG, "Update List " + files.keySet().size());
-    		String[] array = new String[files.keySet().size()];
-    		array = files.keySet().toArray(array);
-    		listView.setAdapter(new ArrayAdapter<String>(this.getActivity().getApplicationContext(), R.layout.boxee_browser_list_item, R.id.boxee_browser_text_view, array));
-    	}    	
+   		Log.v(TAG, "Update List");
+   		BoxeeBrowserFileAdapter fileAdapter = new BoxeeBrowserFileAdapter(R.layout.standard_browser_list_item);   		
+   		fileAdapter.addFiles(files);
+   		listView.setAdapter(fileAdapter);
     }
     
 	public String getIdentifier() {
@@ -155,4 +152,55 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 		return this;
 	}    
     
+	
+	
+	
+	
+	
+	
+	class BoxeeBrowserFileAdapter extends BaseAdapter {
+
+		private List<BoxeeBrowserFile> files = new ArrayList<BoxeeBrowserFile>();
+		private int resource;
+		
+		public BoxeeBrowserFileAdapter(int resource) {
+			this.resource = resource;
+		}
+
+		public int getCount() {
+			return files.size();
+		}
+
+		public Object getItem(int position) {
+			return files.get(position);
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public void clear() {
+			this.files.clear();
+		}
+		
+		public void addFile(BoxeeBrowserFile file) {
+			this.files.add(file);
+		}
+		
+		public void addFiles(List<BoxeeBrowserFile> files) {
+			this.files.addAll(files);
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflater = (LayoutInflater)getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			View view = inflater.inflate(resource, null);
+			BoxeeBrowserFile file = files.get(position);
+			TextView textView = (TextView)view.findViewById(R.id.standard_browser_label);
+			textView.setText(file.getLabel());
+			
+			return view;
+		}
+	}	
+	
 }

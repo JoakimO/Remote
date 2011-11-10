@@ -8,6 +8,7 @@ import java.util.Set;
 
 import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.boxee.BoxeeRemoteDeviceDiscoverer;
+import se.newbie.remote.predefined.SelectRemoteDeviceRemoteCommand;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,6 +22,8 @@ public class RemoteDeviceFactory {
 	
 	private static final String REMOTE_DEVICE_IDENTITY_SET_PROPERTY = "rdf.rdis.";
 	private static final String REMOTE_DEVICE_SERIALIZED_PROPERTY = "rdf.rd";
+	
+	private static final String PREDEFINED = "Predefined";
 
 	private List<RemoteDeviceListener> listeners = new ArrayList<RemoteDeviceListener>();
 	private List<RemoteDeviceDiscoverer> discoverers = new ArrayList<RemoteDeviceDiscoverer>();
@@ -141,7 +144,9 @@ public class RemoteDeviceFactory {
 	 * 
 	 */
 	public void create() {
-		Log.v(TAG, "Remote Device Factory Starting");
+		Log.v(TAG, "Remote Device Factory Starting...");
+		createPredefined();
+		
 		discoverers.add(new BoxeeRemoteDeviceDiscoverer(this));
 		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
@@ -156,6 +161,18 @@ public class RemoteDeviceFactory {
 		for (RemoteDeviceDiscoverer discoverer : discoverers) {
 			discoverer.create();
 		}
+	}
+	
+	/**
+	 * Create all the predefined commands and functions.
+	 */
+	public void createPredefined() {
+		Log.v(TAG, "Create predefined objects");
+		RemoteApplication remoteApplication = RemoteApplication.getInstance();
+		
+		SelectRemoteDeviceRemoteCommand selectRemoteDevice = new SelectRemoteDeviceRemoteCommand(PREDEFINED);
+		addListener(selectRemoteDevice);
+		remoteApplication.getRemoteCommandFactory().registerCommand(PREDEFINED, selectRemoteDevice);
 	}
 	
 	public void pause() {
@@ -187,7 +204,7 @@ public class RemoteDeviceFactory {
 			remoteDevices.put(device.getIdentifier(), device);
 			notifyObservers(device);
 		} else {
-			Log.e(TAG, "Remote device allready exists: " + device.getIdentifier());
+			Log.e(TAG, "Remote device already exists: " + device.getIdentifier());
 		}		
 	}
 	

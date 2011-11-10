@@ -63,7 +63,7 @@ public class RemoteModelParametersImpl implements RemoteModelParameters {
 	/**
 	 * TODO We will probably have to improve this. 
 	 */
-	public boolean equals(RemoteModelParameters parameters) {
+	public boolean isChanged(RemoteModelParameters parameters) {
 		for (String key : this.parameters.keySet()) {
 			if (!parameters.containsParam(key)) {
 				return false;
@@ -78,11 +78,17 @@ public class RemoteModelParametersImpl implements RemoteModelParameters {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
+		int i = 0;
 		for (String key : this.parameters.keySet()) {
+			if (i > 0) {
+				sb.append(", ");
+			}
 			sb.append("\"").append(key).append("\": ");
 			sb.append(this.parameters.get(key).toString());
+			i++;
 		}
 		sb.append("}");
 		return sb.toString();
 	}
+
 }

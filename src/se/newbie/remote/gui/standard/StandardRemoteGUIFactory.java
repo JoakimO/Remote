@@ -1,26 +1,35 @@
 package se.newbie.remote.gui.standard;
 
-import se.newbie.remote.gui.AbstractRemoteGUIFactory;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.gui.RemoteButton;
+import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.gui.RemoteSeekBar;
+import se.newbie.remote.gui.RemoteSpinner;
 import android.content.Context;
 
 /**
  * 
  */
-public class StandardRemoteGUIFactory extends AbstractRemoteGUIFactory{
+public class StandardRemoteGUIFactory implements RemoteGUIFactory{
 	
 	public StandardRemoteGUIFactory() {
 		
 	}
 	
-	public RemoteButton createButton(Context context, String text) {
-		RemoteButton remoteButton = new StandardRemoteButton(context, text);
+	public RemoteButton createButton(Context context, String text, String device, String command) {
+		RemoteButton remoteButton = new StandardRemoteButton(context, text, device, command);
 		
 		return remoteButton;
 	}
 	
-	public RemoteSeekBar createSeekBar(Context context) {
-		return new StandardSeekBar(context);
+	public RemoteSeekBar createSeekBar(Context context, String device, String command) {
+		return new StandardRemoteSeekBar(context, device, command);
+	}
+	
+	public RemoteSpinner createSpinner(Context context, String device, String command) {
+		StandardRemoteSpinner spinner = new StandardRemoteSpinner(context, device, command);
+		RemoteApplication.getInstance().getRemoteModel().addListener(spinner);
+		spinner.update(RemoteApplication.getInstance().getRemoteModel());
+		return spinner;
 	}
 }

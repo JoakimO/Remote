@@ -8,19 +8,19 @@ import se.newbie.remote.action.RemoteActionListener;
 import se.newbie.remote.main.RemoteModelListener;
 import android.content.Context;
 import android.util.Log;
-import android.widget.SeekBar;
+import android.widget.Spinner;
 
 /**
  *
  */
-public abstract class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, RemoteModelListener  {
-	private static final String TAG = "RemoteSeekBar";
+public abstract class RemoteSpinner extends Spinner implements RemoteGUIComponent, RemoteModelListener  {
+	private static final String TAG = "RemoteSpinner";
 	
 	String command;
 	String device;
 	List<RemoteActionListener> listeners = new ArrayList<RemoteActionListener>();
 	
-	public RemoteSeekBar(Context context) {
+	public RemoteSpinner(Context context) {
 		super(context);
 	}	
 

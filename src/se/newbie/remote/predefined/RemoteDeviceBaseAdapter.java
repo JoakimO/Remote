@@ -1,11 +1,12 @@
-package se.newbie.remote.universal;
+package se.newbie.remote.predefined;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import se.newbie.remote.R;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.device.RemoteDevice;
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,10 @@ import android.widget.TextView;
 
 public class RemoteDeviceBaseAdapter extends BaseAdapter {
 
-	private Activity activity;
-	private List<RemoteDevice> devices;
+	private List<RemoteDevice> devices = new ArrayList<RemoteDevice>();
 	private int resource;
 	
-	public RemoteDeviceBaseAdapter(Activity activity, List<RemoteDevice> devices, int resource) {
-		this.activity = activity;
-		this.devices = new ArrayList<RemoteDevice>();
-		this.devices.addAll(devices);
+	public RemoteDeviceBaseAdapter(int resource) {
 		this.resource = resource;
 	}
 
@@ -36,9 +33,15 @@ public class RemoteDeviceBaseAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
+	
+	public void setRemoteDevices(List<RemoteDevice> remoteDevices) {
+		devices.clear();
+		devices.addAll(remoteDevices);
+	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final LayoutInflater inflater = activity.getLayoutInflater();
+		LayoutInflater inflater = (LayoutInflater)RemoteApplication.getInstance().getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
 		View view = inflater.inflate(resource, null);
 		
 		TextView textView = (TextView)view.findViewById(R.id.standard_device_spinner_text);
@@ -47,6 +50,4 @@ public class RemoteDeviceBaseAdapter extends BaseAdapter {
 		textView.setText(device.getRemoteDeviceName());
 		return view;
 	}
-	
-	
 }

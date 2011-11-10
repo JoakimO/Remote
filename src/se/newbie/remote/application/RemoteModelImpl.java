@@ -36,7 +36,7 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	}
 	
 	public void notifyObservers() {
-		Log.v(TAG, "notifyObservers");
+		Log.v(TAG, "notifyObservers: " + listeners.size());
 		for (RemoteModelListener listener : listeners) {
 			listener.update(this);
 		}
@@ -96,14 +96,14 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 		return params;
 	}
 
+	/**
+	 * Sets the parameters and notifies the observers only if the parameters have changed.
+	 */
 	public void setRemoteModelParameters(String device, String key, RemoteModelParameters params) {
-		Log.v(TAG, "Model parameters changed : " + params.toString());
-		
 		String internalKey = device + "-" + key;
-		if (!remoteModelParameters.containsKey(internalKey) || (remoteModelParameters.containsKey(internalKey) && !remoteModelParameters.get(internalKey).equals(params))) {
-			Log.v(TAG, "Notifying observers");
-			remoteModelParameters.put(internalKey, params);
-			this.notifyObservers();	
-		}
+		
+		Log.v(TAG, "Model parameters changed : " + internalKey + ", " + params.toString());
+		remoteModelParameters.put(internalKey, params);
+		this.notifyObservers();	
 	}
 }

@@ -9,11 +9,12 @@ import android.content.Context;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class StandardSeekBar extends RemoteSeekBar implements OnSeekBarChangeListener   {
+public class StandardRemoteSeekBar extends RemoteSeekBar implements OnSeekBarChangeListener   {
 
-	public StandardSeekBar(Context context) {
+	public StandardRemoteSeekBar(Context context, String device, String command) {
 		super(context);
-		
+		setDevice(device);
+		setCommand(command);
 		
 		//this.setBackgroundResource(R.drawable.standard_seek_bar);
 		//this.setSecondaryProgress(R.drawable.standard_seek_bar);

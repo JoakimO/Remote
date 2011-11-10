@@ -51,5 +51,5 @@ public interface RemoteModelParameters {
 	 * Returns true if no values are different from the given
 	 * parameters. 
 	 */
-	public boolean equals(RemoteModelParameters params);
+	public boolean isChanged(RemoteModelParameters params);
 }

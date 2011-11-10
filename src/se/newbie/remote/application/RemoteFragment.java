@@ -1,25 +1,17 @@
 package se.newbie.remote.application;
 
-import java.util.List;
-
 import se.newbie.remote.R;
-import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.gui.RemoteButton;
 import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.gui.RemoteSeekBar;
-import se.newbie.remote.universal.RemoteDeviceBaseAdapter;
+import se.newbie.remote.gui.RemoteSpinner;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
 public class RemoteFragment extends Fragment {
 	private final static String TAG = "RemoteFragment";
@@ -33,54 +25,31 @@ public class RemoteFragment extends Fragment {
     	RemoteApplication remoteApplication = RemoteApplication.getInstance();
     	RemoteGUIFactory remoteGUIFactory = remoteApplication.getRemoteModel().getRemoteGUIFactory();
     	
-    	RemoteButton leftButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Left");
-        RemoteButton rightButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Right");
-        RemoteButton upButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Up");
-        RemoteButton downButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Down");
-        RemoteButton stopButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Back");
-        RemoteButton playButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select");
-        
-        RemoteSeekBar seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext());
-        
-        Spinner spinner = new Spinner(getActivity().getApplicationContext());
-        spinner.setId(8);
+    	RemoteButton leftButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Left", "Boxee-boxeebox", "left");
+        RemoteButton rightButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Right", "Boxee-boxeebox", "right");
+        RemoteButton upButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Up", "Boxee-boxeebox", "up");
+        RemoteButton downButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Down", "Boxee-boxeebox", "down");
+        RemoteButton stopButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Back", "Boxee-boxeebox", "back");
+        RemoteButton playButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select", "Boxee-boxeebox", "select");
+        RemoteSeekBar seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext(), "Boxee-boxeebox", "seek");
+        RemoteSpinner spinner = remoteGUIFactory.createSpinner(getActivity().getApplicationContext(), "Predefined", "selectRemoteDevice");
         
         leftButton.setId(1);
-        leftButton.setCommand("left");
-        leftButton.setDevice("Boxee-boxeebox");
         leftButton.addListener(RemoteApplication.getInstance().getRemoteView());
-        
         rightButton.setId(2);
-        rightButton.setCommand("right");
-        rightButton.setDevice("Boxee-boxeebox");
         rightButton.addListener(RemoteApplication.getInstance().getRemoteView());
-        
         upButton.setId(3);
-        upButton.setCommand("up");
-        upButton.setDevice("Boxee-boxeebox");
         upButton.addListener(RemoteApplication.getInstance().getRemoteView());
-        
         downButton.setId(4);
-        downButton.setCommand("down");
-        downButton.setDevice("Boxee-boxeebox");         
         downButton.addListener(RemoteApplication.getInstance().getRemoteView());
-        
         stopButton.setId(5);
-        stopButton.setCommand("back");
-        stopButton.setDevice("Boxee-boxeebox");        
         stopButton.addListener(RemoteApplication.getInstance().getRemoteView());
-        
         playButton.setId(6);
-        playButton.setCommand("select");
-        playButton.setDevice("Boxee-boxeebox");        
         playButton.addListener(RemoteApplication.getInstance().getRemoteView());
-        
         seekBar.setId(7);
-        seekBar.setCommand("seek");
-        seekBar.setDevice("Boxee-boxeebox");        
         seekBar.addListener(RemoteApplication.getInstance().getRemoteView());
-        
-        DisplayMetrics metrics = getActivity().getApplicationContext().getResources().getDisplayMetrics();
+        spinner.setId(8);
+        spinner.addListener(RemoteApplication.getInstance().getRemoteView());        
         
         
         Resources res = getResources();
@@ -93,8 +62,7 @@ public class RemoteFragment extends Fragment {
         
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(selectorWidth, selectorHeight);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        spinner.setLayoutParams(params);
-        
+        spinner.setLayoutParams(params);        
         
         params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
         params.addRule(RelativeLayout.BELOW, spinner.getId());
@@ -138,6 +106,7 @@ public class RemoteFragment extends Fragment {
         RelativeLayout.LayoutParams labelLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
         layout.setLayoutParams(labelLayoutParams);
         
+        layout.addView(spinner); 
         layout.addView(upButton);
         layout.addView(playButton);
         layout.addView(downButton);
@@ -145,32 +114,6 @@ public class RemoteFragment extends Fragment {
         layout.addView(rightButton);
         layout.addView(stopButton);
         layout.addView(seekBar);
-    	
-        
-        List<RemoteDevice> list = RemoteApplication.getInstance().getRemoteModel().getRemoteDevices();
-        RemoteDeviceBaseAdapter adapter = new RemoteDeviceBaseAdapter(this.getActivity(), list, R.layout.standard_device_spinner_item);
-
-        
-        spinner.setAdapter(adapter);
-        spinner.setBackgroundResource(R.drawable.standard_spinner);
-        //spinner.setSelection(position);
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener(){
-
-        	public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-        	{
-        		RemoteDevice remoteDevice = (RemoteDevice)parent.getItemAtPosition(position);
-        		Log.v(TAG, "Selected Device:" + remoteDevice.getIdentifier());
-			}
-
-			public void onNothingSelected(AdapterView<?> arg0) {
-				Log.v(TAG, "onNothingSelected");
-			}
-        });
-        
-        
-        
-        
-        layout.addView(spinner);        
         
         layout.setBackgroundResource(R.drawable.standard_remote);
         

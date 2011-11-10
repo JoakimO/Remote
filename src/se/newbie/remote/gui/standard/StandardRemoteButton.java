@@ -11,10 +11,13 @@ import android.view.View;
  */
 public class StandardRemoteButton extends RemoteButton {
 
-	public StandardRemoteButton(Context context, String text) {
+	public StandardRemoteButton(Context context, String text, String device, String command) {
 		super(context);
-		setBackgroundResource(R.drawable.standard_remote_button);
 		setText(text);
+		setCommand(command);
+		setDevice(device);
+		setBackgroundResource(R.drawable.standard_remote_button);
+
 		
         setOnClickListener(new View.OnClickListener() {
              public void onClick(View v) {
