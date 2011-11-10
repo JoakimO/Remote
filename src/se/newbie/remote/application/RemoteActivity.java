@@ -33,8 +33,6 @@ public class RemoteActivity extends Activity {
     	fragmentTransaction.add(R.id.main_panel, remoteView.getFragment());
     	
     	fragmentTransaction.commit();
-    	
-    	
     }
     
     @Override

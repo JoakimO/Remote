@@ -107,6 +107,12 @@ public abstract class JSONRPC2Message {
 		}
 	}		
 	
+	protected void setJSONArrayData(String key, JSONArray array) throws JSONException {
+		if (jsonData != null) {
+			jsonData.put(key, array);
+		}
+	}
+	
 	public String serialize() {
 		/*try {
 			if (jsonData.length() > -1) {

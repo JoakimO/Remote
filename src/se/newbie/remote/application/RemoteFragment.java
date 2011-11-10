@@ -3,6 +3,7 @@ package se.newbie.remote.application;
 import se.newbie.remote.R;
 import se.newbie.remote.gui.RemoteButton;
 import se.newbie.remote.gui.RemoteGUIFactory;
+import se.newbie.remote.gui.RemoteImageButton;
 import se.newbie.remote.gui.RemoteSeekBar;
 import se.newbie.remote.gui.RemoteSpinner;
 import android.app.Fragment;
@@ -21,6 +22,8 @@ public class RemoteFragment extends Fragment {
             ViewGroup container, Bundle savedInstanceState) {
     	
     	
+    	//new ImageButton(getActivity().getApplicationContext()).setImageResource(resId);
+    	
     	
     	RemoteApplication remoteApplication = RemoteApplication.getInstance();
     	RemoteGUIFactory remoteGUIFactory = remoteApplication.getRemoteModel().getRemoteGUIFactory();
@@ -30,7 +33,8 @@ public class RemoteFragment extends Fragment {
         RemoteButton upButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Up", "Boxee-boxeebox", "up");
         RemoteButton downButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Down", "Boxee-boxeebox", "down");
         RemoteButton stopButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Back", "Boxee-boxeebox", "back");
-        RemoteButton playButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select", "Boxee-boxeebox", "select");
+        //RemoteButton playButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select", "Boxee-boxeebox", "select");
+        RemoteImageButton playButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "select");
         RemoteSeekBar seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext(), "Boxee-boxeebox", "seek");
         RemoteSpinner spinner = remoteGUIFactory.createSpinner(getActivity().getApplicationContext(), "Predefined", "selectRemoteDevice");
         

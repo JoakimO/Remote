@@ -1,5 +1,6 @@
 package se.newbie.remote.util.jsonrpc2;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.util.Log;
@@ -46,6 +47,14 @@ public class JSONRPC2Request extends JSONRPC2Message{
 		}		
 	}		
 	
+	public void setParam(String key, JSONArray array) {
+		try {
+			super.setJSONArrayData(key, array);
+		} catch (JSONException e) {
+			Log.v(TAG, "Not able to set " + key + ", " + array.toString());
+		}	
+	}	
+	
 	public Integer getIntegerParam(String key) {
 		try {
 			return super.getIntegerData(key);
@@ -69,4 +78,6 @@ public class JSONRPC2Request extends JSONRPC2Message{
 			return null;
 		}		
 	}	
+	
+	
 }

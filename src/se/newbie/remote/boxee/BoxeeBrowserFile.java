@@ -1,5 +1,6 @@
 package se.newbie.remote.boxee;
 
+
 public class BoxeeBrowserFile {
 	public enum FileType {
 		file, directory
@@ -13,6 +14,8 @@ public class BoxeeBrowserFile {
 		this.fileType = fileType;
 		this.label = label;
 		this.file = file;
+		
+		
 	}
 	
 	public FileType getFileType() {
@@ -23,7 +26,7 @@ public class BoxeeBrowserFile {
 		return label;
 	}	
 	
-	public String getFile() {
+	public String getFile() { 
 		return file;
 	}
 }

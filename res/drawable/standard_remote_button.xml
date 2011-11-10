@@ -8,18 +8,7 @@
                 android:right="10dp" android:bottom="20dp" />
         </shape>
     </item>
-    <item>
-        <shape>
-            <gradient
-                android:startColor="#FF343434"
-                android:endColor="#FF171717"
-                android:angle="270" />
-            <stroke
-                android:width="1dp"
-                android:color="#FF171717" />
-            <corners android:radius="0dp" />
-            <padding android:left="10dp" android:top="20dp"
-                android:right="10dp" android:bottom="20dp" />
-        </shape>
+    <item android:drawable="@drawable/button"
+        >
     </item>
  </selector>
