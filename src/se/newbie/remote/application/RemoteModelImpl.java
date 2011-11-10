@@ -10,6 +10,7 @@ import se.newbie.remote.device.RemoteDeviceListener;
 import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteModelListener;
+import se.newbie.remote.main.RemoteModelParameters;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -25,7 +26,7 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	private List<RemoteDevice> remoteDevices = new ArrayList<RemoteDevice>();
 	private RemoteGUIFactory remoteGUIFactory;
 	
-	private Map<String, Map<String, Object>> deviceParameters = new HashMap<String, Map<String, Object>>();
+	private Map<String, RemoteModelParameters> remoteModelParameters = new HashMap<String, RemoteModelParameters>();
 	
 	private boolean isBroadcast;
 	
@@ -82,26 +83,27 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 		this.notifyObservers();
 	}
 
-	public void setDeviceParameter(String device, String key, Object value) {
-		getDeviceParameterMap(device).put(key,  value);
-		this.notifyObservers();
-	}
-
-	public int getIntDeviceParameter(String device, String key) {
-		return (Integer)getDeviceParameterMap(device).get(key);
-	}
-
-	public String getStringDeviceParameter(String device, String key) {
-		return (String)getDeviceParameterMap(device).get(key);
-	}
-	
-	private Map<String, Object> getDeviceParameterMap(String device) {
-		if (deviceParameters.containsKey(device)) {
-			return deviceParameters.get(device);
+	public RemoteModelParameters getRemoteModelParameters(String device, String key) {
+		String internalKey = device + "-" + key;
+		
+		RemoteModelParameters params;
+		if (remoteModelParameters.containsKey(internalKey)) {
+			params = remoteModelParameters.get(internalKey);
 		} else {
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			deviceParameters.put(device,  parameters);
-			return parameters;
-		}		
+			params = new RemoteModelParametersImpl();
+			remoteModelParameters.put(internalKey, params);
+		}
+		return params;
+	}
+
+	public void setRemoteModelParameters(String device, String key, RemoteModelParameters params) {
+		Log.v(TAG, "Model parameters changed : " + params.toString());
+		
+		String internalKey = device + "-" + key;
+		if (!remoteModelParameters.containsKey(internalKey) || (remoteModelParameters.containsKey(internalKey) && !remoteModelParameters.get(internalKey).equals(params))) {
+			Log.v(TAG, "Notifying observers");
+			remoteModelParameters.put(internalKey, params);
+			this.notifyObservers();	
+		}
 	}
 }

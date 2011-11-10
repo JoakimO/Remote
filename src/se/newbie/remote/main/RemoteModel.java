@@ -21,8 +21,19 @@ public interface RemoteModel {
 	
 	public void setRemoteGUIFactory(RemoteGUIFactory remoteGUIFactory);
 	public RemoteGUIFactory getRemoteGUIFactory();
+
+	/**
+	 * This method returns the parameters set for the given device and key.
+	 * 
+	 * If no parameters set was found a new is created.
+	 */
+	public RemoteModelParameters getRemoteModelParameters(String device, String key);
 	
-	public void setDeviceParameter(String device, String key, Object value);
-	public int getIntDeviceParameter(String device, String key);
-	public String getStringDeviceParameter(String device, String key);
+	/**
+	 * If any parameters have been change the parameters should be set back even
+	 * if it is the same instance.
+	 * 
+	 * This will notify the observers of the changes.
+	 */
+	public void setRemoteModelParameters(String device, String key, RemoteModelParameters params);
 }
