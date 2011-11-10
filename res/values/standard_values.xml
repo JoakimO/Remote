@@ -4,10 +4,45 @@
     <dimen name="standard_button_height">60dp</dimen>
     <dimen name="standard_seek_height">50dp</dimen>
     <dimen name="standard_small_button_width">60dp</dimen>
-    <dimen name="standard_small_button_height">40dp</dimen>	
+    <dimen name="standard_small_button_height">40dp</dimen>
+    <dimen name="standard_large_font_size">24sp</dimen>	
     <dimen name="standard_font_size">16sp</dimen>
 	<dimen name="standard_small_font_size">8sp</dimen>
     <dimen name="standard_device_selector_width">160dp</dimen>
     <dimen name="standard_device_selector_height">40dp</dimen>	
     
+    <color name="main_light_color">#E0E0E0</color>
+    <color name="main_medium_color">#808080</color>
+    <color name="main_dark_color">#404040</color>
+    
+    <color name="secondary_light_color">#608060</color>
+    <color name="secondary_medium_color">#406040</color>
+    <color name="secondary_dark_color">#204020</color>        
+        
+	<style name="standard_large_text">
+		<item name="android:textSize">@dimen/standard_large_font_size</item>
+		<item name="android:textColor">@color/main_light_color</item>
+	</style>
+	<style name="standard_medium_text">
+		<item name="android:textSize">@dimen/standard_font_size</item>
+		<item name="android:textColor">@color/main_light_color</item>
+	</style>
+	<style name="standard_small_large_text">
+		<item name="android:textSize">@dimen/standard_small_font_size</item>
+		<item name="android:textColor">@color/main_light_color</item>
+	</style>		
+	
+	<style name="standard_secondary_large_text">
+		<item name="android:textSize">@dimen/standard_large_font_size</item>
+		<item name="android:textColor">@color/secondary_light_color</item>
+	</style>
+	<style name="standard_secondary_medium_text">
+		<item name="android:textSize">@dimen/standard_font_size</item>
+		<item name="android:textColor">@color/secondary_light_color</item>
+	</style>
+	<style name="standard_secondary_small_text">
+		<item name="android:textSize">@dimen/standard_small_font_size</item>
+		<item name="android:textColor">@color/secondary_light_color</item>
+	</style>	    
+	    
 </resources>

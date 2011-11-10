@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
@@ -21,18 +22,19 @@
     		    android:layout_height="wrap_content" >
     		    
     	        <TextView
+  	            style="@style/standard_large_text"
     		    android:id="@+id/boxee_video_title"
     		    android:layout_width="wrap_content"
     		    android:layout_height="wrap_content"
-    		    android:text="Large Text"
-    		    android:textAppearance="?android:attr/textAppearanceLarge" />
+    		    android:text="Title"/>
+
     	        
     	        <TextView
+    	        style="@style/standard_secondary_large_text"
     		    android:id="@+id/boxee_video_year"
     		    android:layout_width="wrap_content"
     		    android:layout_height="wrap_content"
-    		    android:text="Large Text"
-    		    android:textAppearance="?android:attr/textAppearanceLarge" />    	        
+    		    android:text="Year"/>    	        
     	        
     		</LinearLayout>
 	   	    <LinearLayout
@@ -41,22 +43,23 @@
 	    		    android:layout_height="wrap_content" >
 	
 	   	        <TextView
+	   	            style="@style/standard_secondary_small_text"
 	   	            android:id="@+id/boxee_video_duration"
 	   	            android:layout_width="wrap_content"
 	   	            android:layout_height="wrap_content"
-	   	            android:text="Small Text"
-	   	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	   	            android:text="Small Text"/>
 	
 	   	        <TextView
+	   	            style="@style/standard_secondary_small_text"
 	   	            android:id="@+id/boxee_video_genre"
 	   	            android:layout_width="wrap_content"
 	   	            android:layout_height="wrap_content"
-	   	            android:text="Small Text"
-	   	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	   	            android:text="Small Text"/>
 	   	        	    
 			</LinearLayout>
 
 	 		<TextView
+	 		    style="@style/standard_medium_text"
 	   	        android:id="@+id/boxee_video_plotoutline"
 	   	        android:layout_width="wrap_content"
 	   	        android:layout_height="wrap_content"
@@ -69,11 +72,11 @@
 	    		    android:layout_height="wrap_content" >
 	
 	   	        <TextView
+	   	            style="@style/standard_secondary_small_text"
 	   	            android:id="@+id/boxee_video_director"
 	   	            android:layout_width="wrap_content"
 	   	            android:layout_height="wrap_content"
-	   	            android:text="Small Text"
-	   	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	   	            android:text="Small Text"/>
 	
 	   	        	    
 			</LinearLayout>   	    
