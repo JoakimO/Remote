@@ -134,7 +134,6 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 			Log.v(TAG, "SendRequest:" + request.serialize());
 			connection.sendRequest(request, responseHandler);
 		}    		
-		connection.sendRequest(request, responseHandler);    	
     }
     
     private void updateList() {

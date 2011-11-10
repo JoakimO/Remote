@@ -132,13 +132,10 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
 			jsonArray.put("VideoPlayer.Plotoutline");
 			jsonArray.put("VideoPlayer.Year");
 			jsonArray.put("VideoPlayer.Duration");
-			
 			request.setParam("labels", jsonArray);
 			Log.v(TAG, "SendRequest:" + request.serialize());
 			connection.sendRequest(request, responseHandler);
 		}    		
-		connection.sendRequest(request, responseHandler);    	
-	
     }
 
 	public void onNotification(JSONRPC2Notification notification) {
