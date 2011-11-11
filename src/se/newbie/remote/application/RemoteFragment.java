@@ -9,6 +9,7 @@ import se.newbie.remote.gui.RemoteSpinner;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,9 +37,9 @@ public class RemoteFragment extends Fragment {
         RemoteButton downButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Down", "Boxee-boxeebox", "down");
         RemoteButton backButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Back", "Boxee-boxeebox", "back");
         RemoteButton selectButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select", "Boxee-boxeebox", "select");
-        RemoteButton muteButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Mute", "Boxee-boxeebox", "muteToggle");
+        RemoteImageButton muteButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_mute, "Boxee-boxeebox", "muteToggle");
         RemoteImageButton volumeUpButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "volumeUp");
-        RemoteButton volumeDownButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Vol-", "Boxee-boxeebox", "volumeDown");
+        RemoteImageButton volumeDownButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_down, "Boxee-boxeebox", "volumeDown");
         RemoteSeekBar seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext(), "Boxee-boxeebox", "seek");
         RemoteSpinner spinner = remoteGUIFactory.createSpinner(getActivity().getApplicationContext(), "Predefined", "selectRemoteDevice");
         
@@ -145,9 +146,11 @@ public class RemoteFragment extends Fragment {
         /* START PLAYER LAYOUT */
         
         LinearLayout playerLayout = new LinearLayout(this.getActivity().getApplicationContext());
-        FrameLayout.LayoutParams playerLayoutParams = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
-        playerLayout.setOrientation(LinearLayout.VERTICAL);
+        FrameLayout.LayoutParams playerLayoutParams = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         playerLayout.setLayoutParams(playerLayoutParams);
+        playerLayout.setOrientation(LinearLayout.VERTICAL);
+        playerLayout.setGravity(Gravity.BOTTOM);        
+        playerLayout.setBackgroundResource(R.drawable.standard_player_background);
         
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, seekHeight);
         seekBar.setLayoutParams(params);
@@ -175,7 +178,7 @@ public class RemoteFragment extends Fragment {
         playerControllLayout.addView(playToggleButton);
         playerControllLayout.addView(nextButton);
         
-        playerLayout.setBackgroundResource(R.drawable.standard_player_background);
+        
         playerLayout.setOnTouchListener(new OnTouchListener() {
 			
 			public boolean onTouch(View v, MotionEvent event) {
