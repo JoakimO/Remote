@@ -10,7 +10,18 @@
 	<dimen name="standard_small_font_size">8sp</dimen>
     <dimen name="standard_device_selector_width">160dp</dimen>
     <dimen name="standard_device_selector_height">40dp</dimen>	
-    
+        
+    <color name="layout_primary_dark_color">#FF101010</color>
+    <color name="layout_primary_normal_color">#FF202020</color>    
+    <color name="layout_primary_light_color">#FF404040</color>
+    <color name="layout_secondary_dark_color">#FF101010</color>
+    <color name="layout_secondary_normal_color">#FF202020</color>    
+    <color name="layout_secondary_light_color">#FF404040</color>        
+    <color name="layout_tertiary_dark_color">#FF101010</color>
+    <color name="layout_tertiary_normal_color">#FF202020</color>    
+    <color name="layout_tertiary_light_color">#FF404040</color>
+            
+        
     <color name="main_light_color">#E0E0E0</color>
     <color name="main_medium_color">#808080</color>
     <color name="main_dark_color">#404040</color>

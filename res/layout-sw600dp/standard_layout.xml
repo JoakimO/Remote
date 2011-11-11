@@ -12,7 +12,7 @@
         android:orientation="vertical" >
     </LinearLayout>        
     <LinearLayout
-        android:layout_width="6dp"
+        android:layout_width="8dp"
         android:background="@drawable/standard_transition_right"
         android:layout_height="fill_parent"
         android:layout_weight="0.00"

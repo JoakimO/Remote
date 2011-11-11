@@ -9,11 +9,8 @@ import se.newbie.remote.gui.RemoteSpinner;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -145,20 +142,32 @@ public class RemoteFragment extends Fragment {
         
         /* START PLAYER LAYOUT */
         
+        
+
+        RelativeLayout playerRelativelayout = new RelativeLayout(this.getActivity().getApplicationContext());
+        RelativeLayout.LayoutParams playerRelativelayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+        playerRelativelayout.setLayoutParams(playerRelativelayoutParams);       
+        
         LinearLayout playerLayout = new LinearLayout(this.getActivity().getApplicationContext());
-        FrameLayout.LayoutParams playerLayoutParams = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //FrameLayout.LayoutParams playerLayoutParams = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams playerLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        playerLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        playerLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         playerLayout.setLayoutParams(playerLayoutParams);
         playerLayout.setOrientation(LinearLayout.VERTICAL);
-        playerLayout.setGravity(Gravity.BOTTOM);        
         playerLayout.setBackgroundResource(R.drawable.standard_player_background);
+        
+        
         
         params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, seekHeight);
         seekBar.setLayoutParams(params);
+
         playerLayout.addView(seekBar);
         
         LinearLayout playerControllLayout = new LinearLayout(this.getActivity().getApplicationContext());
         LinearLayout.LayoutParams playerControllLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         playerControllLayout.setLayoutParams(playerControllLayoutParams);
+
         playerLayout.addView(playerControllLayout);
         
         params = new RelativeLayout.LayoutParams(buttonSmallWidth, buttonSmallHeight);
@@ -178,8 +187,9 @@ public class RemoteFragment extends Fragment {
         playerControllLayout.addView(playToggleButton);
         playerControllLayout.addView(nextButton);
         
+        playerRelativelayout.addView(playerLayout);
         
-        playerLayout.setOnTouchListener(new OnTouchListener() {
+        /*playerLayout.setOnTouchListener(new OnTouchListener() {
 			
 			public boolean onTouch(View v, MotionEvent event) {
 				FrameLayout.LayoutParams par = (FrameLayout.LayoutParams) v.getLayoutParams();
@@ -192,7 +202,7 @@ public class RemoteFragment extends Fragment {
 				}
 				return true;
 			}
-		});         
+		});   */      
 
         
         /* END PLAYER LAYOUT */
@@ -217,14 +227,11 @@ public class RemoteFragment extends Fragment {
         layout.addView(muteButton);
         layout.addView(volumeUpButton);
         layout.addView(volumeDownButton);
-        
-//        layout.addView(playerLayout);
-
-        
         layout.setBackgroundResource(R.drawable.standard_remote);
         
         frameLayout.addView(layout);
-        frameLayout.addView(playerLayout);
+        //frameLayout.addView(playerLayout);
+        frameLayout.addView(playerRelativelayout);
         
     	return frameLayout;
     }

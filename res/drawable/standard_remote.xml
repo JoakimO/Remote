@@ -2,14 +2,15 @@
  <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-    		<solid android:color="#FF242424" />
-            <gradient
-                android:startColor="#FF444444"
-                android:endColor="#FF242424"
+    		<solid android:color="@color/layout_primary_normal_color" />
+            <!-- <gradient
+                android:startColor="@color/layout_primary_light_color"
+                android:endColor="@color/layout_primary_normal_color"
  				android:gradientRadius="200"
-
+				android:centerX="0.5"
+       			android:centerY="0.20"
                 android:type="radial" 
-                />
+                />-->
             <corners android:radius="0dp" />
             <padding android:left="10dp" android:top="20dp"
                 android:right="10dp" android:bottom="20dp" />
