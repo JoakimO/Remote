@@ -92,6 +92,12 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 				try {
 					int playerVolume = response.getIntResult();
 					playerVolume = playerVolume + volume;
+					if (playerVolume > 100) {
+						playerVolume = 100;
+					}
+					if (playerVolume < 0) {
+						playerVolume = 0;
+					}					
 					JSONRPC2Request request = connection.createJSONRPC2Request("XBMC.SetVolume");
 					if (request != null) {
 						request.setParam("value",  playerVolume);

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
-        <shape>
-        	<solid android:color="#FF343434" />
-            <corners android:radius="0dp" />
-            <padding android:left="10dp" android:top="20dp"
-                android:right="10dp" android:bottom="20dp" />
-        </shape>
+    <item android:drawable="@drawable/but_square_pushed"
+        android:state_pressed="true"
+        >
     </item>
     <item android:drawable="@drawable/but_square"
         >

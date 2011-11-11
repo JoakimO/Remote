@@ -10,8 +10,11 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -122,10 +125,7 @@ public class RemoteFragment extends Fragment {
         params.addRule(RelativeLayout.LEFT_OF, downButton.getId());
         backButton.setLayoutParams(params);
         
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, seekHeight);
-        params.addRule(RelativeLayout.BELOW, downButton.getId());
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        seekBar.setLayoutParams(params);
+
         
         params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
         params.addRule(RelativeLayout.ABOVE, leftButton.getId());
@@ -142,37 +142,67 @@ public class RemoteFragment extends Fragment {
         params.addRule(RelativeLayout.RIGHT_OF, downButton.getId());
         volumeDownButton.setLayoutParams(params);
         
+        /* START PLAYER LAYOUT */
         
         LinearLayout playerLayout = new LinearLayout(this.getActivity().getApplicationContext());
-        RelativeLayout.LayoutParams playerLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        playerLayoutParams.addRule(RelativeLayout.BELOW, seekBar.getId());
-        playerLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        FrameLayout.LayoutParams playerLayoutParams = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
+        playerLayout.setOrientation(LinearLayout.VERTICAL);
         playerLayout.setLayoutParams(playerLayoutParams);
         
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, seekHeight);
+        seekBar.setLayoutParams(params);
+        playerLayout.addView(seekBar);
+        
+        LinearLayout playerControllLayout = new LinearLayout(this.getActivity().getApplicationContext());
+        LinearLayout.LayoutParams playerControllLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        playerControllLayout.setLayoutParams(playerControllLayoutParams);
+        playerLayout.addView(playerControllLayout);
+        
         params = new RelativeLayout.LayoutParams(buttonSmallWidth, buttonSmallHeight);
-        params.addRule(RelativeLayout.BELOW, seekBar.getId());
-        params.addRule(RelativeLayout.ALIGN_LEFT,RelativeLayout.TRUE);
         previousButton.setLayoutParams(params);
         
         params = new RelativeLayout.LayoutParams(buttonSmallWidth, buttonSmallHeight);
-        params.addRule(RelativeLayout.BELOW, seekBar.getId());
-        params.addRule(RelativeLayout.RIGHT_OF, previousButton.getId());
         stopButton.setLayoutParams(params);
         
         params = new RelativeLayout.LayoutParams(buttonSmallWidth, buttonSmallHeight);
-        params.addRule(RelativeLayout.BELOW, seekBar.getId());
-        params.addRule(RelativeLayout.RIGHT_OF, stopButton.getId());
         playToggleButton.setLayoutParams(params);
         
         params = new RelativeLayout.LayoutParams(buttonSmallWidth, buttonSmallHeight);
-        params.addRule(RelativeLayout.BELOW, seekBar.getId());
-        params.addRule(RelativeLayout.RIGHT_OF, playToggleButton.getId());
-        nextButton.setLayoutParams(params);        
+        nextButton.setLayoutParams(params);   
         
+        playerControllLayout.addView(previousButton);
+        playerControllLayout.addView(stopButton);
+        playerControllLayout.addView(playToggleButton);
+        playerControllLayout.addView(nextButton);
+        
+        playerLayout.setBackgroundResource(R.drawable.standard_player_background);
+        playerLayout.setOnTouchListener(new OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				FrameLayout.LayoutParams par = (FrameLayout.LayoutParams) v.getLayoutParams();
+				switch(event.getAction()) {
+					case MotionEvent.ACTION_MOVE: {
+						par.topMargin = (int)event.getRawY();
+						v.setLayoutParams(par);
+						break;
+					}				
+				}
+				return true;
+			}
+		});         
+
+        
+        /* END PLAYER LAYOUT */
+        
+        
+        
+        FrameLayout frameLayout = new FrameLayout(this.getActivity().getApplicationContext()); 
+        FrameLayout.LayoutParams frameLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.FILL_PARENT);
+        frameLayout.setLayoutParams(frameLayoutParams);
         
         RelativeLayout layout = new RelativeLayout(this.getActivity().getApplicationContext());
         RelativeLayout.LayoutParams labelLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
-        layout.setLayoutParams(labelLayoutParams);
+        layout.setLayoutParams(labelLayoutParams);        
         
         layout.addView(spinner); 
         layout.addView(upButton);
@@ -181,20 +211,19 @@ public class RemoteFragment extends Fragment {
         layout.addView(leftButton);
         layout.addView(rightButton);
         layout.addView(backButton);
-        layout.addView(seekBar);
         layout.addView(muteButton);
         layout.addView(volumeUpButton);
         layout.addView(volumeDownButton);
         
-        layout.addView(playerLayout);
-        playerLayout.addView(previousButton);
-        playerLayout.addView(stopButton);
-        playerLayout.addView(playToggleButton);
-        playerLayout.addView(nextButton);
+//        layout.addView(playerLayout);
+
         
         layout.setBackgroundResource(R.drawable.standard_remote);
         
-    	return layout;
+        frameLayout.addView(layout);
+        frameLayout.addView(playerLayout);
+        
+    	return frameLayout;
     }
 
 }
