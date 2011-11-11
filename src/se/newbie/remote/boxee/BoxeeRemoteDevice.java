@@ -1,24 +1,21 @@
 package se.newbie.remote.boxee;
 
-import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceDetails;
-import se.newbie.remote.util.HttpRequestTask;
-import se.newbie.remote.util.HttpRequestTaskHandler;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 public class BoxeeRemoteDevice implements RemoteDevice {
 	private static final String TAG = "BoxeeRemoteDevice";
 	
 	private BoxeeRemoteDeviceDetails details;
 	private BoxeeRemoteDeviceConnection connection;
+	private BoxeePlayerState state;
 	
 	public BoxeeRemoteDevice(BoxeeRemoteDeviceDetails details) {
 		this.details = details;
 		this.connection = new BoxeeRemoteDeviceConnection(this);
+		this.state = new BoxeePlayerState(this);
 	}
 	
 	public String getIdentifier() {
@@ -36,23 +33,13 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 	public RemoteDeviceDetails getRemoteDeviceDetails() {
 		return details;
 	}
-/*
-	public int sendKey(int key) {
-		sendHttpRequestTask(String.format("http://%s:%s/xbmcCmds/xbmcHttp?command=SendKey(%s)", details.getHost(), details.getPort(), key), null);
-		return 1;
-	}
-	
-	public int sendCommand(String command, String argument) {
-		sendHttpRequestTask(String.format("http://%s:%s/xbmcCmds/xbmcHttp?command=%s(%s)", details.getHost(), details.getPort(), command, argument), null);
-		return 1;	
-	}
-	*/
+
 	public int sendCommand(final JSONRPC2Request request) {
 		this.connection.sendRequest(request, null);
 		return 1;	
 	}	
 	
-	private void sendHttpRequestTask(String url, HttpRequestTaskHandler handler) {
+/*	private void sendHttpRequestTask(String url, HttpRequestTaskHandler handler) {
 		HttpRequestTask request = new HttpRequestTask();
 		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
@@ -65,7 +52,7 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 			request.setHttpRequestTaskHandler(handler);
 		}
 		request.execute(url);
-	}
+	}*/
 	
 	/**
 	 * Only update the host information if the device was found again.
@@ -87,7 +74,6 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 
 	public void pause() {
 		getConnection().pause();
-		
 	}
 
 	public void resume() {
@@ -101,5 +87,9 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 
 	public BoxeeRemoteDeviceConnection getConnection() {
 		return connection;
+	}
+
+	public BoxeePlayerState getBoxeePlayerState() {
+		return this.state;
 	}
 }

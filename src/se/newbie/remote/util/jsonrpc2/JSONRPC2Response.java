@@ -21,6 +21,14 @@ public class JSONRPC2Response extends JSONRPC2Message {
 		}
 	}
 	
+	public Integer getIntResult() {
+		try {
+			return jsonObject.getInt("result");
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+	
 	public Integer getIntResult(String key) {
 		try {
 			return super.getIntegerData(key);
@@ -48,6 +56,14 @@ public class JSONRPC2Response extends JSONRPC2Message {
 	public JSONArray getJSONArrayResult(String key) {
 		try {
 			return super.getArrayData(key);
+		} catch (JSONException e) {
+			return null;
+		}	
+	}
+	
+	public JSONObject getJSONObject(String key) {
+		try {
+			return super.getJSONObjectData(key);
 		} catch (JSONException e) {
 			return null;
 		}	

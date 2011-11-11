@@ -47,14 +47,14 @@
 	   	            android:id="@+id/boxee_video_duration"
 	   	            android:layout_width="wrap_content"
 	   	            android:layout_height="wrap_content"
-	   	            android:text="Small Text"/>
+	   	            android:text="Duration"/>
 	
 	   	        <TextView
 	   	            style="@style/standard_secondary_small_text"
 	   	            android:id="@+id/boxee_video_genre"
 	   	            android:layout_width="wrap_content"
 	   	            android:layout_height="wrap_content"
-	   	            android:text="Small Text"/>
+	   	            android:text="Genre"/>
 	   	        	    
 			</LinearLayout>
 
@@ -64,7 +64,7 @@
 	   	        android:layout_width="wrap_content"
 	   	        android:layout_height="wrap_content"
 	   	        android:singleLine="false"
-	   	        android:text="TextView" />   	 
+	   	        android:text="Plotoutline" />   	 
    	    
 	   	    <LinearLayout
 	    		    android:id="@+id/linearLayout1"
@@ -76,7 +76,7 @@
 	   	            android:id="@+id/boxee_video_director"
 	   	            android:layout_width="wrap_content"
 	   	            android:layout_height="wrap_content"
-	   	            android:text="Small Text"/>
+	   	            android:text="Director"/>
 	
 	   	        	    
 			</LinearLayout>   	    

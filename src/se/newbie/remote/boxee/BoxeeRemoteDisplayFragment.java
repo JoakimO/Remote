@@ -102,7 +102,6 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     	
     	JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler(){
 			public void onResponse(JSONRPC2Response response) {
-				mediaItem = null;
 				Log.v(TAG, response.serialize());
 				try {
 					mediaItem = new MediaItem();
@@ -116,7 +115,7 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
 				} catch (Exception e) {
 					Log.e(TAG, e.getMessage());
 				}
-				handler.sendEmptyMessage(0);
+				handler.sendEmptyMessage(0); 
 			}
     		
     	};

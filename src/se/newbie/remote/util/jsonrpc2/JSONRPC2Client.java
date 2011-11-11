@@ -32,7 +32,7 @@ public class JSONRPC2Client {
 	
 	
 	public boolean isConnected() {
-		return socket.isConnected();
+		return (socket != null) ? socket.isConnected() : false;
 	}
 	
 	/**

@@ -89,6 +89,13 @@ public abstract class JSONRPC2Message {
 		return null;
 	}	
 	
+	protected JSONObject getJSONObjectData(String key) throws JSONException {
+		if (jsonData != null) {
+			return jsonData.getJSONObject(key);
+		}
+		return null;
+	}
+	
 	protected void setStringData(String key, String value) throws JSONException {
 		if (jsonData != null) {
 			jsonData.put(key, value);

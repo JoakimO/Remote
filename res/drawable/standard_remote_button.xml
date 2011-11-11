@@ -8,7 +8,7 @@
                 android:right="10dp" android:bottom="20dp" />
         </shape>
     </item>
-    <item android:drawable="@drawable/button"
+    <item android:drawable="@drawable/but_square"
         >
     </item>
  </selector>
