@@ -1,14 +1,21 @@
 package se.newbie.remote.application;
 
 import se.newbie.remote.R;
+import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.gui.RemoteButton;
 import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.gui.RemoteImageButton;
 import se.newbie.remote.gui.RemoteSeekBar;
 import se.newbie.remote.gui.RemoteSpinner;
+import se.newbie.remote.main.RemoteModel;
+import se.newbie.remote.main.RemoteModelListener;
+import se.newbie.remote.main.RemotePlayerState;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +23,24 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-public class RemoteFragment extends Fragment {
+public class RemoteFragment extends Fragment implements RemoteModelListener {
 	private final static String TAG = "RemoteFragment";
+	
+	RelativeLayout playerRelativelayout;
+	RemoteSeekBar seekBar;
+	Handler handler;
+	RemotePlayerState state;
 	
     @Override
     public View onCreateView(LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
     	
+    	handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+            	updateFragment();
+            }    		
+    	};
     	
     	
     	RemoteApplication remoteApplication = RemoteApplication.getInstance();
@@ -37,7 +55,7 @@ public class RemoteFragment extends Fragment {
         RemoteImageButton muteButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_mute, "Boxee-boxeebox", "muteToggle");
         RemoteImageButton volumeUpButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "volumeUp");
         RemoteImageButton volumeDownButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_down, "Boxee-boxeebox", "volumeDown");
-        RemoteSeekBar seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext(), "Boxee-boxeebox", "seek");
+        seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext(), "Boxee-boxeebox", "seek");
         RemoteSpinner spinner = remoteGUIFactory.createSpinner(getActivity().getApplicationContext(), "Predefined", "selectRemoteDevice");
         
         RemoteImageButton previousButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "skipPrevious");
@@ -144,7 +162,7 @@ public class RemoteFragment extends Fragment {
         
         
 
-        RelativeLayout playerRelativelayout = new RelativeLayout(this.getActivity().getApplicationContext());
+        playerRelativelayout = new RelativeLayout(this.getActivity().getApplicationContext());
         RelativeLayout.LayoutParams playerRelativelayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
         playerRelativelayout.setLayoutParams(playerRelativelayoutParams);       
         
@@ -235,5 +253,39 @@ public class RemoteFragment extends Fragment {
         
     	return frameLayout;
     }
+
+	public void update(RemoteModel model) {
+	
+		RemoteDevice remoteDevice = RemoteApplication.getInstance().getRemoteModel().getSelectedRemoteDevice();
+		if (remoteDevice != null) {
+			state = model.getRemotePlayerState(remoteDevice.getIdentifier());
+			if (handler != null) {
+				handler.sendEmptyMessage(0);
+			}
+		}
+	}
+	
+	public void updateFragment() {
+		if (state != null) {
+			if (state.isPlaying()) {
+				//Animation animation = AnimationUtils.loadAnimation(this.getActivity().getApplicationContext(), R.anim.slide_out_left);
+				//playerRelativelayout.startAnimation(animation);
+				playerRelativelayout.setVisibility(View.VISIBLE);
+			} else {
+				
+				//Animation animation = AnimationUtils.loadAnimation(this.getActivity().getApplicationContext(), R.anim.slide_in_left);
+				//playerRelativelayout.startAnimation(animation);
+				
+				playerRelativelayout.setVisibility(View.INVISIBLE);
+			}			
+			
+			if (state.getDuration() > 0) {
+				float f = (float)(System.currentTimeMillis() - state.getStateTime() + state.getTime()) / (float)state.getDuration();
+				int progress = (int)(f * 100F);
+				Log.v(TAG, "Progress: " + progress + ", " + f + ", "+ state.getTime() + ", " + state.getDuration() * 100);
+				seekBar.setProgress(progress);
+			}
+		}
+	}
 
 }

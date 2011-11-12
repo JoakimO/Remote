@@ -30,6 +30,9 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 	private RemotePlayerStateImpl videoPlayerState;
 	private BoxeeRemoteDevice device;
 	private DelayedUpdateThread delayedUpdateThread;
+	
+	private boolean audioUpdated = false;
+	private boolean videoUpdated = false;
 		
 	public BoxeePlayerState(BoxeeRemoteDevice device) {
 		this.device = device;
@@ -85,8 +88,22 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		return state;
 	}
 
-
+	
+	private boolean isUpdated() {
+		return audioUpdated & videoUpdated;
+	}
+	
+	private void updateStateDone(BoxeePlayer player) {
+    	if (player == BoxeePlayer.AudioPlayer) {
+    		audioUpdated = true;
+    	} else if (player == BoxeePlayer.VideoPlayer) {
+    		videoUpdated = true;
+    	}			
+	}
+	
 	private void updateState() {
+		audioUpdated = false;
+		videoUpdated = false;
 		BoxeeRemoteDeviceConnection connection = device.getConnection();
 		//{"jsonrpc": "2.0", "method": "VideoPlayer.State", "id": 1}
     	JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler(){
@@ -146,6 +163,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 					} catch (Exception e) {
 						Log.e(TAG, e.getMessage());
 					}
+					updateStateDone(player);
 				}
 	    		
 	    	};
@@ -162,6 +180,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 			state.setStateTime(-1);
 			state.setDuration(-1);
 			state.setTime(-1);
+			updateStateDone(player);
 		}
 	}
 	
@@ -215,11 +234,19 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 	 * Thread for sending delayed updates to the model. 
 	 */
 	private class DelayedUpdateThread extends Thread {
+		
+		private final static int timeout = 5000;
+		private final static int sleepTime = 50;
+		
 		private static final String TAG = "DelayedUpdateThread";
 		@Override
         public void run() {
 			try {
-				Thread.sleep(2000);
+				int time = 0;
+				while(!isUpdated()) {
+					Thread.sleep(sleepTime);
+					time += sleepTime;
+				}
 				RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
 				
 				RemotePlayerState state = null;
@@ -228,7 +255,9 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 					state = getAudioPlayerState();
 				} else if (player == BoxeePlayer.VideoPlayer) {
 					state = getVideoPlayerState();
-				}				
+				} else {
+					state = new RemotePlayerStateImpl();
+				}
 				remoteModel.setRemotePlayerState(device.getIdentifier(), state);
 			} catch (InterruptedException e) {
 				Log.e(TAG, e.getMessage());

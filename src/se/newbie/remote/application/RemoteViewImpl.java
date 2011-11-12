@@ -126,7 +126,9 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
     	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     	RemoteFragment remoteFragment = new RemoteFragment();
-    	fragmentTransaction.add(R.id.standard_remote_layout, remoteFragment);    	
+    	fragmentTransaction.add(R.id.standard_remote_layout, remoteFragment); 
+    	
+    	RemoteApplication.getInstance().getRemoteModel().addListener(remoteFragment);
     	
     	RemoteDisplay remoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
     	fragmentTransaction.add(R.id.standard_display_layout, remoteDisplay.getFragment());
