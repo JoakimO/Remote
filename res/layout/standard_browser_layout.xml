@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+
+    <FrameLayout
+        android:id="@+id/standard_browser_frame_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        
+        
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/linearLayout1"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:orientation="vertical"
+		    >        
+	        <RelativeLayout
+	        	android:id="@+id/relativeLayout1"
+	        	android:layout_width="fill_parent"
+	        	android:background="@drawable/standard_browser_menu"
+	        	android:layout_height="40dp" >
+	    	</RelativeLayout>
+		    <ListView
+		        android:id="@+id/standard_browser_list_view"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"	
+		        />             
+        </LinearLayout>
+ 		<SlidingDrawer 
+ 		    android:layout_height="fill_parent"
+ 		    android:layout_width="fill_parent"
+             android:handle="@+id/standard_browser_media_drawer_handle" 
+             android:content="@+id/standard_browser_media_drawer_content"
+             android:id="@+id/standard_browser_media_slide" 
+             android:orientation="vertical">        
+        
+ 		     <ImageView
+		        android:id="@+id/standard_browser_media_drawer_handle"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/ic_launcher" />
+ 		    
+	         <LinearLayout
+	             android:id="@+id/standard_browser_media_drawer_content"
+	             android:layout_width="fill_parent"
+	             android:layout_height="fill_parent"
+	             android:orientation="vertical" >
+	
+	             <LinearLayout
+	                 android:id="@+id/linearLayout3"
+	                 android:layout_width="fill_parent"
+	                 android:layout_height="fill_parent"
+	                 android:layout_weight="1">
+		           <Button
+		               android:id="@+id/standard_browser_button_video"
+		               android:layout_width="fill_parent"
+		               android:layout_height="fill_parent"
+		               android:layout_weight="1"
+		               android:background="@drawable/standard_browser_media_button"
+		               android:text="Video" />
+		           
+		           <Button
+		               android:id="@+id/standard_browser_button_music"
+		               android:layout_width="fill_parent"
+		               android:layout_height="fill_parent"
+		               android:layout_weight="1"
+		               android:background="@drawable/standard_browser_media_button"
+		               android:text="Music" />	           
+	                   	                   
+	             </LinearLayout>
+	             <LinearLayout
+	                 android:id="@+id/linearLayout3"
+	                 android:layout_width="fill_parent"
+	                 android:layout_height="fill_parent"
+	                 android:layout_weight="1">
+		           <Button
+		               android:id="@+id/standard_browser_button_pictures"
+		               android:layout_width="fill_parent"
+		               android:layout_height="fill_parent"
+		               android:layout_weight="1"
+		               android:background="@drawable/standard_browser_media_button"
+		               android:text="Pictures" />
+		
+		           <Button
+		               android:id="@+id/standard_browser_button_files"
+		               android:layout_width="fill_parent"
+		               android:layout_height="fill_parent"
+		               android:layout_weight="1"
+		               android:background="@drawable/standard_browser_media_button"
+		               android:text="Files" />
+	                 
+	             </LinearLayout>
+	         </LinearLayout>
+		</SlidingDrawer>	
+       
+    </FrameLayout>           
+</LinearLayout>

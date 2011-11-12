@@ -23,26 +23,36 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 	private final static String TAG = "BoxeeBrowserFragment";
+	private enum MediaType {
+		video, music, pictures, files
+	}
+	
 	private BoxeeRemoteDevice device;
 	private Handler handler;
-	//private JSONRPC2ResponseHandler responseHandler;
-	private String directory = "smb://192.168.0.1/share";
-	//private Map<String, Map<String,String>> files = new HashMap<String, Map<String,String>>();
-	private List<BoxeeBrowserFile> files = new ArrayList<BoxeeBrowserFile>();
-	private ListView listView;
 	
+	
+	private MediaType mediaType;
+	private String directory; // = "smb://192.168.0.1/share";
+	
+	//private List<String> directory = new ArrayList();
+	BoxeeBrowserFileAdapter fileAdapter;
+	private List<BoxeeBrowserFile> files = new ArrayList<BoxeeBrowserFile>();
 
+	
+	private ListView listView;
+	private SlidingDrawer slidingDrawer;
+	
 	
 	public BoxeeBrowserFragment(BoxeeRemoteDevice device) {
 		this.device = device;
 	}
-
-	
 	
     @Override
     public void onResume() {
@@ -59,27 +69,87 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
     	handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-            	updateList();
+            	//updateBrowser();
+            	Log.v(TAG, "handleMessage");
+
+            	fileAdapter.clear();
+				fileAdapter.addFiles(files);            	
+				fileAdapter.notifyDataSetChanged();
             }
         };	    	
-    	
-    	listView = new ListView(this.getActivity().getApplicationContext());
+        
+        View view = inflater.inflate(R.layout.standard_browser_layout, container, false);
+        
+        
+        Button videoButton = (Button)view.findViewById(R.id.standard_browser_button_video);
+        Button musicButton = (Button)view.findViewById(R.id.standard_browser_button_music);
+        Button picturesButton = (Button)view.findViewById(R.id.standard_browser_button_pictures);
+        Button filesButton = (Button)view.findViewById(R.id.standard_browser_button_files);
+        
+        videoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	mediaType = MediaType.video;
+            	directory = null;
+            	slidingDrawer.close();
+            	getDirectory();
+            	handler.sendEmptyMessage(0);
+            }
+        });
+        
+        musicButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	mediaType = MediaType.music;
+            	directory = null;
+            	slidingDrawer.close();
+            	getDirectory();
+            	handler.sendEmptyMessage(0);
+            }
+        });		        
+        
+        picturesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	mediaType = MediaType.pictures;
+            	directory = null;
+            	slidingDrawer.close();
+            	getDirectory();
+            	handler.sendEmptyMessage(0);
+            }
+        });
+        
+        filesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	mediaType = MediaType.files;
+            	directory = null;
+            	slidingDrawer.close();
+            	getDirectory();
+            	handler.sendEmptyMessage(0);
+            }
+        });	        
+        
+        
+    	listView = (ListView)view.findViewById(R.id.standard_browser_list_view);
     	listView.setBackgroundResource(R.drawable.standard_boxee_browser);
     	listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				BoxeeBrowserFile file = (BoxeeBrowserFile)parent.getItemAtPosition(position);
-				if (file.getFileType() == BoxeeBrowserFile.FileType.directory) {
-					directory = file.getFile();
-					getDirectory();					
-				} else {
-					playMedia(file.getFile());
+				if (file != null) {
+					if (file.getFileType() == BoxeeBrowserFile.FileType.directory) {
+						directory = file.getFile();
+						getDirectory();					
+					} else { 
+						playMedia(file.getFile());
+					}
 				}
 				handler.sendEmptyMessage(0);
 			}
     	});
-    	
-    	
-    	return listView;
+   		fileAdapter = new BoxeeBrowserFileAdapter(R.layout.standard_browser_list_item);   		
+   		listView.setAdapter(fileAdapter);
+   		
+   		slidingDrawer = (SlidingDrawer)view.findViewById(R.id.standard_browser_media_slide);
+   		slidingDrawer.open();
+   		
+    	return view;
     }
     
     private void playMedia(String file) {
@@ -94,53 +164,72 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
     }
     
     private void getDirectory() {
-    	BoxeeRemoteDeviceConnection connection = device.getConnection();
+    	final BoxeeRemoteDeviceConnection connection = device.getConnection();
     	
-    	JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler(){
-
-			public void onResponse(JSONRPC2Response response) {
-				Log.v(TAG, response.serialize());
-				try {
-					List<BoxeeBrowserFile> list = new ArrayList<BoxeeBrowserFile>();
-					files.clear();
-					JSONArray array = response.getJSONArrayResult("files");
-					for (int i = 0; i < array.length(); i++) {
-						JSONObject object = array.getJSONObject(i);
-						
-						BoxeeBrowserFile file;
-						if (object.getString("filetype").equals("directory")) {
-							file = new BoxeeBrowserFile(BoxeeBrowserFile.FileType.directory
-									, object.getString("label"), object.getString("file"));
-						} else {
-							file = new BoxeeBrowserFile(BoxeeBrowserFile.FileType.file
-									, object.getString("label"), object.getString("file"));							
+    	if (mediaType != null && directory == null) {
+	    	JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler(){
+				public void onResponse(JSONRPC2Response response) {
+					Log.v(TAG, response.serialize());  
+					try {
+						files.clear();
+						JSONArray array = response.getJSONArrayResult("shares");
+						if (array != null) {
+							for (int i = 0; i < array.length(); i++) {
+								JSONObject object = array.getJSONObject(i);						
+								BoxeeBrowserFile file = new BoxeeBrowserFile(BoxeeBrowserFile.FileType.directory
+											, object.getString("label"), object.getString("file"));
+								files.add(file);
+							}
 						}
-						files.add(file);
-					}					
-				} catch (Exception e) {
-					Log.e(TAG, e.getMessage());
-				}
-				handler.sendEmptyMessage(0);
+					} catch (Exception e) {
+						Log.e(TAG, e.getMessage());
+					}
+					handler.sendEmptyMessage(0);					
+		    	}
+	    	};
+			//{"jsonrpc": "2.0", "method": "Files.GetSources", "params":{"media": "video"}, "id": 1}
+			JSONRPC2Request request = connection.createJSONRPC2Request("Files.GetSources");
+			if (request != null) {
+				request.setParam("media", mediaType.name());
+				Log.v(TAG, "SendRequest:" + request.serialize());
+				connection.sendRequest(request, responseHandler);
 			}
-    		
-    	};
-    	
-    	
-		//{"jsonrpc": "2.0", "method": "Files.GetDirectory","params":{"media": "video", "directory": "smb://192.168.0.1/share/Movies/HD/Blade.Runner.1982.FiNAL.CUT.720p.HDDVD.x264-SiNNERS/" }, "id": 1}
-		JSONRPC2Request request = connection.createJSONRPC2Request("Files.GetDirectory");
-		if (request != null) {
-			request.setParam("media", "video");
-			request.setParam("directory", directory);
-			Log.v(TAG, "SendRequest:" + request.serialize());
-			connection.sendRequest(request, responseHandler);
-		}    		
-    }
-    
-    private void updateList() {
-   		Log.v(TAG, "Update List");
-   		BoxeeBrowserFileAdapter fileAdapter = new BoxeeBrowserFileAdapter(R.layout.standard_browser_list_item);   		
-   		fileAdapter.addFiles(files);
-   		listView.setAdapter(fileAdapter);
+    	} else if (directory != null) {
+	    	JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler(){
+				public void onResponse(JSONRPC2Response response) {
+					Log.v(TAG, response.serialize());
+					try {
+						files.clear();
+						JSONArray array = response.getJSONArrayResult("files");
+						if (array != null) {
+							for (int i = 0; i < array.length(); i++) {
+								JSONObject object = array.getJSONObject(i);						
+								BoxeeBrowserFile file;
+								if (object.getString("filetype").equals("directory")) {
+									file = new BoxeeBrowserFile(BoxeeBrowserFile.FileType.directory
+											, object.getString("label"), object.getString("file"));
+								} else {
+									file = new BoxeeBrowserFile(BoxeeBrowserFile.FileType.file
+											, object.getString("label"), object.getString("file"));							
+								}
+								files.add(file);
+							}			
+						}
+					} catch (Exception e) {
+						Log.e(TAG, e.getMessage());
+					}
+					handler.sendEmptyMessage(0);
+				}
+	    	};
+			//{"jsonrpc": "2.0", "method": "Files.GetDirectory","params":{"media": "video", "directory": "smb://192.168.0.1/share/Movies/HD/Blade.Runner.1982.FiNAL.CUT.720p.HDDVD.x264-SiNNERS/" }, "id": 1}
+			JSONRPC2Request request = connection.createJSONRPC2Request("Files.GetDirectory");
+			if (request != null) {
+				request.setParam("media", mediaType.name());
+				request.setParam("directory", directory);
+				Log.v(TAG, "SendRequest:" + request.serialize());
+				connection.sendRequest(request, responseHandler);
+			}
+    	}
     }
     
 	public String getIdentifier() {
@@ -179,11 +268,11 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 		}
 
 		public void clear() {
-			this.files.clear();
+			files.clear();
 		}
 		
 		public void addFile(BoxeeBrowserFile file) {
-			this.files.add(file);
+			files.add(file);
 		}
 		
 		public void addFiles(List<BoxeeBrowserFile> files) {

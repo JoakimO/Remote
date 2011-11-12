@@ -26,17 +26,17 @@
 
 	    <LinearLayout
 	        android:id="@+id/standard_display_layout"
-	        android:layout_width="match_parent"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="0.00"
+	        android:layout_weight="1.00"
 	        android:orientation="vertical" >
 	
 	    </LinearLayout>     
 	    <LinearLayout
 	        android:id="@+id/standard_browser_layout"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0.00"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1.00"
 	        android:orientation="vertical" >
 	    </LinearLayout>        
         

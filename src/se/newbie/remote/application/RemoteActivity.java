@@ -19,8 +19,9 @@ public class RemoteActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	Log.v(TAG, "Activity start");
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "Activity start");
+        
         setContentView(R.layout.main);
         Context context = this.getApplicationContext();
         RemoteApplication.getInstance().init(context);

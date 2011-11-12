@@ -3,7 +3,6 @@
     <item android:drawable="@drawable/but_square_pushed"
         android:state_pressed="true"
         >
-        <solid android:color="@color/layout_secondary_light_color"/>
     </item>
     <item android:drawable="@drawable/but_square"
         >
