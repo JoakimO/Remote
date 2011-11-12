@@ -36,4 +36,8 @@ public interface RemoteModel {
 	 * This will notify the observers of the changes.
 	 */
 	public void setRemoteModelParameters(String device, String key, RemoteModelParameters params);
+	
+	public void setRemotePlayerState(String device, RemotePlayerState state);
+	
+	public RemotePlayerState getRemotePlayerState(String device);
 }

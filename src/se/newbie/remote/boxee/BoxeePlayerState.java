@@ -3,6 +3,10 @@ package se.newbie.remote.boxee;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import se.newbie.remote.application.RemoteApplication;
+import se.newbie.remote.application.RemotePlayerStateImpl;
+import se.newbie.remote.main.RemoteModel;
+import se.newbie.remote.main.RemotePlayerState;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Notification;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
@@ -22,9 +26,10 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		VideoPlayer, AudioPlayer
 	}
 	
-	private PlayerState audioPlayerState;
-	private PlayerState videoPlayerState;
+	private RemotePlayerStateImpl audioPlayerState;
+	private RemotePlayerStateImpl videoPlayerState;
 	private BoxeeRemoteDevice device;
+	private DelayedUpdateThread delayedUpdateThread;
 		
 	public BoxeePlayerState(BoxeeRemoteDevice device) {
 		this.device = device;
@@ -41,7 +46,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		return null;
 	}	
 
-	public PlayerState getAudioPlayerState() {
+	public RemotePlayerState getAudioPlayerState() {
 		return audioPlayerState;
 	}
 
@@ -49,7 +54,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		audioPlayerState = createState(response);
 	}
 	
-	public PlayerState getVideoPlayerState() {
+	public RemotePlayerState getVideoPlayerState() {
 		return videoPlayerState;
 	}
 
@@ -58,8 +63,8 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		videoPlayerState = createState(response);
 	}
 	
-	public PlayerState createState(JSONRPC2Response response) {
-		PlayerState state = new PlayerState();
+	public RemotePlayerStateImpl createState(JSONRPC2Response response) {
+		RemotePlayerStateImpl state = new RemotePlayerStateImpl();
 		
 		state.setPlaying(response.getBooleanResult("playing"));
 		if (state.isPlaying()) {
@@ -88,6 +93,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 			public void onResponse(JSONRPC2Response response) {
 				try {
 					setVideoPlayerState(response);
+					updateTimeState(BoxeePlayer.VideoPlayer, videoPlayerState);
 				} catch (Exception e) {
 					Log.e(TAG, e.getMessage());
 				}
@@ -104,6 +110,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 			public void onResponse(JSONRPC2Response response) {
 				try {
 					setAudioPlayerState(response);
+					updateTimeState(BoxeePlayer.AudioPlayer, audioPlayerState);
 				} catch (Exception e) {
 					Log.e(TAG, e.getMessage());
 				}
@@ -113,9 +120,68 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		request = connection.createJSONRPC2Request("AudioPlayer.State");
 		if (request != null) {
 			connection.sendRequest(request, responseHandler);
-		}    						
+		}    		
+		
+		//Start a delayed model update if no one is running.
+		if (delayedUpdateThread == null || (delayedUpdateThread != null && !delayedUpdateThread.isAlive())) {
+			delayedUpdateThread = new DelayedUpdateThread();
+			delayedUpdateThread.start();
+		}
 	}
 
+	private void updateTimeState(final BoxeePlayer player, final RemotePlayerStateImpl state) {
+		if (state != null && state.isPlaying()) {
+			BoxeeRemoteDeviceConnection connection = device.getConnection();
+			JSONRPC2Request request = null;
+			//{ "jsonrpc": "2.0","id": 1,"method": "AudioPlayer.GetTime" }		
+			JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler(){
+				public void onResponse(JSONRPC2Response response) {
+					try {
+				    	((RemotePlayerStateImpl)state).setStateTime(System.currentTimeMillis());
+				    	JSONObject timeObject = response.getJSONObject("time");
+				    	if (state != null && timeObject != null) {
+				    		((RemotePlayerStateImpl)state).setTime(getTimeMillis(timeObject));
+				    		((RemotePlayerStateImpl)state).setDuration(getTimeMillis(response.getJSONObject("total")));
+				    	}
+					} catch (Exception e) {
+						Log.e(TAG, e.getMessage());
+					}
+				}
+	    		
+	    	};
+	    	if (player == BoxeePlayer.AudioPlayer) {
+	    		request = connection.createJSONRPC2Request("AudioPlayer.GetTime");
+	    	} else if (player == BoxeePlayer.VideoPlayer) {
+	    		request = connection.createJSONRPC2Request("VideoPlayer.GetTime");
+	    	}
+	    	
+			if (request != null) {
+				connection.sendRequest(request, responseHandler);
+			} 		
+		} else {
+			state.setStateTime(-1);
+			state.setDuration(-1);
+			state.setTime(-1);
+		}
+	}
+	
+	/**
+	 * Method to parse the input from JSON object and return the time in milliseconds.
+	 */
+	private long getTimeMillis(JSONObject object) {
+		long time = 0;
+		
+		try {
+			time += (object.getInt("hours") * 60 * 60 * 1000);
+			time += (object.getInt("minutes") * 60 * 1000);
+			time += (object.getInt("seconds") * 1000);
+			time += object.getInt("milliseconds");
+		} catch (JSONException e) {
+			Log.v(TAG, "Not able to parse time");
+		}
+		return time;
+	}
+	
 	/**
 	 * Playback 	PlaybackStarted 	Playback of media has started
 	 * Playback 	PlaybackEnded 	Playback of media has ended
@@ -139,56 +205,35 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		} else if (notification.getStringParam("message") != null &&
 				notification.getStringParam("message").equals("PlaybackStarted")) {
 			updateState();
-		}
-	}	
-	
-	/**
-	 * Holds the current state of a player, players can be video or audio players.
-	 * 
-	 * There is a possibility that both players are active at the same time;
-	 */
-	public class PlayerState {
-		private boolean isPlaying;
-		private boolean isPaused;
-		private boolean isNextAvailable;
-		private boolean isPreviousAvailable;
-		private boolean isSeekable;
-		private String  file;
-		public boolean isPlaying() {
-			return isPlaying;
-		}
-		public void setPlaying(boolean isPlaying) {
-			this.isPlaying = isPlaying;
-		}
-		public boolean isPaused() {
-			return isPaused;
-		}
-		public void setPaused(boolean isPaused) {
-			this.isPaused = isPaused;
-		}
-		public boolean isNextAvailable() {
-			return isNextAvailable;
-		}
-		public void setNextAvailable(boolean isNextAvailable) {
-			this.isNextAvailable = isNextAvailable;
-		}
-		public boolean isPreviousAvailable() {
-			return isPreviousAvailable;
-		}
-		public void setPreviousAvailable(boolean isPreviousAvailable) {
-			this.isPreviousAvailable = isPreviousAvailable;
-		}
-		public boolean isSeekable() {
-			return isSeekable;
-		}
-		public void setSeekable(boolean isSeekable) {
-			this.isSeekable = isSeekable;
-		}
-		public String getFile() {
-			return file;
-		}
-		public void setFile(String file) {
-			this.file = file;
+		} else if (notification.getStringParam("message") != null &&
+				notification.getStringParam("message").equals("PlaybackPaused")) {
+			updateState();
 		}
 	}
+	
+	/**
+	 * Thread for sending delayed updates to the model. 
+	 */
+	private class DelayedUpdateThread extends Thread {
+		private static final String TAG = "DelayedUpdateThread";
+		@Override
+        public void run() {
+			try {
+				Thread.sleep(2000);
+				RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
+				
+				RemotePlayerState state = null;
+				BoxeePlayer player = getActivePlayer();
+				if (player == BoxeePlayer.AudioPlayer) {
+					state = getAudioPlayerState();
+				} else if (player == BoxeePlayer.VideoPlayer) {
+					state = getVideoPlayerState();
+				}				
+				remoteModel.setRemotePlayerState(device.getIdentifier(), state);
+			} catch (InterruptedException e) {
+				Log.e(TAG, e.getMessage());
+			}
+		}		
+	}
+	
 }

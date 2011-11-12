@@ -11,6 +11,7 @@ import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteModelListener;
 import se.newbie.remote.main.RemoteModelParameters;
+import se.newbie.remote.main.RemotePlayerState;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -25,7 +26,8 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	private RemoteDevice selectedRemoteDevice;
 	private List<RemoteDevice> remoteDevices = new ArrayList<RemoteDevice>();
 	private RemoteGUIFactory remoteGUIFactory;
-	
+
+	private Map<String, RemotePlayerState> remotePlayerStates = new HashMap<String, RemotePlayerState>();
 	private Map<String, RemoteModelParameters> remoteModelParameters = new HashMap<String, RemoteModelParameters>();
 	
 	private boolean isBroadcast;
@@ -104,6 +106,15 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 		
 		Log.v(TAG, "Model parameters changed : " + internalKey + ", " + params.toString());
 		remoteModelParameters.put(internalKey, params);
+		this.notifyObservers();	
+	}
+
+	public RemotePlayerState getRemotePlayerState(String device) {
+		return remotePlayerStates.get(device);
+	}
+
+	public void setRemotePlayerState(String device, RemotePlayerState remotePlayerState) {
+		this.remotePlayerStates.put(device, remotePlayerState);
 		this.notifyObservers();	
 	}
 }
