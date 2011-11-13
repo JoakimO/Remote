@@ -43,6 +43,13 @@
 		<item name="android:textColor">@color/main_light_color</item>
 	</style>		
 	
+	<style name="standard_medium_title_text">
+		<item name="android:textSize">@dimen/standard_font_size</item>
+		<item name="android:textColor">@color/main_light_color</item>
+		<item name="android:textStyle">bold</item>
+	</style>	    
+	    
+	
 	<style name="standard_secondary_large_text">
 		<item name="android:textSize">@dimen/standard_large_font_size</item>
 		<item name="android:textColor">@color/secondary_light_color</item>

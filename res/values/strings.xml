@@ -25,5 +25,12 @@
 	<string name="remote_right">Right</string>
 	<string name="remote_select">Select</string>
 	<string name="remote_back">Back</string>
+	
+	    
+	<string name="music_by">by</string>
+	<string name="music_title_duration">Length:</string>
+	<string name="music_title_genre">Genre:</string>
+	<string name="music_title_year">Year:</string>
+	<string name="music_title_album">Album:</string>
 	    
 </resources>

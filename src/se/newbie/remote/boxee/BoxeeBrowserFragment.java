@@ -63,7 +63,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
             ViewGroup container, Bundle savedInstanceState) {
     	Log.v(TAG, "onCreate");
     	
-    	handler = new Handler() {
+    	handler = new Handler() { 
             @Override
             public void handleMessage(Message msg) {
             	//updateBrowser();

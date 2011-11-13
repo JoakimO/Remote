@@ -1,5 +1,8 @@
 package se.newbie.remote.boxee;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONArray;
 
 import se.newbie.remote.R;
@@ -27,8 +30,50 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     private Handler handler;
     
 	private BoxeeRemoteDevice boxeeRemoteDevice;
-	private LinearLayout rootPanel;
+	private LinearLayout contentLayout;
 	private MediaItem mediaItem;
+	
+	private enum InfoLabel {
+		VideoTitle("VideoPlayer", "Title")
+		, VideoGenre("VideoPlayer", "Genre")
+		, VideoStudio("VideoPlayer", "Studio")
+		, VideoDirector("VideoPlayer", "Director")
+		, VideoPlotoutline("VideoPlayer", "Plotoutline")
+		, VideoPlot("VideoPlayer", "Plot")
+		, VideoYear("VideoPlayer", "Year")
+		, VideoDuration("VideoPlayer", "Duration")
+		
+		, MusicTitle("MusicPlayer", "Title")
+		, MusicArtist("MusicPlayer", "Artist")
+		, MusicAlbum("MusicPlayer", "Album")
+		, MusicGenre("MusicPlayer", "Genre")
+		, MusicYear("MusicPlayer", "Year")
+		, MusicDuration("MusicPlayer", "Duration")
+		
+		;
+	
+		
+		
+		String namespace;
+		String name;
+		
+		InfoLabel(String namespace, String name) {
+			this.namespace = namespace;
+			this.name = name;
+		}
+		
+		public String getNamespace() {
+			return namespace;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		public String getKey() {
+			return namespace + "." + name;
+		}
+	}
 	
 	public BoxeeRemoteDisplayFragment(BoxeeRemoteDevice boxeeRemoteDevice) {
 		super();
@@ -61,38 +106,59 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
             	updateFragment();
             }
         };	    	
-        rootPanel = new LinearLayout(this.getActivity().getApplicationContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
-        rootPanel.setLayoutParams(layoutParams);
-        rootPanel.setBackgroundResource(R.drawable.standard_browser_list_background);
-    	return rootPanel;
+        
+        View view = inflater.inflate(R.layout.standard_display_layout, container, false);
+        contentLayout = (LinearLayout)view.findViewById(R.id.standard_display_content);
+    	return view;
     }
     
     private void updateFragment() {
-    	rootPanel.removeAllViews();
+    	contentLayout.removeAllViews();
     	if (mediaItem != null) {
-			LayoutInflater inflater = (LayoutInflater)getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View view = inflater.inflate(R.layout.boxee_video_view, null);    	
-			
-			TextView textView;
-			
-			textView = (TextView)view.findViewById(R.id.boxee_video_title);
-			textView.setText(mediaItem.getTitle());
-			textView = (TextView)view.findViewById(R.id.boxee_video_year);
-			textView.setText(mediaItem.getYear());
-			
-			textView = (TextView)view.findViewById(R.id.boxee_video_genre);
-			textView.setText(mediaItem.getGenre());
-			textView = (TextView)view.findViewById(R.id.boxee_video_duration);
-			textView.setText(mediaItem.getDuration());
-			
-			textView = (TextView)view.findViewById(R.id.boxee_video_plotoutline);
-			textView.setText(mediaItem.getPlotoutline());		
-			
-			textView = (TextView)view.findViewById(R.id.boxee_video_director);
-			textView.setText(mediaItem.getDirector());		
-			
-			rootPanel.addView(view);
+    		if (mediaItem.getMediaType() == BoxeeMediaType.video) {
+				LayoutInflater inflater = (LayoutInflater)getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View view = inflater.inflate(R.layout.boxee_video_view, null);    	
+				
+				TextView textView;
+				
+				textView = (TextView)view.findViewById(R.id.boxee_video_title);
+				textView.setText(mediaItem.getTitle());
+				textView = (TextView)view.findViewById(R.id.boxee_video_year);
+				textView.setText(mediaItem.getProperty(InfoLabel.VideoYear.getName(), ""));
+				
+				textView = (TextView)view.findViewById(R.id.boxee_video_genre);
+				textView.setText(mediaItem.getProperty(InfoLabel.VideoGenre.getName(), ""));
+				textView = (TextView)view.findViewById(R.id.boxee_video_duration);
+				textView.setText(mediaItem.getProperty(InfoLabel.VideoDuration.getName(), ""));
+				
+				textView = (TextView)view.findViewById(R.id.boxee_video_plotoutline);
+				textView.setText(mediaItem.getProperty(InfoLabel.VideoPlotoutline.getName(), ""));		
+				
+				textView = (TextView)view.findViewById(R.id.boxee_video_director);
+				textView.setText(mediaItem.getProperty(InfoLabel.VideoDirector.getName(), ""));		
+				
+				contentLayout.addView(view);
+    		} else if (mediaItem.getMediaType() == BoxeeMediaType.music) {
+				LayoutInflater inflater = (LayoutInflater)getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View view = inflater.inflate(R.layout.standard_display_music_layout, contentLayout);    	
+				
+				TextView textView;
+				
+				textView = (TextView)view.findViewById(R.id.standard_display_music_title);
+				textView.setText(mediaItem.getProperty(InfoLabel.MusicTitle.getName(), ""));
+				textView = (TextView)view.findViewById(R.id.standard_display_music_artist);
+				textView.setText(mediaItem.getProperty(InfoLabel.MusicArtist.getName(), ""));				
+				textView = (TextView)view.findViewById(R.id.standard_display_music_duration);
+				textView.setText(mediaItem.getProperty(InfoLabel.MusicDuration.getName(), ""));
+				textView = (TextView)view.findViewById(R.id.standard_display_music_genre);
+				textView.setText(mediaItem.getProperty(InfoLabel.MusicGenre.getName(), ""));
+				textView = (TextView)view.findViewById(R.id.standard_display_music_year);
+				textView.setText(mediaItem.getProperty(InfoLabel.MusicYear.getName(), ""));
+				textView = (TextView)view.findViewById(R.id.standard_display_music_album);
+				textView.setText(mediaItem.getProperty(InfoLabel.MusicAlbum.getName(), ""));				
+    		}
+    	} else {
+    		
     	}
     }
 
@@ -103,15 +169,19 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     	JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler(){
 			public void onResponse(JSONRPC2Response response) {
 				Log.v(TAG, response.serialize());
+				mediaItem = null;
 				try {
-					mediaItem = new MediaItem();
-					mediaItem.setTitle(response.getStringResult("VideoPlayer.Title"));
-					mediaItem.setGenre(response.getStringResult("VideoPlayer.Genre"));
-					mediaItem.setStudio(response.getStringResult("VideoPlayer.Studio"));
-					mediaItem.setDirector(response.getStringResult("VideoPlayer.Director"));
-					mediaItem.setPlotoutline(response.getStringResult("VideoPlayer.Plotoutline"));
-					mediaItem.setYear(response.getStringResult("VideoPlayer.Year"));
-					mediaItem.setDuration(response.getStringResult("VideoPlayer.Duration"));
+					
+					if (response.getStringResult(InfoLabel.VideoTitle.getKey()) != null && response.getStringResult(InfoLabel.VideoTitle.getKey()).length() > 0) {
+						mediaItem = new MediaItem();
+						mediaItem.setMediaType(BoxeeMediaType.video);
+						setProperties(mediaItem, "VideoPlayer", response);
+					}					
+					if (response.getStringResult(InfoLabel.MusicTitle.getKey()) != null && response.getStringResult(InfoLabel.MusicTitle.getKey()).length() > 0) {
+						mediaItem = new MediaItem();
+						mediaItem.setMediaType(BoxeeMediaType.music);
+						setProperties(mediaItem, "MusicPlayer", response);
+					}
 				} catch (Exception e) {
 					Log.e(TAG, e.getMessage());
 				}
@@ -120,37 +190,38 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     		
     	};
     	
-		//{ "jsonrpc": "2.0","id": 1,"method": "System.GetInfoLabels", "params": {"labels": [ "VideoPlayer.Title","VideoPlayer.Genre","VideoPlayer.Studio","VideoPlayer.Director","VideoPlayer.Plotoutline","VideoPlayer.Year","VideoPlayer.Time" ] } }
 		JSONRPC2Request request = connection.createJSONRPC2Request("System.GetInfoLabels");
 		if (request != null) {
 			JSONArray jsonArray = new JSONArray();
-			jsonArray.put("VideoPlayer.Title");
-			jsonArray.put("VideoPlayer.Genre");
-			jsonArray.put("VideoPlayer.Studio");
-			jsonArray.put("VideoPlayer.Director");
-			jsonArray.put("VideoPlayer.Plotoutline");
-			jsonArray.put("VideoPlayer.Year");
-			jsonArray.put("VideoPlayer.Duration");
+			
+			for (InfoLabel infoLabel : InfoLabel.values()) {
+				jsonArray.put(infoLabel.getKey());
+			}
 			request.setParam("labels", jsonArray);
 			Log.v(TAG, "SendRequest:" + request.serialize());
 			connection.sendRequest(request, responseHandler);
 		}    		
     }
+    
+    private void setProperties(MediaItem item, String namespace, JSONRPC2Response response) {
+    	for (InfoLabel infoLabel : InfoLabel.values()) {
+    		if (infoLabel.getNamespace().equals(namespace)) {
+    			String s = response.getStringResult(infoLabel.getKey());
+    			item.setProperty(infoLabel.getName(), s);
+    		}
+    	}
+    }
 
 	public void onNotification(JSONRPC2Notification notification) {
-		if (notification.getStringParam("message").equals("PlaybackStarted") || notification.getStringParam("message").equals("PlaybackEnded")) {
+		if (notification.getStringParam("message").equals("PlaybackStarted") || notification.getStringParam("message").equals("PlaybackEnded") || notification.getStringParam("message").equals("PlaybackStopped")) {
 			getCurrentlyPlaying();
 		}
 	}
 	
 	class MediaItem {
+		private BoxeeMediaType mediaType;
 		private String title;
-		private String genre;
-		private String studio;
-		private String director;
-		private String plotoutline;
-		private String year;
-		private String duration;
+		private Map<String, String> properties = new HashMap<String, String>();
 		
 		public String getTitle() {
 			return title;
@@ -158,42 +229,26 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
 		public void setTitle(String title) {
 			this.title = title;
 		}
-		public String getGenre() {
-			return genre;
+		
+		public void setProperty(String key, String value) {
+			properties.put(key,  value);
 		}
-		public void setGenre(String genre) {
-			this.genre = genre;
+		
+		public String getProperty(String key, String defaultValue) {
+			String value = properties.get(key);
+			if (properties != null && properties.size() > 0) {
+				return value;				
+			} else {
+				return defaultValue;
+			}
 		}
-		public String getStudio() {
-			return studio;
+		public BoxeeMediaType getMediaType() {
+			return mediaType;
 		}
-		public void setStudio(String studio) {
-			this.studio = studio;
+		public void setMediaType(BoxeeMediaType mediaType) {
+			this.mediaType = mediaType;
 		}
-		public String getDirector() {
-			return director;
-		}
-		public void setDirector(String director) {
-			this.director = director;
-		}
-		public String getPlotoutline() {
-			return plotoutline;
-		}
-		public void setPlotoutline(String plotoutline) {
-			this.plotoutline = plotoutline;
-		}
-		public String getYear() {
-			return year;
-		}
-		public void setYear(String year) {
-			this.year = year;
-		}
-		public String getDuration() {
-			return duration;
-		}
-		public void setDuration(String duration) {
-			this.duration = duration;
-		}
+		
 	}
 }
 

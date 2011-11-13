@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/linearLayout1"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_weight="0.00"
+	>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<TextView
+		    android:id="@+id/standard_display_music_title"
+		    style="@style/standard_large_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    android:text="Track title" />
+
+		<TextView
+		    android:id="@+id/standard_display_music_by"
+		    style="@style/standard_secondary_medium_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/standard_display_music_title"
+		    android:text="@string/music_by" />
+
+		<TextView
+		    android:id="@+id/standard_display_music_artist"
+		    style="@style/standard_secondary_medium_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/standard_display_music_by"
+		    android:layout_alignBottom="@+id/standard_display_music_by"
+		    android:layout_marginLeft="8dp"
+		    android:layout_toRightOf="@+id/standard_display_music_by"
+		    android:text="Artist/Band" />
+
+		<TextView
+		    android:id="@+id/standard_display_music_duration_title"
+		    style="@style/standard_medium_title_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/standard_display_music_by"
+		    android:layout_marginTop="16dp"
+		    android:text="@string/music_title_duration" />
+
+		<TextView
+		    android:id="@+id/standard_display_music_duration"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/standard_display_music_duration_title"
+		    android:layout_alignBottom="@+id/standard_display_music_duration_title"
+		    android:layout_marginLeft="8dp"
+		    android:layout_toRightOf="@+id/standard_display_music_duration_title"
+		    android:text="3:43" />
+		
+		<TextView
+		    android:id="@+id/standard_display_music_genre_title"
+		    style="@style/standard_medium_title_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/standard_display_music_duration"
+		    android:text="@string/music_title_genre" />
+		
+		<TextView
+		    android:id="@+id/standard_display_music_genre"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/standard_display_music_genre_title"
+		    android:layout_alignBottom="@+id/standard_display_music_genre_title"
+		    android:layout_marginLeft="8dp"
+		    android:layout_toRightOf="@+id/standard_display_music_genre_title"
+		    android:text="rock" />		
+				
+		<TextView
+		    android:id="@+id/standard_display_music_year_title"
+		    style="@style/standard_medium_title_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/standard_display_music_genre_title"
+		    android:text="@string/music_title_year" />
+		
+		<TextView
+		    android:id="@+id/standard_display_music_year"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/standard_display_music_year_title"
+		    android:layout_alignBottom="@+id/standard_display_music_year_title"
+		    android:layout_marginLeft="8dp"
+		    android:layout_toRightOf="@+id/standard_display_music_year_title"
+		    android:text="2011" />				
+		    
+		<TextView
+		    android:id="@+id/standard_display_music_album_title"
+		    style="@style/standard_medium_title_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_below="@+id/standard_display_music_year_title"
+		    android:text="@string/music_title_album" />
+		
+		<TextView
+		    android:id="@+id/standard_display_music_album"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/standard_display_music_album_title"
+		    android:layout_alignBottom="@+id/standard_display_music_album_title"
+		    android:layout_marginLeft="8dp"
+		    android:layout_toRightOf="@+id/standard_display_music_album_title"
+		    android:text="Album title" />				
+	</RelativeLayout>
+	        
+</LinearLayout>
+
