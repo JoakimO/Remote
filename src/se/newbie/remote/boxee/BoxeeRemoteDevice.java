@@ -4,6 +4,7 @@ import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceDetails;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
+import android.util.Log;
 
 public class BoxeeRemoteDevice implements RemoteDevice {
 	private static final String TAG = "BoxeeRemoteDevice";
@@ -73,10 +74,12 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 	}
 
 	public void pause() {
+		Log.v(TAG, "Pause");
 		getConnection().pause();
 	}
 
 	public void resume() {
+		Log.v(TAG, "Resume");
 		getConnection().resume();
 		
 	}

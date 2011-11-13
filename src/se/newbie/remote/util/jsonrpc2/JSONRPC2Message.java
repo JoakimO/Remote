@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 public abstract class JSONRPC2Message {
 	private static final String version = "2.0";
-	private static final String TAG = "JSONRPC2Message";
 	
 	protected enum JSONRPC2MessageType {
 		REQUEST, RESPONSE, NOTIFICATION

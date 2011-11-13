@@ -40,6 +40,7 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
 	private Handler handler;
 	View rootView;
 	
+	@SuppressWarnings("unused")
 	private List<String> knownDevices = new ArrayList<String>();
 	private List<String> registeredDevices = new ArrayList<String>();
 
@@ -100,10 +101,8 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
     	GESTURE_THRESHOLD_DP = ViewConfiguration.get(this.getActivity().getApplicationContext()).getScaledTouchSlop();
     	GESTURE_THRESHOLD_VELOCITY = ViewConfiguration.get(this.getActivity().getApplicationContext()).getScaledMinimumFlingVelocity();
     	
-		RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
+		//RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
 		//RemoteGUIFactory remoteGUIFactory = remoteModel.getRemoteGUIFactory();
-		
-		
 
 		rootView = inflater.inflate(R.layout.standard_layout, container, false);
 		viewFlipper = (ViewFlipper)rootView.findViewById(R.id.standard_view_flipper);

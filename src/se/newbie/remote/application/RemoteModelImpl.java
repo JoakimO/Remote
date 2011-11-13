@@ -30,6 +30,7 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	private Map<String, RemotePlayerState> remotePlayerStates = new HashMap<String, RemotePlayerState>();
 	private Map<String, RemoteModelParameters> remoteModelParameters = new HashMap<String, RemoteModelParameters>();
 	
+	@SuppressWarnings("unused")
 	private boolean isBroadcast;
 	
 	public RemoteModelImpl(Context context) {

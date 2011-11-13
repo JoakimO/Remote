@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 
 public class JSONRPC2Response extends JSONRPC2Message {
-	private final static String TAG = "JSONRPC2Response";
 	
 	public JSONRPC2Response(JSONObject response) throws JSONException {
 		super(JSONRPC2MessageType.RESPONSE, response);

@@ -246,6 +246,9 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 				while(!isUpdated()) {
 					Thread.sleep(sleepTime);
 					time += sleepTime;
+					if (time > timeout) {
+						break;
+					}
 				}
 				RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
 				

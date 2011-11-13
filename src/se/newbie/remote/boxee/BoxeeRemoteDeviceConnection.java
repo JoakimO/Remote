@@ -48,6 +48,7 @@ public class BoxeeRemoteDeviceConnection {
 		private long timeout = 3000L;
 		private static final long threadSleep = 100L;
 
+		@SuppressWarnings("unused")
 		public void setTimeout(long timeout) {
 			this.timeout = timeout;
 		}		
