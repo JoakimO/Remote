@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
@@ -78,10 +78,10 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
         View view = inflater.inflate(R.layout.standard_browser_layout, container, false);
         
         
-        Button videoButton = (Button)view.findViewById(R.id.standard_browser_button_video);
-        Button musicButton = (Button)view.findViewById(R.id.standard_browser_button_music);
-        Button picturesButton = (Button)view.findViewById(R.id.standard_browser_button_pictures);
-        Button filesButton = (Button)view.findViewById(R.id.standard_browser_button_files);
+        ImageButton videoButton = (ImageButton)view.findViewById(R.id.standard_browser_button_video);
+        ImageButton musicButton = (ImageButton)view.findViewById(R.id.standard_browser_button_music);
+        ImageButton picturesButton = (ImageButton)view.findViewById(R.id.standard_browser_button_pictures);
+        ImageButton filesButton = (ImageButton)view.findViewById(R.id.standard_browser_button_files);
         
         videoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

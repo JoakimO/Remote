@@ -25,6 +25,7 @@ public class RemoteApplication {
 	private RemoteDeviceFactory remoteDeviceFactory;
 	private RemoteCommandFactory remoteCommandFactory;
 	private RemoteDisplayFactory remoteDisplayFactory;
+	private RemotePlayerView remotePlayerView;
 	
 	protected RemoteApplication() {
 	}
@@ -49,10 +50,16 @@ public class RemoteApplication {
 
 	public void pause() {
 		remoteDeviceFactory.pause();
+		if (remotePlayerView != null) {
+			remotePlayerView.pause();
+		}
 	}
 
 	public void resume() {
 		remoteDeviceFactory.resume();
+		if (remotePlayerView != null) {
+			remotePlayerView.resume();
+		}
 	}	
 	
 	
@@ -145,5 +152,13 @@ public class RemoteApplication {
 
 	public void setRemoteDisplayFactory(RemoteDisplayFactory remoteDisplayFactory) {
 		this.remoteDisplayFactory = remoteDisplayFactory;
+	}
+
+	public RemotePlayerView getRemotePlayerView() {
+		return remotePlayerView;
+	}
+
+	public void setRemotePlayerView(RemotePlayerView remotePlayerView) {
+		this.remotePlayerView = remotePlayerView;
 	}
 }

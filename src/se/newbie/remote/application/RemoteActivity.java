@@ -58,7 +58,11 @@ public class RemoteActivity extends Activity {
         inflater.inflate(R.menu.remote_menu, menu);
         
         RemotePlayerView player = (RemotePlayerView) menu.findItem(R.id.remote_player_view).getActionView();
-
+        RemoteApplication.getInstance().setRemotePlayerView(player);
+        RemoteApplication.getInstance().getRemoteModel().addListener(player);
+        //TextView text = new TextView(this);
+        //text.setText("test!!!!!!!!");
+        //player.addView(text);
         
         return true;
     }    

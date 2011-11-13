@@ -159,6 +159,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 				    	if (state != null && timeObject != null) {
 				    		((RemotePlayerStateImpl)state).setTime(getTimeMillis(timeObject));
 				    		((RemotePlayerStateImpl)state).setDuration(getTimeMillis(response.getJSONObject("total")));
+				    		state.setPaused(response.getBooleanResult("paused"));
 				    	}
 					} catch (Exception e) {
 						Log.e(TAG, e.getMessage());
@@ -227,7 +228,12 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 		} else if (notification.getStringParam("message") != null &&
 				notification.getStringParam("message").equals("PlaybackPaused")) {
 			updateState();
+		} else if (notification.getStringParam("message") != null &&
+				notification.getStringParam("message").equals("PlaybackResumed")) {
+			updateState();
 		}
+		
+		
 	}
 	
 	/**

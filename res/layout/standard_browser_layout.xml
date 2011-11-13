@@ -55,20 +55,22 @@
 	                 android:layout_width="fill_parent"
 	                 android:layout_height="fill_parent"
 	                 android:layout_weight="1">
-		           <Button
+		           <ImageButton
 		               android:id="@+id/standard_browser_button_video"
 		               android:layout_width="fill_parent"
 		               android:layout_height="fill_parent"
 		               android:layout_weight="1"
 		               android:background="@drawable/standard_browser_media_button"
+		               android:src="@drawable/btn_movie"
 		               android:text="Video" />
 		           
-		           <Button
+		           <ImageButton
 		               android:id="@+id/standard_browser_button_music"
 		               android:layout_width="fill_parent"
 		               android:layout_height="fill_parent"
 		               android:layout_weight="1"
 		               android:background="@drawable/standard_browser_media_button"
+		               android:src="@drawable/btn_music"
 		               android:text="Music" />	           
 	                   	                   
 	             </LinearLayout>
@@ -77,20 +79,22 @@
 	                 android:layout_width="fill_parent"
 	                 android:layout_height="fill_parent"
 	                 android:layout_weight="1">
-		           <Button
+		           <ImageButton
 		               android:id="@+id/standard_browser_button_pictures"
 		               android:layout_width="fill_parent"
 		               android:layout_height="fill_parent"
 		               android:layout_weight="1"
 		               android:background="@drawable/standard_browser_media_button"
+		               android:src="@drawable/btn_pictures"
 		               android:text="Pictures" />
 		
-		           <Button
+		           <ImageButton
 		               android:id="@+id/standard_browser_button_files"
 		               android:layout_width="fill_parent"
 		               android:layout_height="fill_parent"
 		               android:layout_weight="1"
 		               android:background="@drawable/standard_browser_media_button"
+		               android:src="@drawable/btn_files"
 		               android:text="Files" />
 	                 
 	             </LinearLayout>
