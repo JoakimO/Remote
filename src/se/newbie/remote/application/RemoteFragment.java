@@ -2,7 +2,6 @@ package se.newbie.remote.application;
 
 import se.newbie.remote.R;
 import se.newbie.remote.device.RemoteDevice;
-import se.newbie.remote.gui.RemoteButton;
 import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.gui.RemoteImageButton;
 import se.newbie.remote.gui.RemoteSeekBar;
@@ -46,22 +45,22 @@ public class RemoteFragment extends Fragment implements RemoteModelListener {
     	RemoteApplication remoteApplication = RemoteApplication.getInstance();
     	RemoteGUIFactory remoteGUIFactory = remoteApplication.getRemoteModel().getRemoteGUIFactory();
     	
-    	RemoteButton leftButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Left", "Boxee-boxeebox", "left");
-        RemoteButton rightButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Right", "Boxee-boxeebox", "right");
-        RemoteButton upButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Up", "Boxee-boxeebox", "up");
-        RemoteButton downButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Down", "Boxee-boxeebox", "down");
-        RemoteButton backButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Back", "Boxee-boxeebox", "back");
-        RemoteButton selectButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select", "Boxee-boxeebox", "select");
+    	RemoteImageButton leftButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_rmt_left, "Boxee-boxeebox", "left");
+    	RemoteImageButton rightButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_rmt_right, "Boxee-boxeebox", "right");
+        RemoteImageButton upButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_rmt_up, "Boxee-boxeebox", "up");
+        RemoteImageButton downButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_rmt_down, "Boxee-boxeebox", "down");
+        RemoteImageButton backButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_rmt_back, "Boxee-boxeebox", "back");
+        RemoteImageButton selectButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_rmt_enter, "Boxee-boxeebox", "select");
         RemoteImageButton muteButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_mute, "Boxee-boxeebox", "muteToggle");
         RemoteImageButton volumeUpButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "volumeUp");
         RemoteImageButton volumeDownButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_down, "Boxee-boxeebox", "volumeDown");
         seekBar = remoteGUIFactory.createSeekBar(getActivity().getApplicationContext(), "Boxee-boxeebox", "seek");
         RemoteSpinner spinner = remoteGUIFactory.createSpinner(getActivity().getApplicationContext(), "Predefined", "selectRemoteDevice");
         
-        RemoteImageButton previousButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "skipPrevious");
-        RemoteImageButton nextButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "skipNext");
-        RemoteImageButton playToggleButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "play");
-        RemoteImageButton stopButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_vol_up, "Boxee-boxeebox", "stop");
+        RemoteImageButton previousButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_skip_previous, "Boxee-boxeebox", "skipPrevious");
+        RemoteImageButton nextButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_skip_next, "Boxee-boxeebox", "skipNext");
+        RemoteImageButton playToggleButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_mov_play, "Boxee-boxeebox", "play");
+        RemoteImageButton stopButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_mov_stop, "Boxee-boxeebox", "stop");
         
         //RemoteButton playButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select", "Boxee-boxeebox", "select");
         

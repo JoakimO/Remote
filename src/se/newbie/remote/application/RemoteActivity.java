@@ -56,6 +56,10 @@ public class RemoteActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.remote_menu, menu);
+        
+        RemotePlayerView player = (RemotePlayerView) menu.findItem(R.id.remote_player_view).getActionView();
+
+        
         return true;
     }    
     
