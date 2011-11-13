@@ -1,5 +1,6 @@
 package se.newbie.remote.boxee;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ import android.widget.TextView;
 public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDisplay, JSONRPC2NotificationListener {
 	private static final String TAG = "BoxeeDisplayFragment";
 	
-    private Handler handler;
+    private Handler handler; 
     
 	private BoxeeRemoteDevice boxeeRemoteDevice;
 	private LinearLayout contentLayout;
@@ -107,19 +108,21 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     	Log.v(TAG, "onCreate");
 
     	super.onCreateView(inflater, container, savedInstanceState);
-
-    	handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-            	updateFragment();
-            }
-        };	    	
-
+    	
         if (savedInstanceState != null) {
         	boxeeRemoteDevice = (BoxeeRemoteDevice)RemoteApplication.getInstance()
-       			.getRemoteDeviceFactory().getRemoteDevice(savedInstanceState.getString("remote_device"));
-        }
-        
+       			.getRemoteDeviceFactory().getRemoteDevice(savedInstanceState.getString("BoxeeRemoteDisplayFragment.remoteDevice"));
+        	mediaItem = (MediaItem)savedInstanceState.getSerializable("BoxeeRemoteDisplayFragment.mediaItem");
+        	
+        }    	
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+            	Log.v(TAG, "Handler update view..");
+            	updateFragment(mediaItem);
+            }
+        };        
         View view = inflater.inflate(R.layout.standard_display_layout, container, false);
         contentLayout = (LinearLayout)view.findViewById(R.id.standard_display_content);
     	return view;
@@ -127,14 +130,17 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
-      super.onSaveInstanceState(outState);
-      outState.putString("remote_device", boxeeRemoteDevice.getIdentifier());
+	  super.onSaveInstanceState(outState);
+	  outState.putString("BoxeeRemoteDisplayFragment.remoteDevice", boxeeRemoteDevice.getIdentifier());
+	  if (mediaItem != null) {
+		  //outState.putSerializable("BoxeeRemoteDisplayFragment.mediaItem", mediaItem);
+	  }
     }    
     
     
-    private void updateFragment() {
+    private void updateFragment(MediaItem mediaItem) {
     	contentLayout.removeAllViews();
-    	Log.v(TAG, "Update display view");
+    	Log.v(TAG, "Update fragment: " + mediaItem);
     	if (mediaItem != null) {
     		if (mediaItem.getMediaType() == BoxeeMediaType.video) {
 				LayoutInflater inflater = (LayoutInflater)getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -239,10 +245,14 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
 		}
 	}
 	
-	class MediaItem {
+	public class MediaItem implements Serializable {
+		private static final long serialVersionUID = 3412345645224891L;
 		private BoxeeMediaType mediaType;
 		private String title;
 		private Map<String, String> properties = new HashMap<String, String>();
+		
+		public MediaItem() {
+		}
 		
 		public String getTitle() {
 			return title;
@@ -269,7 +279,6 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
 		public void setMediaType(BoxeeMediaType mediaType) {
 			this.mediaType = mediaType;
 		}
-		
 	}
 }
 

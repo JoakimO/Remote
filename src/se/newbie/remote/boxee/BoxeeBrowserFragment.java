@@ -72,6 +72,11 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
             ViewGroup container, Bundle savedInstanceState) {
     	Log.v(TAG, "onCreate");
     	
+        if (savedInstanceState != null) {
+        	device = (BoxeeRemoteDevice)RemoteApplication.getInstance()
+       			.getRemoteDeviceFactory().getRemoteDevice(savedInstanceState.getString("BoxeeBrowserFragment.remoteDevice"));
+        }         	
+    	
     	handler = new Handler() { 
             @Override
             public void handleMessage(Message msg) {
@@ -82,12 +87,8 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 				fileAdapter.addFiles(files);            	
 				fileAdapter.notifyDataSetChanged();
             }
-        };	    	
-        
-        if (savedInstanceState != null) {
-        	device = (BoxeeRemoteDevice)RemoteApplication.getInstance()
-       			.getRemoteDeviceFactory().getRemoteDevice(savedInstanceState.getString("remote_device"));
-        }        
+        };	  	
+   
         
         View view = inflater.inflate(R.layout.standard_browser_layout, container, false);
         
@@ -166,7 +167,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
     @Override
     public void onSaveInstanceState(Bundle outState) {
       super.onSaveInstanceState(outState);
-      outState.putString("remote_device", device.getIdentifier());
+      outState.putString("BoxeeBrowserFragment.remoteDevice", device.getIdentifier());
     }        
     
     

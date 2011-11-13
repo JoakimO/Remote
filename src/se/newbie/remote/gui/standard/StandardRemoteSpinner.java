@@ -61,6 +61,4 @@ public class StandardRemoteSpinner extends RemoteSpinner implements OnItemSelect
 			}
 		}
 	}	
-	
-	
 }

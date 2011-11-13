@@ -11,6 +11,8 @@ public interface RemoteModel {
 	
 	public Mode getMode();
 	public void addListener(RemoteModelListener listener);
+	public void removeListener(RemoteModelListener listener);
+	
 	public void notifyObservers();
 
 	public void setSelectedRemoteDevice(RemoteDevice remoteDevice);

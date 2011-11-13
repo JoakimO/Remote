@@ -31,7 +31,7 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 	
 	private static final String REMOTE_KEY = "b0xeeRem0tE!";
 	private static final int DISCOVERY_PORT = 2562;
-	private static final int TIMEOUT_MS = 1000 * 60;	
+	private static final int TIMEOUT_MS = 100;	
 	
 	private String challenge = "myChallenge"; 
 	private boolean paused = false;
@@ -74,7 +74,12 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 	
 	public void pause() {
 		paused = true;
+		if (boxeeDiscovererThread != null && boxeeDiscovererThread.isAlive()) {
+			boxeeDiscovererThread.interrupt();
+		}		
 	}
+	
+	
 	
 	public RemoteDeviceDetails createRemoteDeviceDetails(String details) {
 		RemoteDeviceDetails remoteDeviceDetails = null;
@@ -144,7 +149,7 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 	private void sendDiscoveryRequest(DatagramSocket socket) throws IOException {
 	    String data = String.format("<?xml version=\"1.0\">\n<BDP1 cmd=\"discover\" application=\"iphone_remote\" challenge=\"%s\" signature=\"%s\"/>", this.challenge, getSignature(this.challenge));
 	    Log.v(TAG, "Sending data " + data);
-
+	    
 	    DatagramPacket packet = new DatagramPacket(data.getBytes(), data.length(), getBroadcastInetAddress(), DISCOVERY_PORT);
 	    socket.send(packet);
 	}
@@ -215,11 +220,15 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 					sendDiscoveryRequest(socket);
 					listenForResponses(socket);
 					
-					socket.close();
-					Thread.sleep(500);
+					socket.close(); 
+					Thread.sleep(1000 * 60);
 				}
 			} catch (Exception innerException) {
-				Log.e(TAG, innerException.getMessage());
+				Log.e(TAG, "Discoverer were stopped: " + innerException.getMessage());
+			} finally {
+				if (socket != null && !socket.isClosed()) {
+					socket.close();
+				}
 			}
 		}
 	}

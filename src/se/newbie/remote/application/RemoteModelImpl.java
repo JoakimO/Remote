@@ -41,12 +41,17 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	public void notifyObservers() {
 		Log.v(TAG, "notifyObservers: " + listeners.size());
 		for (RemoteModelListener listener : listeners) {
+			Log.v(TAG, "notifyObservers: " + listener.getClass());
 			listener.update(this);
 		}
 	}
 	
 	public void addListener(RemoteModelListener listener) {
 		this.listeners.add(listener);		
+	}
+	
+	public void removeListener(RemoteModelListener listener) {
+		this.listeners.remove(listener);
 	}
 	
 	public Mode getMode() {

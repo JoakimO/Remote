@@ -122,11 +122,13 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
     private void updateFragment() {
     	Log.v(TAG, "updateFragment");
     	FragmentManager fragmentManager = getFragmentManager();
+    	
+    	//Check if the fragments have already been added.
+
     	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
     	RemoteFragment remoteFragment = new RemoteFragment();
     	fragmentTransaction.add(R.id.standard_remote_layout, remoteFragment); 
-    	
     	RemoteApplication.getInstance().getRemoteModel().addListener(remoteFragment);
     	
     	RemoteDisplay remoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
@@ -135,7 +137,7 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
     	remoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
     	fragmentTransaction.add(R.id.standard_browser_layout, remoteDisplay.getFragment());
     	
-    	fragmentTransaction.commit();    	
+    	fragmentTransaction.commit();   
     }
 
 	class RemoteViewGestureDetector extends SimpleOnGestureListener {

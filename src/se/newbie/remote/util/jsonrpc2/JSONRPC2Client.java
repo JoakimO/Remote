@@ -103,7 +103,9 @@ public class JSONRPC2Client {
 				Log.d(TAG, "sendRequest: " + s);
 				byte[] buffer = s.getBytes();
 				try {
-					outputStream.write(buffer, 0, buffer.length);
+					if (outputStream != null) {
+						outputStream.write(buffer, 0, buffer.length);
+					}
 				} catch (IOException e) {
 					Log.e(TAG, e.getMessage());
 				}
@@ -171,7 +173,7 @@ public class JSONRPC2Client {
 							Thread.sleep(1000);
 						}
 					} catch (Exception innerException) {
-						Log.e(TAG, innerException.getMessage());
+						Log.e(TAG, "Inner exception in JSONRPC2 Client: " + innerException.getMessage());
 					}
 				}
 			} catch (Exception exception) {

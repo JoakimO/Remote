@@ -41,6 +41,11 @@ public class RemoteFragment extends Fragment implements RemoteModelListener {
             }    		
     	};
     	
+    	// Be careful to edit the below since we don't want to add a second remote when the orientation changes.
+    	// Instead we return null here to to simulate the Inflater behavior.
+    	if (savedInstanceState != null) {
+    		return null;
+    	}
     	
     	RemoteApplication remoteApplication = RemoteApplication.getInstance();
     	RemoteGUIFactory remoteGUIFactory = remoteApplication.getRemoteModel().getRemoteGUIFactory();
