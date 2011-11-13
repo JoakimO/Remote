@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import se.newbie.remote.R;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Response;
@@ -47,7 +48,15 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 	private SlidingDrawer slidingDrawer;
 	
 	
+	/**
+	 * Need a empty constructor to handle recreate on orientation change
+	 */
+	public BoxeeBrowserFragment() {
+		super();
+	}	
+	
 	public BoxeeBrowserFragment(BoxeeRemoteDevice device) {
+		super();
 		this.device = device;
 	}
 	
@@ -74,6 +83,11 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 				fileAdapter.notifyDataSetChanged();
             }
         };	    	
+        
+        if (savedInstanceState != null) {
+        	device = (BoxeeRemoteDevice)RemoteApplication.getInstance()
+       			.getRemoteDeviceFactory().getRemoteDevice(savedInstanceState.getString("remote_device"));
+        }        
         
         View view = inflater.inflate(R.layout.standard_browser_layout, container, false);
         
@@ -148,6 +162,13 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
    		
     	return view;
     }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+      super.onSaveInstanceState(outState);
+      outState.putString("remote_device", device.getIdentifier());
+    }        
+    
     
     private void playMedia(String file) {
     	BoxeeRemoteDeviceConnection connection = device.getConnection();

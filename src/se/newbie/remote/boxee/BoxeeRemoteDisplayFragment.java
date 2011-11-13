@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONArray;
 
 import se.newbie.remote.R;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Notification;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
@@ -75,8 +76,13 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
 		}
 	}
 	
+	/**
+	 * Need a empty constructor to handle recreate on orientation change
+	 */
+	public BoxeeRemoteDisplayFragment() {
+	}
+	
 	public BoxeeRemoteDisplayFragment(BoxeeRemoteDevice boxeeRemoteDevice) {
-		super();
 		this.boxeeRemoteDevice = boxeeRemoteDevice;
 	} 
 	
@@ -99,21 +105,36 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
     public View onCreateView(LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
     	Log.v(TAG, "onCreate");
-    	
+
+    	super.onCreateView(inflater, container, savedInstanceState);
+
     	handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
             	updateFragment();
             }
         };	    	
+
+        if (savedInstanceState != null) {
+        	boxeeRemoteDevice = (BoxeeRemoteDevice)RemoteApplication.getInstance()
+       			.getRemoteDeviceFactory().getRemoteDevice(savedInstanceState.getString("remote_device"));
+        }
         
         View view = inflater.inflate(R.layout.standard_display_layout, container, false);
         contentLayout = (LinearLayout)view.findViewById(R.id.standard_display_content);
     	return view;
     }
     
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+      super.onSaveInstanceState(outState);
+      outState.putString("remote_device", boxeeRemoteDevice.getIdentifier());
+    }    
+    
+    
     private void updateFragment() {
     	contentLayout.removeAllViews();
+    	Log.v(TAG, "Update display view");
     	if (mediaItem != null) {
     		if (mediaItem.getMediaType() == BoxeeMediaType.video) {
 				LayoutInflater inflater = (LayoutInflater)getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

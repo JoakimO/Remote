@@ -21,9 +21,11 @@ public class RemoteActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "Activity start");
-        
+
         setContentView(R.layout.main);
         Context context = this.getApplicationContext();
+       
+        
         RemoteApplication.getInstance().init(context);
         RemoteApplication.getInstance().getRemoteDeviceFactory().create();
         
