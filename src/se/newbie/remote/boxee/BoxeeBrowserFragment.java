@@ -30,15 +30,12 @@ import android.widget.TextView;
 
 public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
 	private final static String TAG = "BoxeeBrowserFragment";
-	private enum MediaType {
-		video, music, pictures, files
-	}
 	
 	private BoxeeRemoteDevice device;
 	private Handler handler;
 	
 	
-	private MediaType mediaType;
+	private BoxeeMediaType mediaType;
 	private String directory; // = "smb://192.168.0.1/share";
 	
 	//private List<String> directory = new ArrayList();
@@ -88,7 +85,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
         
         videoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	mediaType = MediaType.video;
+            	mediaType = BoxeeMediaType.video;
             	directory = null;
             	slidingDrawer.close();
             	getDirectory();
@@ -98,7 +95,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
         
         musicButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	mediaType = MediaType.music;
+            	mediaType = BoxeeMediaType.music;
             	directory = null;
             	slidingDrawer.close();
             	getDirectory();
@@ -108,7 +105,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
         
         picturesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	mediaType = MediaType.pictures;
+            	mediaType = BoxeeMediaType.pictures;
             	directory = null;
             	slidingDrawer.close();
             	getDirectory();
@@ -118,7 +115,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
         
         filesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	mediaType = MediaType.files;
+            	mediaType = BoxeeMediaType.files;
             	directory = null;
             	slidingDrawer.close();
             	getDirectory();
@@ -128,7 +125,7 @@ public class BoxeeBrowserFragment extends Fragment implements RemoteDisplay {
         
         
     	listView = (ListView)view.findViewById(R.id.standard_browser_list_view);
-    	listView.setBackgroundResource(R.drawable.standard_boxee_browser);
+    	listView.setBackgroundResource(R.drawable.standard_browser_list_background);
     	listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				BoxeeBrowserFile file = (BoxeeBrowserFile)parent.getItemAtPosition(position);

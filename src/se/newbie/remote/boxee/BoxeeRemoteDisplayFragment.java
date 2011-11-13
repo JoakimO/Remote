@@ -64,7 +64,7 @@ public class BoxeeRemoteDisplayFragment extends Fragment implements RemoteDispla
         rootPanel = new LinearLayout(this.getActivity().getApplicationContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
         rootPanel.setLayoutParams(layoutParams);
-        rootPanel.setBackgroundResource(R.drawable.standard_boxee_browser);
+        rootPanel.setBackgroundResource(R.drawable.standard_browser_list_background);
     	return rootPanel;
     }
     
