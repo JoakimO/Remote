@@ -22,7 +22,7 @@
 	        	android:id="@+id/relativeLayout1"
 	        	android:layout_width="fill_parent"
 	        	android:background="@drawable/standard_browser_menu"
-	        	android:layout_height="40dp" >
+	        	android:layout_height="42dp" >
 	    	</RelativeLayout>
 		    <ListView
 		        android:id="@+id/standard_browser_list_view"
