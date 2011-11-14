@@ -3,6 +3,7 @@ package se.newbie.remote.boxee;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Client;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
+import se.newbie.remote.util.jsonrpc2.JSONRPC2Response;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2ResponseHandler;
 import android.util.Log;
 
@@ -13,7 +14,8 @@ public class BoxeeRemoteDeviceConnection {
 	private boolean isConnected = false;
 	
 	public BoxeeRemoteDeviceConnection(BoxeeRemoteDevice remoteDevice) {
-		this.boxeeRemoteDevice = remoteDevice;
+		boxeeRemoteDevice = remoteDevice;
+		isConnected = false;
 		jsonRPC2Client = new JSONRPC2Client();
 	}
 	
@@ -45,7 +47,7 @@ public class BoxeeRemoteDeviceConnection {
 		
 		private JSONRPC2Request request;
 		private JSONRPC2ResponseHandler handler;
-		private long timeout = 3000L;
+		private long timeout = 10L * 1000L;
 		private static final long threadSleep = 100L;
 
 		@SuppressWarnings("unused")
@@ -61,7 +63,7 @@ public class BoxeeRemoteDeviceConnection {
 		@Override
         public void run() {
 			long runTime = 0L;
-			while (!isConnected && !jsonRPC2Client.isConnected()) {
+			while (!isConnected || !jsonRPC2Client.isConnected()) {
 				try {
 					Thread.sleep(threadSleep);
 				} catch (InterruptedException e) {
@@ -94,13 +96,25 @@ public class BoxeeRemoteDeviceConnection {
 			BoxeeRemoteDeviceDetails remoteDeviceDetails = (BoxeeRemoteDeviceDetails)boxeeRemoteDevice.getRemoteDeviceDetails();
 			try {
 				jsonRPC2Client.connect(remoteDeviceDetails.getHost(), 9090);
-
+				Thread.sleep(100);
 				JSONRPC2Request request = jsonRPC2Client.createJSONRPC2Request("Device.connect");
+				
+				JSONRPC2ResponseHandler handler = new JSONRPC2ResponseHandler() {
+
+					public void onResponse(JSONRPC2Response response) {
+						Log.v(TAG, response.serialize());
+						if (response.getBooleanResult("success")) {
+							isConnected = true;						
+						} else {
+							BoxeeRemoteDeviceConnectionThread thread = new BoxeeRemoteDeviceConnectionThread();
+							thread.start();
+						}
+					}				
+				};				
 				if (request != null) {
 					request.setParam("deviceid", "android");
-					jsonRPC2Client.sendRequest(request, null);
+					jsonRPC2Client.sendRequest(request, handler);
 				}
-				isConnected = true;
 			} catch (Exception innerException) {
 				Log.e(TAG, innerException.getMessage()); 
 			}

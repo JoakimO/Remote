@@ -27,8 +27,6 @@ public class RemoteApplication {
 	private RemoteDisplayFactory remoteDisplayFactory;
 	private RemotePlayerView remotePlayerView;
 	
-	private boolean isApplicationStarting;
-	
 	protected RemoteApplication() {
 	}
 	
@@ -63,7 +61,6 @@ public class RemoteApplication {
 		if (remotePlayerView != null) {
 			remotePlayerView.resume();
 		}
-		remoteModel.notifyObservers();
 	}	
 	
 	

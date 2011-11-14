@@ -61,10 +61,9 @@ public class RemoteActivity extends Activity {
     @Override
     public void onResume() {
     	Log.v(TAG, "onResume");
-    	RemoteApplication.getInstance().resume();
-    	remoteView.initializeFragments(this);
-    	 
     	super.onResume();
+    	remoteView.initializeFragments(this);
+    	RemoteApplication.getInstance().resume();
     }	    
     
     

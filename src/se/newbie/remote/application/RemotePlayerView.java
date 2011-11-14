@@ -82,9 +82,7 @@ public class RemotePlayerView extends LinearLayout implements RemoteModelListene
 		boolean visible = false;
 		if (state != null) {
 			if (state.isPlaying()) {
-				Log.v(TAG, "isPlaying");
 				if (state.isPaused()) {
-					Log.v(TAG, "isPaused");
 					play.setVisibility(View.VISIBLE);
 					pause.setVisibility(View.INVISIBLE);
 				} else {
@@ -129,7 +127,6 @@ public class RemotePlayerView extends LinearLayout implements RemoteModelListene
 	}
 
 	public void update(RemoteModel model) {
-		
 		RemoteDevice device = model.getSelectedRemoteDevice();
 		if (device != null) {
 			state = model.getRemotePlayerState(device.getIdentifier());

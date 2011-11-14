@@ -27,9 +27,9 @@ public class JSONRPC2Client {
 	private JSONRPC2ClientThread thread;
 	private boolean isThreadRunning = true;
 	
-	private Map<Integer, JSONRPC2ResponseHandler> handlers;
+	private Map<Integer, JSONRPC2ResponseHandler> handlers = new HashMap<Integer, JSONRPC2ResponseHandler>();
 	private List<JSONRPC2NotificationListener> notificationListeners = new ArrayList<JSONRPC2NotificationListener>();
-	
+
 	
 	public boolean isConnected() {
 		return (socket != null) ? socket.isConnected() : false;
@@ -41,9 +41,9 @@ public class JSONRPC2Client {
 	 * @throws UnknownHostException 
 	 */
 	public void connect(String host, int port) {
-		requestIndex = 0;
+		//requestIndex = 0;
 		isThreadRunning = true;
-		handlers = new HashMap<Integer, JSONRPC2ResponseHandler>();
+		//handlers = new HashMap<Integer, JSONRPC2ResponseHandler>();
 		try {
 			Log.d(TAG, "Connecting: " + host + ":" + port);
 			socket = new Socket(host, port);

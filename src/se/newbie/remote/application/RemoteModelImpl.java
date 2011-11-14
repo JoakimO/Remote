@@ -13,8 +13,6 @@ import se.newbie.remote.main.RemoteModelListener;
 import se.newbie.remote.main.RemoteModelParameters;
 import se.newbie.remote.main.RemotePlayerState;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
@@ -30,12 +28,8 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	private Map<String, RemotePlayerState> remotePlayerStates = new HashMap<String, RemotePlayerState>();
 	private Map<String, RemoteModelParameters> remoteModelParameters = new HashMap<String, RemoteModelParameters>();
 	
-	@SuppressWarnings("unused")
-	private boolean isBroadcast;
 	
 	public RemoteModelImpl(Context context) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-		isBroadcast = preferences.getBoolean("is_broadcast", true);
 	}
 	
 	public void notifyObservers() {

@@ -28,8 +28,6 @@ import android.widget.ViewFlipper;
 public class RemoteViewImpl implements RemoteView {
 	private static final String TAG = "RemoteViewImpl";
 	
-	Fragment fragment;
-	
 	int GESTURE_THRESHOLD_DP = 0;
 	int GESTURE_THRESHOLD_VELOCITY = 0;
 
@@ -100,7 +98,6 @@ public class RemoteViewImpl implements RemoteView {
     	RemoteDisplay displayRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
     	RemoteDisplay browserRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
     	if (displayRemoteDisplay != null && browserRemoteDisplay != null) {
-    		Log.v(TAG, "Found fragments!!!");
     		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 	    	RemoteFragment remoteFragment = new RemoteFragment();
 	    	fragmentTransaction.replace(R.id.standard_remote_layout, remoteFragment);
