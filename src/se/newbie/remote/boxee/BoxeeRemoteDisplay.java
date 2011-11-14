@@ -80,10 +80,6 @@ public class BoxeeRemoteDisplay implements RemoteDisplay, JSONRPC2NotificationLi
 		getCurrentlyPlaying();
 		//updateFragment(mediaItem);
 	}
-	
-	public Fragment getFragment() {
-		return fragment;
-	}
     
     private void getCurrentlyPlaying() {
     	BoxeeRemoteDeviceConnection connection = boxeeRemoteDevice.getConnection();

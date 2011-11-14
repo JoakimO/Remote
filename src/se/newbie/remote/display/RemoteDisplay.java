@@ -47,6 +47,4 @@ public interface RemoteDisplay {
 	 * update it's views.
 	 */
 	public void setFragment(Fragment fragment);
-	
-	public Fragment getFragment();
 }

@@ -152,10 +152,6 @@ public class BoxeeBrowserRemoteDisplay implements RemoteDisplay {
 		}
 	}	
 	
-	public Fragment getFragment() {
-		return fragment;
-	}
-	
 	public void setFragment(Fragment fragment) {
 		this.fragment = fragment;
 	
