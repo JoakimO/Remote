@@ -3,8 +3,6 @@ package se.newbie.remote.application;
 import se.newbie.remote.R;
 import se.newbie.remote.main.RemoteView;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,30 +11,43 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+/**
+ * This is the main activity for the application.
+ * 
+ * @author joakim
+ *
+ */
 public class RemoteActivity extends Activity {
 	private static final String TAG = "RemoteActivity";
-	
+	RemoteView remoteView;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "Activity start");
 
-        setContentView(R.layout.main);
-        
+        //setContentView(R.layout.main);        
 
         Context context = this.getApplicationContext();
         
         RemoteApplication.getInstance().init(context);
         RemoteApplication.getInstance().getRemoteDeviceFactory().create();
         
-        RemoteView remoteView = RemoteApplication.getInstance().getRemoteView();
-    	FragmentManager fragmentManager = getFragmentManager();
-    	
+        remoteView = RemoteApplication.getInstance().getRemoteView();
+        
+        setContentView(remoteView.createLayout(this));
+        
+        
+        
+    	/*FragmentManager fragmentManager = getFragmentManager();
     	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    	fragmentTransaction.add(R.id.main_panel, remoteView.getFragment());
-    	
+    	Fragment fragment = remoteView.createFragment(); 
+    	fragmentTransaction.add(R.id.main_panel, fragment);    	
     	fragmentTransaction.commit();
+    	
+    	fragmentManager.executePendingTransactions();
+    	
+    	remoteView.setFragment(fragment);*/    	
     }
     
     @Override
@@ -51,6 +62,8 @@ public class RemoteActivity extends Activity {
     public void onResume() {
     	Log.v(TAG, "onResume");
     	RemoteApplication.getInstance().resume();
+    	remoteView.initializeFragments(this);
+    	 
     	super.onResume();
     }	    
     

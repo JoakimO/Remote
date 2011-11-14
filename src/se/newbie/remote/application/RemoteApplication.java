@@ -27,6 +27,8 @@ public class RemoteApplication {
 	private RemoteDisplayFactory remoteDisplayFactory;
 	private RemotePlayerView remotePlayerView;
 	
+	private boolean isApplicationStarting;
+	
 	protected RemoteApplication() {
 	}
 	
@@ -39,6 +41,7 @@ public class RemoteApplication {
 
 	public void init(Context context) {
 		Log.v(TAG, "Initializing...");
+		
 		this.context = context;
 		
 		createMVCModel(context); 
@@ -60,6 +63,7 @@ public class RemoteApplication {
 		if (remotePlayerView != null) {
 			remotePlayerView.resume();
 		}
+		remoteModel.notifyObservers();
 	}	
 	
 	

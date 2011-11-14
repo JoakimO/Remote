@@ -10,13 +10,11 @@ import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteView;
 import se.newbie.remote.main.RemoteViewListener;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -25,33 +23,26 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 
-public class RemoteViewImpl extends Fragment implements RemoteView {
+public class RemoteViewImpl implements RemoteView {
 	private static final String TAG = "RemoteViewImpl";
+	
+	Fragment fragment;
+	
 	int GESTURE_THRESHOLD_DP = 0;
 	int GESTURE_THRESHOLD_VELOCITY = 0;
 
-	private List<RemoteViewListener> listeners;
+	private List<RemoteViewListener> listeners = new ArrayList<RemoteViewListener>();;
 	private ViewFlipper viewFlipper;
 	RemoteViewGestureDetector gestureDetector;
 	private GestureDetector detector;
-	private Handler handler;
-	View rootView;
-	
-	@SuppressWarnings("unused")
-	private List<String> knownDevices = new ArrayList<String>();
+
 	private List<String> registeredDevices = new ArrayList<String>();
 
 	public RemoteViewImpl() {
-		this.listeners = new ArrayList<RemoteViewListener>();
-    	handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-            	updateFragment();
-            }
-        };			
+    	GESTURE_THRESHOLD_DP = ViewConfiguration.get(RemoteApplication.getInstance().getContext()).getScaledTouchSlop();
+    	GESTURE_THRESHOLD_VELOCITY = ViewConfiguration.get(RemoteApplication.getInstance().getContext()).getScaledMinimumFlingVelocity();		
 	}
 	
 	public void addListener(RemoteViewListener listener) {
@@ -83,64 +74,73 @@ public class RemoteViewImpl extends Fragment implements RemoteView {
 		for (RemoteDevice device : devices) {
 			if (!registeredDevices.contains(device.getIdentifier())) {
 				registeredDevices.add(device.getIdentifier());
-				handler.sendEmptyMessage(0);
 			}
 		}
 	}	
 	
-	public Fragment getFragment() {
-		return this;
-	}
-	
-	float startXValue;
-	
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+	public View createLayout(Activity activity) {
+    	Log.v(TAG, "Create remote view layout");
+    	LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = inflater.inflate(R.layout.standard_layout, null, false);
 		
-    	GESTURE_THRESHOLD_DP = ViewConfiguration.get(this.getActivity().getApplicationContext()).getScaledTouchSlop();
-    	GESTURE_THRESHOLD_VELOCITY = ViewConfiguration.get(this.getActivity().getApplicationContext()).getScaledMinimumFlingVelocity();
-    	
-		//RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
-		//RemoteGUIFactory remoteGUIFactory = remoteModel.getRemoteGUIFactory();
-
-		rootView = inflater.inflate(R.layout.standard_layout, container, false);
-		viewFlipper = (ViewFlipper)rootView.findViewById(R.id.standard_view_flipper);
+		viewFlipper = (ViewFlipper)view.findViewById(R.id.standard_view_flipper);
 		if (viewFlipper != null) {
-			gestureDetector = new RemoteViewGestureDetector(this.getActivity().getApplicationContext());
+			gestureDetector = new RemoteViewGestureDetector(RemoteApplication.getInstance().getContext());
 			detector = new GestureDetector(gestureDetector);
-			rootView.setOnTouchListener(new OnTouchListener() {
+			view.setOnTouchListener(new OnTouchListener() {
 				public boolean onTouch(View rootView, MotionEvent event) {
 					detector.onTouchEvent(event);
 					return true;
 				}
-			}); 
-		}
-		return rootView;
+			});  
+		}	
+		
+    	FragmentManager fragmentManager = activity.getFragmentManager();
+
+    	RemoteDisplay displayRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
+    	RemoteDisplay browserRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
+    	if (displayRemoteDisplay != null && browserRemoteDisplay != null) {
+    		Log.v(TAG, "Found fragments!!!");
+    		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+	    	RemoteFragment remoteFragment = new RemoteFragment();
+	    	fragmentTransaction.replace(R.id.standard_remote_layout, remoteFragment);
+	    	RemoteApplication.getInstance().getRemoteModel().addListener(remoteFragment);
+
+    		Fragment displayFragment = displayRemoteDisplay.createFragment();
+    		fragmentTransaction.replace(R.id.standard_display_layout, displayFragment);
+    		Fragment browserFragment = browserRemoteDisplay.createFragment();
+    		fragmentTransaction.replace(R.id.standard_browser_layout, browserFragment);
+	    	fragmentTransaction.commit();   
+	    	
+	    	fragmentManager.executePendingTransactions();
+	    	
+		    //displayRemoteDisplay.setFragment(displayFragment);
+		    //browserRemoteDisplay.setFragment(browserFragment);
+    	}
+		
+		return view;
 	}
-    
-    private void updateFragment() {
-    	Log.v(TAG, "updateFragment");
-    	FragmentManager fragmentManager = getFragmentManager();
-    	
-    	//Check if the fragments have already been added.
+	
+    public void initializeFragments(Activity activity) {
+    	Log.v(TAG, "Initializing sub fragments...");
 
-    	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    	RemoteDisplay displayRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
+    	RemoteDisplay browserRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
 
-    	RemoteFragment remoteFragment = new RemoteFragment();
-    	fragmentTransaction.add(R.id.standard_remote_layout, remoteFragment); 
-    	RemoteApplication.getInstance().getRemoteModel().addListener(remoteFragment);
-    	
-    	RemoteDisplay remoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
-    	fragmentTransaction.add(R.id.standard_display_layout, remoteDisplay.getFragment());
-    	
-    	remoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
-    	fragmentTransaction.add(R.id.standard_browser_layout, remoteDisplay.getFragment());
-    	
-    	fragmentTransaction.commit();   
+    	FragmentManager fragmentManager = activity.getFragmentManager();
+    	Fragment fragment = fragmentManager.findFragmentById(R.id.standard_display_layout);
+    	if (displayRemoteDisplay != null && fragment != null) {
+    		displayRemoteDisplay.setFragment(fragment);
+    	}
+    	fragment = fragmentManager.findFragmentById(R.id.standard_browser_layout);
+    	if (browserRemoteDisplay != null && fragment != null) {
+    		browserRemoteDisplay.setFragment(fragment);
+    	}    	
     }
+	
 
-	class RemoteViewGestureDetector extends SimpleOnGestureListener {
+	
+    class RemoteViewGestureDetector extends SimpleOnGestureListener {
 		Context context;
 		
 		protected RemoteViewGestureDetector(Context context) {

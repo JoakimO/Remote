@@ -104,10 +104,10 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer{
 			remoteApplication.getRemoteCommandFactory().registerCommands(device.getIdentifier(), commands);
 			
 			RemoteDisplayFactory displayFactory = remoteApplication.getRemoteDisplayFactory();
-			BoxeeRemoteDisplayFragment remoteDisplay = new BoxeeRemoteDisplayFragment(device);
+			BoxeeRemoteDisplay remoteDisplay = new BoxeeRemoteDisplay(device);
 			displayFactory.registerDisplay(device.getIdentifier(), remoteDisplay);
-			BoxeeBrowserFragment browserFragment = new BoxeeBrowserFragment(device);
-			displayFactory.registerDisplay(device.getIdentifier(), browserFragment);
+			BoxeeBrowserRemoteDisplay browserRemoteDisplay = new BoxeeBrowserRemoteDisplay(device);
+			displayFactory.registerDisplay(device.getIdentifier(), browserRemoteDisplay);
 			
 			device.addNotificationListener(remoteDisplay);
 		}

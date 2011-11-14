@@ -25,5 +25,28 @@ public interface RemoteDisplay {
 	 * Return the fragment associated with the display. It will
 	 * then be added to a view on the remote with different proportions.
 	 */
+	public Fragment createFragment();
+	
+	/**
+	 * After the activity have initialized the fragment (e.g after onCreate()), it will make a callback with 
+	 * the fragment.
+	 *
+	 * Fragment newFragment = remoteDisplay.createFragment();
+	 * FragmentTransaction transaction = getFragmentManager().beginTransaction();
+	 * transaction.replace(R.id.fragment_container, newFragment);
+	 * transaction.commit();	 
+	 * newFragment = getFragmentManager().findFragmentById(newFragment.getId());
+	 * fragmentManager.executePendingTransactions();
+	 * remoteDisplay.setFragment(newFragment);
+	 *
+	 * When getting this instance it will be safe to connect all the external listeners to the 
+	 * views, The root view is retrived with fragment.getView().
+	 *
+	 * Design principle for display fragments should follow KISS (keep it simple, Stupid!). 
+	 * Implement the functionality in the display and tell the Fragment when to 
+	 * update it's views.
+	 */
+	public void setFragment(Fragment fragment);
+	
 	public Fragment getFragment();
 }

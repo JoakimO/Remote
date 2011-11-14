@@ -1,11 +1,13 @@
 package se.newbie.remote.main;
 
 import se.newbie.remote.action.RemoteActionListener;
-import android.app.Fragment;
+import android.app.Activity;
+import android.view.View;
 
 
 public interface RemoteView extends RemoteModelListener, RemoteActionListener {
 	public void addListener(RemoteViewListener listener);
 	
-	public Fragment getFragment();
+	public View createLayout(Activity activity);
+	public void initializeFragments(Activity activity);
 }
