@@ -1,58 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/linearLayout1"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:layout_weight="0.00"
+     android:orientation="horizontal"
+     >
 
-    <SeekBar
-        android:id="@+id/remote_player_action_bar_seek"
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
- 	/>
-
-    <ImageButton
-        android:id="@+id/remote_player_action_bar_skip_previous"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="61dp"
-        android:layout_toRightOf="@+id/remote_player_action_bar_seek"
-        android:background="@drawable/action_bar_button"
-        android:src="@drawable/ic_skip_previous" />
-
-    <ImageButton
-        android:id="@+id/remote_player_action_bar_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/remote_player_action_bar_skip_previous"
-        android:background="@drawable/action_bar_button"
-        android:src="@drawable/ic_mov_stop" />
-
-    <ImageButton
-        android:id="@+id/remote_player_action_bar_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
-        android:background="@drawable/action_bar_button"
-        android:src="@drawable/ic_mov_play" />
-    
-    <ImageButton
-        android:id="@+id/remote_player_action_bar_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
-        android:background="@drawable/action_bar_button"
-        android:src="@drawable/ic_mov_pause" />    
-
-    <ImageButton
-        android:id="@+id/remote_player_action_bar_skip_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/remote_player_action_bar_play"
-        android:background="@drawable/action_bar_button"
-        android:src="@drawable/ic_skip_next" />
-
-</RelativeLayout>
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="1.00"
+	    >	    
+	    <SeekBar
+	        android:id="@+id/remote_player_action_bar_seek"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true" />
+	</RelativeLayout>
+	
+	<RelativeLayout 	    
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"	    
+	    android:layout_weight="0.00"
+	    >	    
+	    
+	    <ImageButton
+	        android:id="@+id/remote_player_action_bar_skip_previous"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1.00"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentLeft="true"
+	        android:background="@drawable/action_bar_button"
+	        android:src="@drawable/ic_skip_previous" />
+	
+	    <ImageButton
+	        android:id="@+id/remote_player_action_bar_stop"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1.00"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/remote_player_action_bar_skip_previous"
+	        android:background="@drawable/action_bar_button"
+	        android:src="@drawable/ic_mov_stop" />
+	    
+	    <ImageButton
+	        android:id="@+id/remote_player_action_bar_pause"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1.00"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
+	        android:background="@drawable/action_bar_button"
+	        android:src="@drawable/ic_mov_pause" />
+	    
+	    <ImageButton
+	        android:id="@+id/remote_player_action_bar_play"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1.00"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
+	        android:background="@drawable/action_bar_button"
+	        android:src="@drawable/ic_mov_play" />
+	
+	
+	    <ImageButton
+	        android:id="@+id/remote_player_action_bar_skip_next"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1.00"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/remote_player_action_bar_play"
+	        android:background="@drawable/action_bar_button"
+	        android:src="@drawable/ic_skip_next" />
+  
+	</RelativeLayout>	    
+</LinearLayout>

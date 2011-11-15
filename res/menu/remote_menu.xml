@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/settings"
-          android:title="@string/title_settings" />
 
-    <item android:id="@+id/remote_player_view"
-        android:title="Player"
-        
-        android:showAsAction="always"
-        android:actionViewClass="se.newbie.remote.application.RemotePlayerView" />
-    
+    <item android:id="@+id/settings"
+          android:title="@string/title_settings"
+          />  
+    <!-- <item android:id="@+id/remote_player_view"
+        android:title="Player"        
+        android:showAsAction="always"  
+        android:actionViewClass="se.newbie.remote.application.RemotePlayerView" /> -->
 </menu>
