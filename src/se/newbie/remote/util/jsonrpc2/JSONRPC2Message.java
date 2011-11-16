@@ -4,7 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public abstract class JSONRPC2Message {
+	private static final String TAG = "JSONRPC2Message";
 	private static final String version = "2.0";
 	
 	protected enum JSONRPC2MessageType {
@@ -13,6 +16,10 @@ public abstract class JSONRPC2Message {
 	JSONRPC2MessageType type;
 	protected JSONObject jsonObject;
 	private JSONObject jsonData;
+	
+	private boolean isError;
+	private int errorCode;
+	private String errorMessage;
 
 	
 	
@@ -48,7 +55,20 @@ public abstract class JSONRPC2Message {
 			if (jsonObject.has("result")) {
 				jsonData = jsonObject.optJSONObject("result");
 				//jsonObject.remove("result");
+			} else if (jsonObject.has("error")) {
+				createErrorResponse(jsonObject);
 			}
+		}
+	}
+	
+	private void createErrorResponse(JSONObject jsonObject) {
+		try {
+			isError = true;
+			JSONObject error = jsonObject.getJSONObject("error");
+			errorCode = error.getInt("code");
+			errorMessage = error.getString("message");
+		} catch (JSONException e) {
+			Log.e(TAG, e.getMessage());
 		}
 	}
 	
@@ -132,5 +152,17 @@ public abstract class JSONRPC2Message {
 			Log.v(TAG, e.getMessage());
 		}*/
 		return jsonObject.toString();		
+	}
+
+	public int getErrorCode() {
+		return errorCode;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public boolean isError() {
+		return isError;
 	}
 }

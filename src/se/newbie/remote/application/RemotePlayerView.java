@@ -49,8 +49,8 @@ public class RemotePlayerView extends LinearLayout implements RemoteModelListene
 		view.setVisibility(View.INVISIBLE);
 		this.addView(view);
 		
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		this.setLayoutParams(params);
+		//LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		//this.setLayoutParams(params);
 		
 		seekBar = (SeekBar)view.findViewById(R.id.remote_player_action_bar_seek);
 		skipPrevious = (ImageButton)view.findViewById(R.id.remote_player_action_bar_skip_previous);

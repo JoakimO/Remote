@@ -4,7 +4,9 @@ import se.newbie.remote.R;
 import se.newbie.remote.main.RemoteView;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,10 +31,9 @@ public class RemoteActivity extends Activity {
         Log.v(TAG, "Activity start");
 
         //setContentView(R.layout.main);        
-
-        Context context = this.getApplicationContext();
+        //Context context = this.getApplicationContext();
         
-        RemoteApplication.getInstance().init(context);
+        RemoteApplication.getInstance().init(this);
         RemoteApplication.getInstance().getRemoteDeviceFactory().create();
         
         remoteView = RemoteApplication.getInstance().getRemoteView();
@@ -63,13 +64,21 @@ public class RemoteActivity extends Activity {
     @Override
     public void onResume() {
     	Log.v(TAG, "onResume");
-    	
-	
-    	
     	super.onResume();
     	remoteView.initializeFragments(this);
     	RemoteApplication.getInstance().resume();
-    }	    
+    }
+    
+    public void showDialog(DialogFragment dialog) {
+    	FragmentTransaction fragmentTransaction  = getFragmentManager().beginTransaction();
+    	Fragment prev = getFragmentManager().findFragmentByTag("remote_dialog");
+    	if (prev != null) {
+    	
+    		fragmentTransaction.remove(prev);
+    	}
+    	fragmentTransaction.addToBackStack(null);
+    	dialog.show(fragmentTransaction, "remote_dialog");
+    }    
     
     
     @Override
@@ -80,8 +89,8 @@ public class RemoteActivity extends Activity {
         player = new RemotePlayerView(this);
         ActionBar actionBar = getActionBar();
         
-        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.MATCH_PARENT);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_TITLE);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP);
         actionBar.setCustomView(player, params);
  
         RemoteApplication.getInstance().setRemotePlayerView(player);

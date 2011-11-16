@@ -7,7 +7,9 @@ import se.newbie.remote.gui.standard.StandardRemoteGUIFactory;
 import se.newbie.remote.main.RemoteController;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteView;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 public class RemoteApplication {
@@ -18,7 +20,7 @@ public class RemoteApplication {
 	
 	private static RemoteApplication remoteApplication;
 	
-	private Context context;
+	private RemoteActivity activity;
 	private RemoteModel remoteModel;
 	private RemoteView remoteView;
 	private RemoteController remoteController;
@@ -37,12 +39,13 @@ public class RemoteApplication {
 		return remoteApplication;
 	}
 
-	public void init(Context context) {
+	public void init(RemoteActivity activity) {
 		Log.v(TAG, "Initializing...");
 		
-		this.context = context;
+		this.activity = activity;
 		
-		createMVCModel(context); 
+		
+		createMVCModel(activity.getApplicationContext()); 
 		createRemoteCommandFactory();
 		createRemoteDisplayFactory();
 		createRemoteDeviceFactory();		
@@ -63,7 +66,9 @@ public class RemoteApplication {
 		}
 	}	
 	
-	
+	public void showDialog(DialogFragment dialog) {
+		activity.showDialog(dialog);
+	}
 	
 	private void createMVCModel(Context context) {
         Log.v(TAG, "Create MVC instances");
@@ -95,12 +100,8 @@ public class RemoteApplication {
 		this.remoteCommandFactory = new RemoteCommandFactory();
 	}
 	
-	public void setContext(Context context) {
-		this.context = context;
-	}
-	
 	public Context getContext() {
-		return context;
+		return this.activity.getApplicationContext();
 	}
 
 	public RemoteModel getRemoteModel() {
@@ -161,5 +162,21 @@ public class RemoteApplication {
 
 	public void setRemotePlayerView(RemotePlayerView remotePlayerView) {
 		this.remotePlayerView = remotePlayerView;
+	}
+	
+	/**
+	 * Returns a unique Id for the running device, this value is always the same for each individual device.
+	 * @return
+	 */
+	public String getDeviceId() {
+		return Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID); 
+	}
+	
+	/**
+	 * Returns the application ID.
+	 * @return
+	 */
+	public String getApplicationId() {
+		return "FiRemote";
 	}
 }

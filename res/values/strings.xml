@@ -32,5 +32,10 @@
 	<string name="music_title_genre">Genre:</string>
 	<string name="music_title_year">Year:</string>
 	<string name="music_title_album">Album:</string>
+	
 	    
+	<string name="boxee_pair_dialog_message">Boxee needs to be paired with the remote. Write the digits displayed from your Boxee in the field below and then click Next.\n\n This is a one time operation and to remove the pairing go to your boxee / settings / devices and click remove on the android remote.</string>    
+	
+	<string name="button_next">Next</string>
+	<string name="button_cancel">Cancel</string>	    
 </resources>

@@ -51,7 +51,7 @@ public class JSONRPC2Client {
 			outputStream = socket.getOutputStream();
 			inputStream = socket.getInputStream();
 		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "Connection failed: " + e.getMessage());
 		}		
 		thread = new JSONRPC2ClientThread();
 		thread.start();				

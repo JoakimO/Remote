@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<style name="Theme.Remote" parent="android:style/Theme.Holo">
-		<item name="android:actionBarStyle">@style/ActionBar</item>
+		
 	</style>
 	
 	<style name="ActionBar">

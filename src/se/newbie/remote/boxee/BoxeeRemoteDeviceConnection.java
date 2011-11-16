@@ -1,10 +1,13 @@
 package se.newbie.remote.boxee;
 
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Client;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Response;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2ResponseHandler;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class BoxeeRemoteDeviceConnection {
@@ -12,6 +15,21 @@ public class BoxeeRemoteDeviceConnection {
 	//private boolean isKeepAlive;
 	private JSONRPC2Client jsonRPC2Client;
 	private boolean isConnected = false;
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 0:
+				BoxeeRemoteDeviceDetails remoteDeviceDetails = (BoxeeRemoteDeviceDetails)boxeeRemoteDevice.getRemoteDeviceDetails();
+				BoxeePairDialog dialog = BoxeePairDialog.newInstance(remoteDeviceDetails);
+				if (dialog != null) {
+					RemoteApplication.getInstance().showDialog(dialog);
+				}
+				break;
+			}
+			
+		}
+	};	
 	
 	public BoxeeRemoteDeviceConnection(BoxeeRemoteDevice remoteDevice) {
 		boxeeRemoteDevice = remoteDevice;
@@ -93,27 +111,27 @@ public class BoxeeRemoteDeviceConnection {
 		
 		@Override
         public void run() {
-			BoxeeRemoteDeviceDetails remoteDeviceDetails = (BoxeeRemoteDeviceDetails)boxeeRemoteDevice.getRemoteDeviceDetails();
+			final BoxeeRemoteDeviceDetails remoteDeviceDetails = (BoxeeRemoteDeviceDetails)boxeeRemoteDevice.getRemoteDeviceDetails();
 			try {
 				jsonRPC2Client.connect(remoteDeviceDetails.getHost(), 9090);
 				Thread.sleep(100);
 				JSONRPC2Request request = jsonRPC2Client.createJSONRPC2Request("Device.connect");
 				
-				JSONRPC2ResponseHandler handler = new JSONRPC2ResponseHandler() {
-
+				JSONRPC2ResponseHandler responseHandler = new JSONRPC2ResponseHandler() {
 					public void onResponse(JSONRPC2Response response) {
 						Log.v(TAG, response.serialize());
-						if (response.getBooleanResult("success")) {
+						if (response.isError() && response.getErrorMessage().equals("Bad client permission.")) {
+							handler.sendEmptyMessage(0);
+						} else if (response.getBooleanResult("success")) {
 							isConnected = true;						
 						} else {
-							BoxeeRemoteDeviceConnectionThread thread = new BoxeeRemoteDeviceConnectionThread();
-							thread.start();
+
 						}
 					}				
 				};				
 				if (request != null) {
-					request.setParam("deviceid", "android");
-					jsonRPC2Client.sendRequest(request, handler);
+					request.setParam("deviceid", RemoteApplication.getInstance().getDeviceId());
+					jsonRPC2Client.sendRequest(request, responseHandler);
 				}
 			} catch (Exception innerException) {
 				Log.e(TAG, innerException.getMessage()); 
