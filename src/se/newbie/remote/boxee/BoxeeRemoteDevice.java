@@ -39,22 +39,7 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 		this.connection.sendRequest(request, null);
 		return 1;	
 	}	
-	
-/*	private void sendHttpRequestTask(String url, HttpRequestTaskHandler handler) {
-		HttpRequestTask request = new HttpRequestTask();
-		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
-		
-		if (preferences.contains(getIdentifier() + ".user")) {
-			request.setCredentials(preferences.getString(getIdentifier() + ".user", "")
-					, preferences.getString(getIdentifier() + ".password", ""));
-		}
-		if (handler != null) {
-			request.setHttpRequestTaskHandler(handler);
-		}
-		request.execute(url);
-	}*/
-	
+
 	/**
 	 * Only update the host information if the device was found again.
 	 */

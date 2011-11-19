@@ -10,7 +10,7 @@ package se.newbie.remote.device;
 public interface RemoteDevice {
 	
 	public enum RemoteDeviceType {
-		Boxee;
+		Boxee, TelldusLive;
 	}
 	
 	/**

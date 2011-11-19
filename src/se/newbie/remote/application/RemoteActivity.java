@@ -67,17 +67,26 @@ public class RemoteActivity extends Activity {
     	super.onResume();
     	remoteView.initializeFragments(this);
     	RemoteApplication.getInstance().resume();
+    	
+    	/*Log.v(TAG, "Check if there was a fragment dialog in progress");
+    	Fragment inProgressFragmentDialog = getFragmentManager().findFragmentByTag("remote_dialog");
+    	if (inProgressFragmentDialog != null) {
+    		Log.v(TAG, "Fragment dialog found and will be shown again");
+    		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+    		fragmentTransaction.show(inProgressFragmentDialog);
+    	}*/    	
     }
     
     public void showDialog(DialogFragment dialog) {
     	FragmentTransaction fragmentTransaction  = getFragmentManager().beginTransaction();
     	Fragment prev = getFragmentManager().findFragmentByTag("remote_dialog");
-    	if (prev != null) {
     	
+    	if (prev != null) {
     		fragmentTransaction.remove(prev);
     	}
     	fragmentTransaction.addToBackStack(null);
-    	dialog.show(fragmentTransaction, "remote_dialog");
+
+   		dialog.show(fragmentTransaction, "remote_dialog");
     }    
     
     

@@ -9,6 +9,7 @@ import java.util.Set;
 import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.boxee.BoxeeRemoteDeviceDiscoverer;
 import se.newbie.remote.predefined.SelectRemoteDeviceRemoteCommand;
+import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceDiscoverer;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -100,14 +101,18 @@ public class RemoteDeviceFactory {
 	 * This could happen when a device has a new host address from the stored value
 	 * in their details and needs to be change.
 	 */
-	public void initRemoteDevice(RemoteDeviceDiscoverer discoverer, RemoteDeviceDetails details) {
+	public void initRemoteDevice(final RemoteDeviceDiscoverer discoverer, final RemoteDeviceDetails details) {
 		if (!containsRemoteDevice(details.getIdentifier())) {
-			Log.v(TAG, "New device found: " + details.getIdentifier());
-			RemoteDevice remoteDevice = discoverer.createRemoteDevice(details);
-			if (remoteDevice != null) {
-				registerRemoteDevice(remoteDevice);
-				storeRemoteDeviceDetails(remoteDevice.getRemoteDeviceDetails());
-			}
+			RemoteApplication.getInstance().getActivity().runOnUiThread( new Runnable() {
+				public void run() {
+					Log.v(TAG, "New device found: " + details.getIdentifier());
+					RemoteDevice remoteDevice = discoverer.createRemoteDevice(details);
+					if (remoteDevice != null) {
+						registerRemoteDevice(remoteDevice);
+						storeRemoteDeviceDetails(remoteDevice.getRemoteDeviceDetails());
+					}
+				}
+			});
 		} else {
 			Log.v(TAG, "Device already registered send update: " + details.getIdentifier());
 			RemoteDevice remoteDevice = getRemoteDevice(details.getIdentifier());
@@ -148,6 +153,7 @@ public class RemoteDeviceFactory {
 		createPredefined();
 		
 		discoverers.add(new BoxeeRemoteDeviceDiscoverer(this));
+		discoverers.add(new TelldusLiveRemoteDeviceDiscoverer(this));
 		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
 		Set<String> remoteDevices = preferences.getStringSet(REMOTE_DEVICE_IDENTITY_SET_PROPERTY, null);
@@ -196,7 +202,7 @@ public class RemoteDeviceFactory {
 	}
 
 	/**
-	 * 
+	 * The device will be added on the main UI thread
 	 */
 	private void registerRemoteDevice(RemoteDevice device) {
 		Log.v(TAG, "registerRemoteDevice: " + device.getIdentifier());
@@ -207,7 +213,7 @@ public class RemoteDeviceFactory {
 			Log.e(TAG, "Remote device already exists: " + device.getIdentifier());
 		}		
 	}
-	
+	 
 	private void notifyObservers(RemoteDevice device) {
 		Log.v(TAG, "notifyObservers: " + device.getIdentifier());
 		for (RemoteDeviceListener listener : listeners) {

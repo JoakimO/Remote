@@ -7,6 +7,7 @@ import se.newbie.remote.gui.standard.StandardRemoteGUIFactory;
 import se.newbie.remote.main.RemoteController;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteView;
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.provider.Settings.Secure;
@@ -65,9 +66,16 @@ public class RemoteApplication {
 			remotePlayerView.resume();
 		}
 	}	
-	
-	public void showDialog(DialogFragment dialog) {
-		activity.showDialog(dialog);
+
+	/**
+	 * Shows the dialog with the main UI thread.
+	 */
+	public void showDialog(final DialogFragment dialog) {
+		activity.runOnUiThread(new Runnable(){
+			public void run() {
+				activity.showDialog(dialog);
+			}
+		});
 	}
 	
 	private void createMVCModel(Context context) {
@@ -102,6 +110,10 @@ public class RemoteApplication {
 	
 	public Context getContext() {
 		return this.activity.getApplicationContext();
+	}
+	
+	public Activity getActivity() {
+		return activity;
 	}
 
 	public RemoteModel getRemoteModel() {
