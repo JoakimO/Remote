@@ -45,7 +45,8 @@ public class TelldusLiveRemoteDeviceDetails implements RemoteDeviceDetails {
 	
 	public Token getAccessToken() {
 		Token token = null;
-		if (accessToken != null && accessSecret != null) {
+		if (accessToken != null && accessSecret != null &&
+				accessToken.length() > 0) {
 			token = new Token(accessToken, accessSecret);
 		}
 		return token;
@@ -56,12 +57,14 @@ public class TelldusLiveRemoteDeviceDetails implements RemoteDeviceDetails {
 		StringWriter writer = new StringWriter();
 		try {
 			serializer.setOutput(writer);
-			serializer.startDocument("UTF-8", true);
+			serializer.startDocument("UTF-8", true); 
 			serializer.startTag("", TelldusLiveRemoteDeviceDiscoverer.APPLICATION);
 			serializer.attribute("", "identifier", getIdentifier());
 			serializer.attribute("", "name", getName());
-			serializer.attribute("", "token", accessToken);
-			serializer.attribute("", "secret", accessSecret);
+			if (accessToken != null) {
+				serializer.attribute("", "token", accessToken);
+				serializer.attribute("", "secret", accessSecret);
+			}
 			serializer.endTag("", TelldusLiveRemoteDeviceDiscoverer.APPLICATION);
 			serializer.endDocument();
 		} catch (Exception e) {

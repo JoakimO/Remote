@@ -59,6 +59,7 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		} else if (!isInUse) { 
 			isInUse = true;
 			dialog = new TelldusLiveAuthenticateDialog();
+			dialog.authInProgress = false;
 			Bundle args = new Bundle();
 			args.putString("details", details.serialize());
 			dialog.setArguments(args);

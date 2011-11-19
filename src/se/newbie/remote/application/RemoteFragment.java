@@ -2,6 +2,7 @@ package se.newbie.remote.application;
 
 import se.newbie.remote.R;
 import se.newbie.remote.device.RemoteDevice;
+import se.newbie.remote.gui.RemoteButton;
 import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.gui.RemoteImageButton;
 import se.newbie.remote.gui.RemoteSeekBar;
@@ -67,7 +68,8 @@ public class RemoteFragment extends Fragment implements RemoteModelListener {
         RemoteImageButton playToggleButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_mov_play, "Boxee-boxeebox", "play");
         RemoteImageButton stopButton = remoteGUIFactory.createImageButton(getActivity().getApplicationContext(), R.drawable.ic_mov_stop, "Boxee-boxeebox", "stop");
         
-        //RemoteButton playButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Select", "Boxee-boxeebox", "select");
+        RemoteButton lightOnButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Light on", "TelldusLive", "turnOn-41321");
+        RemoteButton lightOffButton = remoteGUIFactory.createButton(getActivity().getApplicationContext(), "Light off", "TelldusLive", "turnOff-41321");
         
         
         leftButton.setId(1);
@@ -100,6 +102,11 @@ public class RemoteFragment extends Fragment implements RemoteModelListener {
         playToggleButton.addListener(RemoteApplication.getInstance().getRemoteView());
         stopButton.setId(13);
         stopButton.addListener(RemoteApplication.getInstance().getRemoteView());        
+        
+        lightOnButton.setId(14);
+        lightOnButton.addListener(RemoteApplication.getInstance().getRemoteView());
+        lightOffButton.setId(15);
+        lightOffButton.addListener(RemoteApplication.getInstance().getRemoteView());
         
         Resources res = getResources();
         int selectorWidth = (int)res.getDimension(R.dimen.standard_device_selector_width);
@@ -161,6 +168,16 @@ public class RemoteFragment extends Fragment implements RemoteModelListener {
         params.addRule(RelativeLayout.BELOW, leftButton.getId());
         params.addRule(RelativeLayout.RIGHT_OF, downButton.getId());
         volumeDownButton.setLayoutParams(params);
+        
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
+        params.addRule(RelativeLayout.BELOW, downButton.getId());
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        lightOnButton.setLayoutParams(params);
+        
+        params = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
+        params.addRule(RelativeLayout.BELOW, volumeDownButton.getId());
+        params.addRule(RelativeLayout.RIGHT_OF, lightOnButton.getId());
+        lightOffButton.setLayoutParams(params);        
         
         /* START PLAYER LAYOUT */
         
@@ -249,6 +266,10 @@ public class RemoteFragment extends Fragment implements RemoteModelListener {
         layout.addView(muteButton);
         layout.addView(volumeUpButton);
         layout.addView(volumeDownButton);
+        
+        layout.addView(lightOnButton);
+        layout.addView(lightOffButton);
+        
         layout.setBackgroundResource(R.drawable.standard_remote);
         
         frameLayout.addView(layout);

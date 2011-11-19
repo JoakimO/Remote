@@ -43,7 +43,7 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 		Log.v(TAG, "Resume");
 		
 		
-		connection.request("/clients/list");
+		//connection.request("/clients/list", null);
 		//TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog.newInstance((TelldusLiveRemoteDeviceDetails)this.getRemoteDeviceDetails());
 		//Log.v(TAG, "Dialog: " + dialog);
 		//if (dialog != null) {

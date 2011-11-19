@@ -6,13 +6,28 @@ import se.newbie.remote.util.jsonrpc2.JSONRPC2NotificationListener;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Request;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2Response;
 import se.newbie.remote.util.jsonrpc2.JSONRPC2ResponseHandler;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class BoxeeRemoteDeviceConnection {
+	private final static String TAG = "BoxeeRemoteDeviceConnection";
 	BoxeeRemoteDevice boxeeRemoteDevice;
 	//private boolean isKeepAlive;
 	private JSONRPC2Client jsonRPC2Client;
 	private boolean isConnected = false;
+	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Log.v(TAG, "Opening pairing dialog...");
+			BoxeeRemoteDeviceDetails remoteDeviceDetails = (BoxeeRemoteDeviceDetails)boxeeRemoteDevice.getRemoteDeviceDetails();
+			BoxeePairDialog dialog = BoxeePairDialog.newInstance(remoteDeviceDetails);
+			if (dialog != null) {
+				RemoteApplication.getInstance().showDialog(dialog); 
+			}
+		}
+	};		
 
 	
 	public BoxeeRemoteDeviceConnection(BoxeeRemoteDevice remoteDevice) {
@@ -105,11 +120,7 @@ public class BoxeeRemoteDeviceConnection {
 					public void onResponse(JSONRPC2Response response) {
 						Log.v(TAG, response.serialize());
 						if (response.isError() && response.getErrorMessage().equals("Bad client permission.")) {
-							BoxeeRemoteDeviceDetails remoteDeviceDetails = (BoxeeRemoteDeviceDetails)boxeeRemoteDevice.getRemoteDeviceDetails();
-							BoxeePairDialog dialog = BoxeePairDialog.newInstance(remoteDeviceDetails);
-							if (dialog != null) {
-								RemoteApplication.getInstance().showDialog(dialog);
-							}							
+							handler.sendEmptyMessage(0);
 						} else if (response.getBooleanResult("success")) {
 							isConnected = true;						
 						} else {

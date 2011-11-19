@@ -1,5 +1,8 @@
 package se.newbie.remote.tellduslive;
 
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -40,19 +43,35 @@ public class TelldusLiveRemoteDeviceConnection {
         .apiSecret("ZUXEVEGA9USTAZEWRETHAQUBUR69U6EF")
         .callback("callback://remoteApplication")
         .build();
+        
 	}
 	
-	public void request(final String resource) {
+	public void request(final String resource, final Map<String, String> params) {
         new Thread() {
         	public void run() {		
 				OAuthRequest request = new OAuthRequest(Verb.GET, RESOURCE_DOMAIN + resource);
+				request.setConnectTimeout(9, TimeUnit.SECONDS);
+				request.setReadTimeout(3, TimeUnit.SECONDS);
+				
 				TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
-				service.signRequest(details.getAccessToken(), request);
+				if (params != null) {
+					for (String key : params.keySet()) {
+						request.addQuerystringParameter(key, params.get(key));
+					}					
+				}				
 				try {
-				Response response = request.send();
-				Log.v(TAG, response.getBody());
+					Token accessToken = details.getAccessToken();
+					Log.v(TAG, "Sending request: " + request.getUrl() + "; Token: " + accessToken);
+					if (accessToken != null) {
+						service.signRequest(accessToken, request);
+						Response response = request.send();
+						Log.v(TAG, response.getBody());
+					} else {
+						Log.w(TAG, "Trying to send request without access token");
+						handler.sendEmptyMessage(0);	
+					}
 				} catch (Exception e) {
-					Log.v(TAG, e.getMessage());
+					Log.v(TAG, "Error during request: " + e.getMessage());
 					handler.sendEmptyMessage(0);
 				}
         	}
@@ -72,7 +91,7 @@ public class TelldusLiveRemoteDeviceConnection {
 	public void getAccessToken(final Token requestToken, final Verifier verifier, final TelldusLiveTokenResponseHandler handler) {
         new Thread() {
         	public void run() {
-        		Token accessToken = service.getAccessToken(requestToken, verifier);
+        		Token accessToken = service.getAccessToken(requestToken, verifier); 
 				handler.onResponse(accessToken);
         	}
         }.start();		
