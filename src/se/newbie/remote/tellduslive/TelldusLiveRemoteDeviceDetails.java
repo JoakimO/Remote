@@ -44,7 +44,11 @@ public class TelldusLiveRemoteDeviceDetails implements RemoteDeviceDetails {
 	}
 	
 	public Token getAccessToken() {
-		return new Token(accessToken, accessSecret);
+		Token token = null;
+		if (accessToken != null && accessSecret != null) {
+			token = new Token(accessToken, accessSecret);
+		}
+		return token;
 	}
 	
 	public String serialize() {

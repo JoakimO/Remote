@@ -9,9 +9,11 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 	private static final String TAG = "TelldusLiveRemoteDevice";
 	
 	TelldusLiveRemoteDeviceDetails details;
+	TelldusLiveRemoteDeviceConnection connection;
 	
 	public TelldusLiveRemoteDevice(RemoteDeviceDetails details) {
 		this.details = (TelldusLiveRemoteDeviceDetails)details;
+		connection = new TelldusLiveRemoteDeviceConnection(this);
 	}
 	
 	public String getIdentifier() {
@@ -47,12 +49,16 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 	public boolean update(RemoteDeviceDetails details) {
 		boolean b = false;
 		if (details.getIdentifier().startsWith(TelldusLiveRemoteDeviceDiscoverer.APPLICATION)) {
-			if (!((TelldusLiveRemoteDeviceDetails)details).getAccessToken().equals(this.details.getAccessToken())) {
+			if (((TelldusLiveRemoteDeviceDetails)details).getAccessToken() != null &&
+					!((TelldusLiveRemoteDeviceDetails)details).getAccessToken().equals(this.details.getAccessToken())) {
 				this.details.setAccessToken(((TelldusLiveRemoteDeviceDetails)details).getAccessToken());
 				b = true;
 			}		
 		}
 		return b;
 	}	
-
+	
+	public TelldusLiveRemoteDeviceConnection getConnection() {
+		return connection;
+	}
 }

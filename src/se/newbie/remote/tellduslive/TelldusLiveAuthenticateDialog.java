@@ -1,11 +1,11 @@
 package se.newbie.remote.tellduslive;
 
-import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import se.newbie.remote.application.RemoteApplication;
+import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiveTokenResponseHandler;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -33,9 +33,7 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		Activity activity = RemoteApplication.getInstance().getActivity();
 		Uri uri = activity.getIntent().getData(); 
 		Log.v(TAG, "Activity: " + activity.getIntent() + ";Data: " + uri);
-		/*if (instance != null) {
-			Log.v(TAG, "Token:" + instance.requestToken + ";InUse: " + instance.isInUse + ";authInProgress: " + instance.authInProgress);
-		}*/
+
 		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) { 
 			dialog = new TelldusLiveAuthenticateDialog();
 			Bundle args = new Bundle();
@@ -66,6 +64,10 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 			Log.e(TAG, e.getMessage());
 		}		
 		
+		TelldusLiveRemoteDevice device = (TelldusLiveRemoteDevice)RemoteApplication.getInstance()
+				.getRemoteDeviceFactory().getRemoteDevice(details.getIdentifier());
+		
+		final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
 		
 		/*if (savedInstanceState != null) {
 			 requestToken = new Token(savedInstanceState.getString("TelldusLiveAuthenticateDialog.requestTokenPublic"),
@@ -75,28 +77,18 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		
 		if (!authInProgress) {
             authInProgress = true;
-
-            new Thread() {
-            	public void run() {
-				//This might have to be done in a thread...
-	            service = new ServiceBuilder()
-	                .provider(TelldusLiveAPI.class)
-	                .apiKey("FEHUVEW84RAFR5SP22RABURUPHAFRUNU")
-	                .apiSecret("ZUXEVEGA9USTAZEWRETHAQUBUR69U6EF")
-	                .callback("callback://remoteApplication")
-	                .build();
-	
-				Log.v(TAG, "Requesting token..."); 
-				requestToken = service.getRequestToken();
-				Log.v(TAG, "Token received: " + requestToken);
-				
-				//Maybe there should be some sort of information and trigger this with a button.
-				Log.v(TAG, "Authorization URL: " + service.getAuthorizationUrl(requestToken));
-				Log.v(TAG, "Starting HTTP Intent...");
-				RemoteApplication.getInstance().getActivity()
-					.startActivity (new Intent ( Intent.ACTION_VIEW, Uri.parse(service.getAuthorizationUrl(requestToken))));
-            	}
-            }.start();
+            
+            connection.getRequestToken(new TelldusLiveTokenResponseHandler() {
+				public void onResponse(Token token) {
+					Log.v(TAG, "Requesting token..."); 
+					requestToken = token;
+					Log.v(TAG, "Token received: " + requestToken);
+					
+					Log.v(TAG, "Starting HTTP Intent...");
+					RemoteApplication.getInstance().getActivity()
+					.startActivity (new Intent ( Intent.ACTION_VIEW, Uri.parse(connection.getAuthorizationUrl(requestToken))));					
+				}
+			});
 		}
 	}
     
@@ -115,15 +107,18 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		Uri uri = activity.getIntent().getData();  
 		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) {  
 			final Verifier verifier = new Verifier ( uri.getQueryParameter("oauth_verifier") );
-            new Thread() {
-            	public void run() {
-            		Log.v(TAG, "Requesting access token...");
-            		Log.v(TAG, "Request token: " + requestToken);
-            		Log.v(TAG, "Request verifier: " + verifier);
-            		Token accessToken = service.getAccessToken(requestToken, verifier);
-            		Log.v(TAG, "Token received: " + accessToken);
-            	}
-            }.start();
+			
+			TelldusLiveRemoteDevice device = (TelldusLiveRemoteDevice)RemoteApplication.getInstance()
+					.getRemoteDeviceFactory().getRemoteDevice(details.getIdentifier());
+			
+			final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
+			
+			Log.v(TAG, "Requesting access token...");
+			connection.getAccessToken(requestToken, verifier, new TelldusLiveTokenResponseHandler() {
+				public void onResponse(Token token) {
+					Log.v(TAG, "Token received: " + token);
+				}
+			});
 		}
     } 	
 }
