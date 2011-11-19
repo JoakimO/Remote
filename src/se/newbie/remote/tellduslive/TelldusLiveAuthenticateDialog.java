@@ -2,8 +2,8 @@ package se.newbie.remote.tellduslive;
 
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
 
+import se.newbie.remote.R;
 import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiveTokenResponseHandler;
 import android.app.Activity;
@@ -11,18 +11,33 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 public class TelldusLiveAuthenticateDialog extends DialogFragment {
 	private final static String TAG = "TelldusLiveAuthenticateDialog";
 
-	private static OAuthService service;
 	private static boolean isInUse;
 	private static Token requestToken;
 	
 	private boolean authInProgress = false;
 	private TelldusLiveRemoteDeviceDetails details; 
-	//private static TelldusLiveAuthenticateDialog instance;
+	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+				case 0:
+					dismissDialog();
+					break;
+			}
+		}
+	};	
 	
 	private TelldusLiveAuthenticateDialog() {
 		super();
@@ -47,7 +62,6 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 			Bundle args = new Bundle();
 			args.putString("details", details.serialize());
 			dialog.setArguments(args);
-			//instance = dialog;
 		}
 		return dialog;
 	}	
@@ -63,40 +77,11 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}		
-		
-		TelldusLiveRemoteDevice device = (TelldusLiveRemoteDevice)RemoteApplication.getInstance()
-				.getRemoteDeviceFactory().getRemoteDevice(details.getIdentifier());
-		
-		final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
-		
-		/*if (savedInstanceState != null) {
-			 requestToken = new Token(savedInstanceState.getString("TelldusLiveAuthenticateDialog.requestTokenPublic"),
-					 savedInstanceState.getString("TelldusLiveAuthenticateDialog.requestTokenPrivate"));
-			 authInProgress = true;
-		} 		*/
-		
-		if (!authInProgress) {
-            authInProgress = true;
-            
-            connection.getRequestToken(new TelldusLiveTokenResponseHandler() {
-				public void onResponse(Token token) {
-					Log.v(TAG, "Requesting token..."); 
-					requestToken = token;
-					Log.v(TAG, "Token received: " + requestToken);
-					
-					Log.v(TAG, "Starting HTTP Intent...");
-					RemoteApplication.getInstance().getActivity()
-					.startActivity (new Intent ( Intent.ACTION_VIEW, Uri.parse(connection.getAuthorizationUrl(requestToken))));					
-				}
-			});
-		}
 	}
     
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 	  super.onSaveInstanceState(outState);
-	  /*outState.putString("TelldusLiveAuthenticateDialog.requestTokenPublic", requestToken.getToken());
-	  outState.putString("TelldusLiveAuthenticateDialog.requestTokenPrivate", requestToken.getSecret());*/  
 	} 
 	
     @Override
@@ -108,7 +93,7 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) {  
 			final Verifier verifier = new Verifier ( uri.getQueryParameter("oauth_verifier") );
 			
-			TelldusLiveRemoteDevice device = (TelldusLiveRemoteDevice)RemoteApplication.getInstance()
+			final TelldusLiveRemoteDevice device = (TelldusLiveRemoteDevice)RemoteApplication.getInstance()
 					.getRemoteDeviceFactory().getRemoteDevice(details.getIdentifier());
 			
 			final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
@@ -117,8 +102,63 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 			connection.getAccessToken(requestToken, verifier, new TelldusLiveTokenResponseHandler() {
 				public void onResponse(Token token) {
 					Log.v(TAG, "Token received: " + token);
+					
+					TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
+					details.setAccessToken(token);
+					device.setRemoteDeviceDetails(details);					
+					RemoteApplication.getInstance().getRemoteDeviceFactory().updateRemoteDeviceDetails(details);
+					
+					handler.sendEmptyMessage(0);
 				}
 			});
 		}
     } 	
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+    	
+        View view = inflater.inflate(R.layout.telldus_authentication_dialog, container, false);
+
+        // Watch for button clicks.
+        Button continueButton = (Button)view.findViewById(R.id.telldus_authentication_dialog_continue_button);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+        		TelldusLiveRemoteDevice device = (TelldusLiveRemoteDevice)RemoteApplication.getInstance()
+        				.getRemoteDeviceFactory().getRemoteDevice(details.getIdentifier());
+        		
+        		final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
+        		
+        		if (!authInProgress) {
+                    authInProgress = true;
+                    
+                    connection.getRequestToken(new TelldusLiveTokenResponseHandler() {
+        				public void onResponse(Token token) {
+        					Log.v(TAG, "Requesting token..."); 
+        					requestToken = token;
+        					Log.v(TAG, "Token received: " + requestToken);
+        					
+        					Log.v(TAG, "Starting HTTP Intent...");
+        					RemoteApplication.getInstance().getActivity()
+        					.startActivity (new Intent ( Intent.ACTION_VIEW, Uri.parse(connection.getAuthorizationUrl(requestToken))));					
+        				}
+        			});
+        		}
+            }
+        });
+        Button cancelButton = (Button)view.findViewById(R.id.telldus_authentication_dialog_cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	dismissDialog();
+            }
+        });        
+    	return view;
+    }    
+    
+    public void dismissDialog() {
+    	isInUse = false;
+    	authInProgress = false;
+    	requestToken = null;
+    	this.dismiss();
+    }    
 }

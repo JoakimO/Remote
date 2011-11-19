@@ -8,6 +8,9 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import se.newbie.remote.application.RemoteApplication;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class TelldusLiveRemoteDeviceConnection {
@@ -16,6 +19,18 @@ public class TelldusLiveRemoteDeviceConnection {
 	private TelldusLiveRemoteDevice device;
 
 	private static final String RESOURCE_DOMAIN = "https://api.telldus.com/json";
+	
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Log.v(TAG, "Opening login dialog...");
+			TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog.newInstance((TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails());
+			if (dialog != null) {
+				RemoteApplication.getInstance().showDialog(dialog);
+			}					
+
+		}
+	};		
 	
 	public TelldusLiveRemoteDeviceConnection(TelldusLiveRemoteDevice device) {
 		this.device = device;
@@ -27,12 +42,21 @@ public class TelldusLiveRemoteDeviceConnection {
         .build();
 	}
 	
-	public void request(String resource) {
-		OAuthRequest request = new OAuthRequest(Verb.GET, RESOURCE_DOMAIN + resource);
-		TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
-		service.signRequest(details.getAccessToken(), request);	
-		Response response = request.send();
-		Log.v(TAG, response.getBody());
+	public void request(final String resource) {
+        new Thread() {
+        	public void run() {		
+				OAuthRequest request = new OAuthRequest(Verb.GET, RESOURCE_DOMAIN + resource);
+				TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
+				service.signRequest(details.getAccessToken(), request);
+				try {
+				Response response = request.send();
+				Log.v(TAG, response.getBody());
+				} catch (Exception e) {
+					Log.v(TAG, e.getMessage());
+					handler.sendEmptyMessage(0);
+				}
+        	}
+        }.start();
 	}
 	
 	public void getRequestToken(final TelldusLiveTokenResponseHandler handler) {

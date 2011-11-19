@@ -1,6 +1,5 @@
 package se.newbie.remote.tellduslive;
 
-import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceDetails;
 import android.util.Log;
@@ -28,6 +27,10 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 		return TelldusLiveRemoteDeviceDiscoverer.APPLICATION;
 	}
 
+	public void setRemoteDeviceDetails(TelldusLiveRemoteDeviceDetails details) {
+		this.details = details;
+	}
+	
 	public RemoteDeviceDetails getRemoteDeviceDetails() {
 		return details;
 	}
@@ -39,11 +42,13 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 	public void resume() {
 		Log.v(TAG, "Resume");
 		
-		TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog.newInstance((TelldusLiveRemoteDeviceDetails)this.getRemoteDeviceDetails());
-		Log.v(TAG, "Dialog: " + dialog);
-		if (dialog != null) {
-			RemoteApplication.getInstance().showDialog(dialog);
-		}
+		
+		connection.request("/clients/list");
+		//TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog.newInstance((TelldusLiveRemoteDeviceDetails)this.getRemoteDeviceDetails());
+		//Log.v(TAG, "Dialog: " + dialog);
+		//if (dialog != null) {
+		//	RemoteApplication.getInstance().showDialog(dialog);
+		//}
 	}
 
 	public boolean update(RemoteDeviceDetails details) {

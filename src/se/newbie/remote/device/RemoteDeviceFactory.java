@@ -109,7 +109,7 @@ public class RemoteDeviceFactory {
 					RemoteDevice remoteDevice = discoverer.createRemoteDevice(details);
 					if (remoteDevice != null) {
 						registerRemoteDevice(remoteDevice);
-						storeRemoteDeviceDetails(remoteDevice.getRemoteDeviceDetails());
+						updateRemoteDeviceDetails(remoteDevice.getRemoteDeviceDetails());
 					}
 				}
 			});
@@ -119,7 +119,7 @@ public class RemoteDeviceFactory {
 
 			if (remoteDevice.update(details)) {
 				Log.v(TAG, "Device details has changed: " + details.getIdentifier());
-				storeRemoteDeviceDetails(details); 
+				updateRemoteDeviceDetails(details); 
 			}
 		}
 	}
@@ -129,7 +129,7 @@ public class RemoteDeviceFactory {
 	 * 
 	 * This is later used upon start up to initialize the known devices.
 	 */
-	private void storeRemoteDeviceDetails(RemoteDeviceDetails details) {
+	public void updateRemoteDeviceDetails(RemoteDeviceDetails details) {
 		Set<String> remoteDeviceSet = this.remoteDevices.keySet();
 		String remoteDeviceSerialized = details.serialize();
 		

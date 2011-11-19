@@ -60,6 +60,8 @@ public class TelldusLiveRemoteDeviceDetails implements RemoteDeviceDetails {
 			serializer.startTag("", TelldusLiveRemoteDeviceDiscoverer.APPLICATION);
 			serializer.attribute("", "identifier", getIdentifier());
 			serializer.attribute("", "name", getName());
+			serializer.attribute("", "token", accessToken);
+			serializer.attribute("", "secret", accessSecret);
 			serializer.endTag("", TelldusLiveRemoteDeviceDiscoverer.APPLICATION);
 			serializer.endDocument();
 		} catch (Exception e) {
