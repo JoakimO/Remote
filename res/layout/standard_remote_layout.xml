@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:remote="http://schemas.android.com/apk/res/se.newbie.remote"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_up_button"
+	    android:src="@drawable/ic_rmt_up"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerHorizontal="true"
+	    android:background="@drawable/default_remote_button_light"
+	    remote:command="up"
+	    remote:device="Boxee-boxeebox"/>
+	        	            
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_select_button"
+	    android:src="@drawable/ic_rmt_enter"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_up_button"
+	    android:layout_centerHorizontal="true"
+	    android:background="@drawable/default_remote_button_light"
+	    remote:command="select"
+	    remote:device="Boxee-boxeebox"/>		 		
+	
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_down_button"
+	    android:src="@drawable/ic_rmt_down"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_select_button"
+	    android:layout_centerHorizontal="true"
+	    android:background="@drawable/default_remote_button_light"
+	    remote:command="down"
+	    remote:device="Boxee-boxeebox"/>		
+	    
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_left_button"
+	    android:src="@drawable/ic_rmt_left"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_up_button"
+		android:layout_toLeftOf="@+id/standard_remote_select_button"
+		android:background="@drawable/default_remote_button_light"		 		    
+	    remote:command="left"
+	    remote:device="Boxee-boxeebox"/>		 		
+	
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_right_button"
+	    android:src="@drawable/ic_rmt_right"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_up_button"
+	    android:layout_toRightOf="@+id/standard_remote_select_button"
+	    android:background="@drawable/default_remote_button_light"
+	    remote:command="right"
+	    remote:device="Boxee-boxeebox"/>		 		
+	
+	
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_mute_button"
+	    android:src="@drawable/ic_vol_mute"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+		android:layout_toLeftOf="@+id/standard_remote_up_button"
+		android:layout_above="@+id/standard_remote_left_button"
+		android:background="@drawable/default_remote_button_dark"	
+	    remote:command="muteToggle"
+	    remote:device="Boxee-boxeebox"/>			 		
+	
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_vol_up_button"
+	    android:src="@drawable/ic_vol_up"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_above="@+id/standard_remote_right_button"
+	    android:layout_toRightOf="@+id/standard_remote_up_button"
+	    android:background="@drawable/default_remote_button_dark"
+	    remote:command="volumeUp"
+	    remote:device="Boxee-boxeebox"/>
+	
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_back_button"
+	    android:src="@drawable/ic_rmt_back"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_left_button"
+	    android:layout_toLeftOf="@+id/standard_remote_down_button"
+	    android:background="@drawable/default_remote_button_dark"
+	    remote:command="back"
+	    remote:device="Boxee-boxeebox"/>		 		
+			 		
+	<se.newbie.remote.gui.RemoteImageButton
+	    android:id="@+id/standard_remote_vol_down_button"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_right_button"
+	    android:layout_toRightOf="@+id/standard_remote_down_button"
+	    android:background="@drawable/default_remote_button_dark"
+	    remote:command="volumeDown"
+	    remote:device="Boxee-boxeebox"
+	    android:src="@drawable/ic_vol_down" />
+</RelativeLayout>

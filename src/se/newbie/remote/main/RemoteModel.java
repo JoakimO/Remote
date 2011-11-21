@@ -3,7 +3,6 @@ package se.newbie.remote.main;
 import java.util.List;
 
 import se.newbie.remote.device.RemoteDevice;
-import se.newbie.remote.gui.RemoteGUIFactory;
 
 public interface RemoteModel {
 	
@@ -20,9 +19,6 @@ public interface RemoteModel {
 	
 	public void setRemoteDevices(List<RemoteDevice> remoteDevices);
 	public List<RemoteDevice> getRemoteDevices();
-	
-	public void setRemoteGUIFactory(RemoteGUIFactory remoteGUIFactory);
-	public RemoteGUIFactory getRemoteGUIFactory();
 
 	/**
 	 * This method returns the parameters set for the given device and key.

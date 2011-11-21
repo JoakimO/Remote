@@ -12,7 +12,7 @@ public class TelldusLiveAPI extends DefaultApi10a {
 		return ACCESS_TOKEN_URL;
 	}
 	@Override
-	public String getAuthorizationUrl(Token token) {
+	public String getAuthorizationUrl(Token token) { 
 		return String.format(AUTHORIZATION_URL, token.getToken());
 	}
 	@Override

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceListener;
-import se.newbie.remote.gui.RemoteGUIFactory;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteModelListener;
 import se.newbie.remote.main.RemoteModelParameters;
@@ -23,7 +22,6 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 
 	private RemoteDevice selectedRemoteDevice;
 	private List<RemoteDevice> remoteDevices = new ArrayList<RemoteDevice>();
-	private RemoteGUIFactory remoteGUIFactory;
 
 	private Map<String, RemotePlayerState> remotePlayerStates = new HashMap<String, RemotePlayerState>();
 	private Map<String, RemoteModelParameters> remoteModelParameters = new HashMap<String, RemoteModelParameters>();
@@ -61,15 +59,7 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 		return this.selectedRemoteDevice;
 	}
 	
-	public void setRemoteGUIFactory(RemoteGUIFactory remoteGUIFactory) {
-		this.remoteGUIFactory = remoteGUIFactory;
-		notifyObservers();
-	}
 
-	public RemoteGUIFactory getRemoteGUIFactory() {
-		return this.remoteGUIFactory;
-	}	
-	
 	public void setRemoteDevices(List<RemoteDevice> remoteDevices) {
 		this.remoteDevices = remoteDevices;
 		notifyObservers();

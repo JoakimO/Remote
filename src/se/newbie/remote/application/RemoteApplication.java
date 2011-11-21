@@ -3,7 +3,6 @@ package se.newbie.remote.application;
 import se.newbie.remote.command.RemoteCommandFactory;
 import se.newbie.remote.device.RemoteDeviceFactory;
 import se.newbie.remote.display.RemoteDisplayFactory;
-import se.newbie.remote.gui.standard.StandardRemoteGUIFactory;
 import se.newbie.remote.main.RemoteController;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteView;
@@ -50,7 +49,6 @@ public class RemoteApplication {
 		createRemoteCommandFactory();
 		createRemoteDisplayFactory();
 		createRemoteDeviceFactory();		
-		createGUIFactory();
 	}
 
 	public void pause() {
@@ -83,12 +81,6 @@ public class RemoteApplication {
         setRemoteModel(new RemoteModelImpl(context));
         setRemoteView(new RemoteViewImpl());
         setRemoteController(new RemoteControllerImpl(getRemoteModel(), getRemoteView()));
-	}
-	
-	private void createGUIFactory() {
-        Log.v(TAG, "Create Remote GUI Factory");
-        StandardRemoteGUIFactory remoteGUIFactory = new StandardRemoteGUIFactory();
-        this.remoteModel.setRemoteGUIFactory(remoteGUIFactory);	
 	}
 	
 	private void createRemoteDeviceFactory() {

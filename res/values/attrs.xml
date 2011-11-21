@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="remote">
+		<attr name="command" format="string"/>
+		<attr name="device" format="string"/>
+		<attr name="display" format="string"/>
+	</declare-styleable>
+</resources>

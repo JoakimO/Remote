@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:remote="http://schemas.android.com/apk/res/se.newbie.remote"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_2_button"
+	    android:text="2"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerHorizontal="true"	   
+	    remote:command="num2"
+	    remote:device="Boxee-boxeebox"/>
+	        	            
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_5_button"
+	    android:text="5"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_2_button"
+	    android:layout_centerHorizontal="true"
+	    remote:command="num5"
+	    remote:device="Boxee-boxeebox"/>		 		
+	
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_8_button"
+	    android:text="8"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_5_button"
+	    android:layout_centerHorizontal="true"
+	    remote:command="num8"
+	    remote:device="Boxee-boxeebox"/>
+	
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_0_button"
+	    android:text="0"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_8_button"
+	    android:layout_centerHorizontal="true"
+	    remote:command="num0"
+	    remote:device="Boxee-boxeebox"/>			
+	    
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_4_button"
+	    android:text="4"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_2_button"
+		android:layout_toLeftOf="@+id/standard_remote_5_button"		 		    
+	    remote:command="num4"
+	    remote:device="Boxee-boxeebox"/>		 		
+	
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_6_button"
+	    android:text="6"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_2_button"
+	    android:layout_toRightOf="@+id/standard_remote_5_button"
+	    remote:command="num6"
+	    remote:device="Boxee-boxeebox"/>		 		
+	
+	
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_1_button"
+	    android:text="1"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+		android:layout_toLeftOf="@+id/standard_remote_2_button"
+		android:layout_above="@+id/standard_remote_4_button"	
+	    remote:command="num1"
+	    remote:device="Boxee-boxeebox"/>			 		
+	
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_3_button"
+	    android:text="3"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_above="@+id/standard_remote_6_button"
+	    android:layout_toRightOf="@+id/standard_remote_2_button"
+	    remote:command="num3"
+	    remote:device="Boxee-boxeebox"/>
+	
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_7_button"
+	    android:text="7"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_4_button"
+	    android:layout_toLeftOf="@+id/standard_remote_8_button"
+	    remote:command="num7"
+	    remote:device="Boxee-boxeebox"/>		 		
+			 		
+	<se.newbie.remote.gui.RemoteButton
+	    android:id="@+id/standard_remote_vol_9_button"
+	    android:text="9"
+	    style="@style/standard_large_text"
+	    android:layout_width="@dimen/standard_button_width"
+	    android:layout_height="@dimen/standard_button_height"
+	    android:layout_below="@+id/standard_remote_6_button"
+	    android:layout_toRightOf="@+id/standard_remote_8_button"
+	    remote:command="num9"
+	    remote:device="Boxee-boxeebox"
+	    />
+</RelativeLayout>

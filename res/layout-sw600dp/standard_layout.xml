@@ -1,48 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:remote="http://schemas.android.com/apk/res/se.newbie.remote"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
 
-    <LinearLayout
-        android:id="@+id/standard_remote_layout"
-        android:layout_width="260dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="0.00"
-        android:orientation="vertical" >
-    </LinearLayout>        
-    <LinearLayout
-        android:layout_width="8dp"
-        android:background="@drawable/standard_transition_right"
-        android:layout_height="fill_parent"
-        android:layout_weight="0.00"
-        android:orientation="vertical" >
-    </LinearLayout>     
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1.00"
         android:orientation="vertical" >
 
-	    <LinearLayout
-	        android:id="@+id/standard_display_layout"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1.00"
-	        android:orientation="vertical" >
-	
-	    </LinearLayout>     
-	    <LinearLayout
-	        android:id="@+id/standard_browser_layout"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:layout_weight="1.00"
-	        android:orientation="vertical" >
-	    </LinearLayout>        
+		<se.newbie.remote.gui.RemoteDisplayPanel
+		  android:id="@+id/standard_display_layout"
+		  android:layout_width="fill_parent"
+		  android:layout_height="fill_parent"
+		  android:layout_weight="1.00"
+		  remote:display="currentlyPlaying"
+		  remote:device="Boxee-boxeebox"
+		  />		    
+		<se.newbie.remote.gui.RemoteDisplayPanel
+		  android:id="@+id/standard_remote_browser"
+		  android:layout_width="fill_parent"
+		  android:layout_height="fill_parent"
+		  android:layout_weight="1.00"
+		  remote:display="browser"
+		  remote:device="Boxee-boxeebox"
+		  />	       
         
         
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="8dp"
+        android:background="@drawable/standard_transition_left"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.00"
+        android:orientation="vertical" >
+    </LinearLayout>       
+    <LinearLayout
+        android:id="@+id/standard_remote_layout"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.00"
+        android:orientation="vertical"
+        android:background="@drawable/standard_remote"
+        >
+
         
+        <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	        
+			<se.newbie.remote.gui.RemoteSpinner
+			    android:id="@+id/standard_device_selector_spinner"
+			    android:layout_width="@dimen/standard_device_selector_width"
+			    android:layout_height="@dimen/standard_device_selector_height"
+			    remote:command="selectRemoteDevice"
+			    remote:device="Predefined"/>            
+            
+	        
+            <include android:id="@+id/standard_include_remote" layout="@layout/standard_remote_layout" />
+            
+            <include android:id="@+id/standard_include_remote_numeric" layout="@layout/standard_remote_numeric_layout" />
 
-
+	        
+    	</LinearLayout>   
+    </LinearLayout>
 </LinearLayout>

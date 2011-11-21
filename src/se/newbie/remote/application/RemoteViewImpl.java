@@ -6,14 +6,10 @@ import java.util.List;
 import se.newbie.remote.R;
 import se.newbie.remote.action.RemoteAction;
 import se.newbie.remote.device.RemoteDevice;
-import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteView;
 import se.newbie.remote.main.RemoteViewListener;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -92,50 +88,8 @@ public class RemoteViewImpl implements RemoteView {
 				}
 			});  
 		}	
-		
-    	FragmentManager fragmentManager = activity.getFragmentManager();
-
-    	RemoteDisplay displayRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
-    	RemoteDisplay browserRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
-    	if (displayRemoteDisplay != null && browserRemoteDisplay != null) {
-    		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-	    	RemoteFragment remoteFragment = new RemoteFragment();
-	    	fragmentTransaction.replace(R.id.standard_remote_layout, remoteFragment);
-	    	RemoteApplication.getInstance().getRemoteModel().addListener(remoteFragment);
-
-    		Fragment displayFragment = displayRemoteDisplay.createFragment();
-    		fragmentTransaction.replace(R.id.standard_display_layout, displayFragment);
-    		Fragment browserFragment = browserRemoteDisplay.createFragment();
-    		fragmentTransaction.replace(R.id.standard_browser_layout, browserFragment);
-	    	fragmentTransaction.commit();   
-	    	
-	    	fragmentManager.executePendingTransactions();
-	    	
-		    //displayRemoteDisplay.setFragment(displayFragment);
-		    //browserRemoteDisplay.setFragment(browserFragment);
-    	}
-		
 		return view;
 	}
-	
-    public void initializeFragments(Activity activity) {
-    	Log.v(TAG, "Initializing sub fragments...");
-
-    	RemoteDisplay displayRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("currentlyPlaying", "Boxee-boxeebox");
-    	RemoteDisplay browserRemoteDisplay = RemoteApplication.getInstance().getRemoteDisplayFactory().getRemoteDisplay("browser", "Boxee-boxeebox");
-
-    	FragmentManager fragmentManager = activity.getFragmentManager();
-    	Fragment fragment = fragmentManager.findFragmentById(R.id.standard_display_layout);
-    	if (displayRemoteDisplay != null && fragment != null) {
-    		displayRemoteDisplay.setFragment(fragment);
-    	}
-    	fragment = fragmentManager.findFragmentById(R.id.standard_browser_layout);
-    	if (browserRemoteDisplay != null && fragment != null) {
-    		browserRemoteDisplay.setFragment(fragment);
-    	}    	
-    }
-	
-
 	
     class RemoteViewGestureDetector extends SimpleOnGestureListener {
 		Context context;

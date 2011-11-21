@@ -65,7 +65,6 @@ public class RemoteActivity extends Activity {
     public void onResume() {
     	Log.v(TAG, "onResume");
     	super.onResume();
-    	remoteView.initializeFragments(this);
     	RemoteApplication.getInstance().resume();
     	
     	/*Log.v(TAG, "Check if there was a fragment dialog in progress");

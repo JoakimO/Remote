@@ -3,25 +3,54 @@ package se.newbie.remote.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.newbie.remote.R;
+import se.newbie.remote.action.ClickRemoteAction;
 import se.newbie.remote.action.RemoteAction;
 import se.newbie.remote.action.RemoteActionListener;
+import se.newbie.remote.application.RemoteApplication;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 
 /**
  *
  */
-public abstract class RemoteImageButton extends ImageButton implements RemoteGUIComponent {
+public class RemoteImageButton extends ImageButton implements RemoteGUIComponent {
 	private static final String TAG = "RemoteButton";
 	
 	String command;
 	String device;
 	List<RemoteActionListener> listeners = new ArrayList<RemoteActionListener>();
 	
-	public RemoteImageButton(Context context) {
-		super(context);
+	public RemoteImageButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initAttributes(attrs);
+        
+        if (!this.isInEditMode()) {
+        	setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			clickPerformed();
+        		}
+        	});   
+	        addListener(RemoteApplication.getInstance().getRemoteView());
+        }
 	}	
+	
+    private final void initAttributes(AttributeSet attrs) {
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.remote);
+		CharSequence s = a.getString(R.styleable.remote_command);
+		command = s.toString();
+		s = a.getString(R.styleable.remote_device);
+		device = s.toString();		
+    }
+    
+	private void clickPerformed() {
+		ClickRemoteAction action = new ClickRemoteAction(getCommand(), getDevice());
+		actionPerformed(action);
+	}    
 
 	public void addListener(RemoteActionListener listener) {
 		this.listeners.add(listener);

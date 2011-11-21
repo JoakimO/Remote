@@ -9,5 +9,4 @@ public interface RemoteView extends RemoteModelListener, RemoteActionListener {
 	public void addListener(RemoteViewListener listener);
 	
 	public View createLayout(Activity activity);
-	public void initializeFragments(Activity activity);
 }
