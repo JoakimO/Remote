@@ -75,7 +75,7 @@ public class RemoteViewImpl implements RemoteView {
 	public View createLayout(Activity activity) {
     	Log.v(TAG, "Create remote view layout");
     	LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.standard_layout, null, false);
+		View view = inflater.inflate(R.layout.default_layout, null, false);
 		
 		viewFlipper = (ViewFlipper)view.findViewById(R.id.standard_view_flipper);
 		if (viewFlipper != null) {

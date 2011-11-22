@@ -5,4 +5,19 @@
 		<attr name="device" format="string"/>
 		<attr name="display" format="string"/>
 	</declare-styleable>
+	<declare-styleable name="defaultTheme">
+	    <attr name="primaryColor" format="color" />
+		<attr name="primaryColorLight" format="reference|color" />
+		<attr name="primaryColorDark" format="reference|color" />
+	    <attr name="secondaryColor" format="reference|color" />
+		<attr name="secondaryColorLight" format="reference|color" />
+		<attr name="secondaryColorDark" format="reference|color" />
+		<attr name="tertiaryColor" format="reference|color" />
+		<attr name="tertiaryColorLight" format="reference|color" />
+		<attr name="tertiaryColorDark" format="reference|color" />
+		<attr name="buttonBackground" format="reference"/>
+		<attr name="buttonLightBackground" format="reference"/>
+		<attr name="buttonDarkBackground" format="reference"/>
+
+	</declare-styleable>	
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <color name="defaultButtonColorLight">#FF707070</color>
+    <color name="defaultButtonColor">#FF505050</color>
+    <color name="defaultButtonColorDark">#FF303030</color>
+
+    <color name="defaultButtonLightColorLight">#FF404040</color>
+    <color name="defaultButtonLightColor">#FF404040</color>
+    <color name="defaultButtonLightColorDark">#FF404040</color>
+    
+    <color name="defaultButtonDarkColorLight">#FF505050</color>
+    <color name="defaultButtonDarkColor">#FF303030</color>
+    <color name="defaultButtonDarkColorDark">#FF101010</color>        
+        
+	<style name="DefaultTheme" parent="android:style/Theme.Holo">
+		<item name="buttonBackground">@drawable/default_grey_button</item>
+		<item name="buttonLightBackground">@drawable/default_light_grey_button</item>	
+		<item name="buttonDarkBackground">@drawable/default_dark_button</item>		
+	</style>
+	    
+	<style name="DefaultTheme.Light">
+		<item name="buttonBackground">@drawable/default_light_grey_button</item>
+		<item name="buttonLightBackground">@drawable/default_white_button</item>	
+		<item name="buttonDarkBackground">@drawable/default_grey_button</item>	
+	</style>
+	    
+</resources>

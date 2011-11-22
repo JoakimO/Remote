@@ -10,7 +10,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_alignParentTop="true"
 	    android:layout_centerHorizontal="true"
-	    android:background="@drawable/default_remote_button_light"
+	    android:background="?buttonLightBackground"
 	    remote:command="up"
 	    remote:device="Boxee-boxeebox"/>
 	        	            
@@ -21,7 +21,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_up_button"
 	    android:layout_centerHorizontal="true"
-	    android:background="@drawable/default_remote_button_light"
+	    android:background="?buttonLightBackground"
 	    remote:command="select"
 	    remote:device="Boxee-boxeebox"/>		 		
 	
@@ -32,7 +32,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_select_button"
 	    android:layout_centerHorizontal="true"
-	    android:background="@drawable/default_remote_button_light"
+	    android:background="?buttonLightBackground"
 	    remote:command="down"
 	    remote:device="Boxee-boxeebox"/>		
 	    
@@ -43,7 +43,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_up_button"
 		android:layout_toLeftOf="@+id/standard_remote_select_button"
-		android:background="@drawable/default_remote_button_light"		 		    
+		android:background="?buttonLightBackground"		 		    
 	    remote:command="left"
 	    remote:device="Boxee-boxeebox"/>		 		
 	
@@ -54,7 +54,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_up_button"
 	    android:layout_toRightOf="@+id/standard_remote_select_button"
-	    android:background="@drawable/default_remote_button_light"
+	    android:background="?buttonLightBackground"
 	    remote:command="right"
 	    remote:device="Boxee-boxeebox"/>		 		
 	
@@ -66,7 +66,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 		android:layout_toLeftOf="@+id/standard_remote_up_button"
 		android:layout_above="@+id/standard_remote_left_button"
-		android:background="@drawable/default_remote_button_dark"	
+		android:background="?buttonBackground"	
 	    remote:command="muteToggle"
 	    remote:device="Boxee-boxeebox"/>			 		
 	
@@ -77,7 +77,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_above="@+id/standard_remote_right_button"
 	    android:layout_toRightOf="@+id/standard_remote_up_button"
-	    android:background="@drawable/default_remote_button_dark"
+	    android:background="?buttonBackground"
 	    remote:command="volumeUp"
 	    remote:device="Boxee-boxeebox"/>
 	
@@ -88,7 +88,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_left_button"
 	    android:layout_toLeftOf="@+id/standard_remote_down_button"
-	    android:background="@drawable/default_remote_button_dark"
+	    android:background="?buttonBackground"
 	    remote:command="back"
 	    remote:device="Boxee-boxeebox"/>		 		
 			 		
@@ -98,7 +98,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_right_button"
 	    android:layout_toRightOf="@+id/standard_remote_down_button"
-	    android:background="@drawable/default_remote_button_dark"
+	    android:background="?buttonBackground"
 	    remote:command="volumeDown"
 	    remote:device="Boxee-boxeebox"
 	    android:src="@drawable/ic_vol_down" />
