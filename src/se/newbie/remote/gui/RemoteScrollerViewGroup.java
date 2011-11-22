@@ -167,7 +167,6 @@ public class RemoteScrollerViewGroup extends ViewGroup implements
 		int childLeft = 0;
 
 		final int count = getChildCount();
-		Log.v(TAG, "child count: " + count);
 		for (int i = 0; i < count; i++) {
 			final View child = getChildAt(i);
 			if (child.getVisibility() != View.GONE) {
@@ -196,11 +195,10 @@ public class RemoteScrollerViewGroup extends ViewGroup implements
 			}
 
 			final int count = getChildCount();
-			Log.v(TAG, "child count: " + count);
 			for (int i = 0; i < count; i++) {
 				getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);
 			}
-			Log.i(TAG, "moving to screen " + currentScreen);
+			Log.v(TAG, "moving to screen " + currentScreen);
 			scrollTo(currentScreen * width, 0);
 		}
 	}
