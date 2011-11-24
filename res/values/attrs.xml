@@ -6,9 +6,42 @@
 		<attr name="display" format="string"/>
 	</declare-styleable>
 	<declare-styleable name="defaultTheme">
-		<attr name="buttonBackground" format="reference"/>
-		<attr name="buttonLightBackground" format="reference"/>
-		<attr name="buttonDarkBackground" format="reference"/>
+		<attr name="buttonPrimaryBackground" format="reference"/>
+		<attr name="buttonPrimaryLightBackground" format="reference"/>	
+		<attr name="buttonPrimaryDarkBackground" format="reference"/>
+		<attr name="buttonPrimaryDarkRoundBackground" format="reference"/>
+		<attr name="buttonTertiaryBackground" format="reference"/>
 		<attr name="remoteBackground" format="reference"/>
+		
+		<attr name="primaryHighlightLightColor" format="reference|color"/>
+		<attr name="primaryHighlightColor" format="reference|color"/>
+		<attr name="primaryHighlightDarkColor" format="reference|color"/>
+		<attr name="secondaryHighlightLightColor" format="reference|color"/>
+		<attr name="secondaryHighlightColor" format="reference|color"/>
+		<attr name="secondaryHighlightDarkColor" format="reference|color"/>
+		<attr name="tertiaryHighlightLightColor" format="reference|color"/>
+		<attr name="tertiaryHighlightColor" format="reference|color"/>
+		<attr name="tertiaryHighlightDarkColor" format="reference|color"/>
+		
+		<attr name="primaryLightColor" format="reference|color"/>
+		<attr name="primaryColor" format="reference|color"/>
+		<attr name="primaryDarkColor" format="reference|color"/>
+		<attr name="secondaryLightColor" format="reference|color"/>
+		<attr name="secondaryColor" format="reference|color"/>
+		<attr name="secondaryDarkColor" format="reference|color"/>
+		<attr name="tertiaryLightColor" format="reference|color"/>
+		<attr name="tertiaryColor" format="reference|color"/>
+		<attr name="tertiaryDarkColor" format="reference|color"/>
+		
+		<attr name="primaryShadowLightColor" format="reference|color"/>
+		<attr name="primaryShadowColor" format="reference|color"/>
+		<attr name="primaryShadowDarkColor" format="reference|color"/>
+		<attr name="secondaryShadowLightColor" format="reference|color"/>
+		<attr name="secondaryShadowColor" format="reference|color"/>
+		<attr name="secondaryShadowDarkColor" format="reference|color"/>
+		<attr name="tertiaryShadowLightColor" format="reference|color"/>
+		<attr name="tertiaryShadowColor" format="reference|color"/>
+		<attr name="tertiaryShadowDarkColor" format="reference|color"/>		
+		
 	</declare-styleable>	
 </resources>

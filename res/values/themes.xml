@@ -1,31 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     
-    
-    <color name="defaultButtonColorLight">#FF707070</color>
-    <color name="defaultButtonColor">#FF505050</color>
-    <color name="defaultButtonColorDark">#FF303030</color>
-
-    <color name="defaultButtonLightColorLight">#FF404040</color>
-    <color name="defaultButtonLightColor">#FF404040</color>
-    <color name="defaultButtonLightColorDark">#FF404040</color>
-     
-    <color name="defaultButtonDarkColorLight">#FF505050</color>
-    <color name="defaultButtonDarkColor">#FF303030</color>
-    <color name="defaultButtonDarkColorDark">#FF101010</color>        
+	<color name="DefaultPrimaryHighlightLightColor">#ff7f7f7f</color>
+	<color name="DefaultPrimaryHighlightColor">#ff5b5b5b</color>
+	<color name="DefaultPrimaryHighlightDarkColor">#ff373737</color>
+	<color name="DefaultSecondaryHighlightLightColor">#ff91a3b6</color>
+	<color name="DefaultSecondaryHighlightColor">#ff687582</color>
+	<color name="DefaultSecondaryHighlightDarkColor">#ff3f474e</color>
+	<color name="DefaultTertiaryHighlightLightColor">#ffb6a37f</color>
+	<color name="DefaultTertiaryHighlightColor">#ff82755b</color>
+	<color name="DefaultTertiaryHighlightDarkColor">#ff4e4737</color>
+	
+	<color name="DefaultPrimaryLightColor">#ff626262</color>
+	<color name="DefaultPrimaryColor">#ff464646</color>
+	<color name="DefaultPrimaryDarkColor">#ff2a2a2a</color>
+	<color name="DefaultSecondaryLightColor">#ff707e8c</color>
+	<color name="DefaultSecondaryColor">#ff505a64</color>
+	<color name="DefaultSecondaryDarkColor">#ff30363c</color>
+	<color name="DefaultTertiaryLightColor">#ff8c7e62</color>
+	<color name="DefaultTertiaryColor">#ff645a46</color>
+	<color name="DefaultTertiaryDarkColor">#ff3c362a</color>
+	
+	<color name="DefaultPrimaryShadowLightColor">#ff444444</color>
+	<color name="DefaultPrimaryShadowColor">#ff313131</color>
+	<color name="DefaultPrimaryShadowDarkColor">#ff1e1e1e</color>
+	<color name="DefaultSecondaryShadowLightColor">#ff4e5662</color>
+	<color name="DefaultSecondaryShadowColor">#ff383e46</color>
+	<color name="DefaultSecondaryShadowDarkColor">#ff22262a</color>
+	<color name="DefaultTertiaryShadowLightColor">#ff625644</color>
+	<color name="DefaultTertiaryShadowColor">#ff463e31</color>
+	<color name="DefaultTertiaryShadowDarkColor">#ff2a261e</color>
+ 
         
 	<style name="DefaultTheme" parent="android:style/Theme.Holo">
-		<item name="buttonBackground">@drawable/default_grey_button</item>
-		<item name="buttonLightBackground">@drawable/default_light_grey_button</item>	
-		<item name="buttonDarkBackground">@drawable/default_dark_button</item>
+	    <!-- Colors -->
+		<item name="primaryHighlightLightColor">@color/DefaultPrimaryHighlightLightColor</item>
+		<item name="primaryHighlightColor">@color/DefaultPrimaryHighlightColor</item>
+		<item name="primaryHighlightDarkColor">@color/DefaultPrimaryHighlightDarkColor</item>
+		<item name="secondaryHighlightLightColor">@color/DefaultSecondaryHighlightLightColor</item>
+		<item name="secondaryHighlightColor">@color/DefaultSecondaryHighlightColor</item>
+		<item name="secondaryHighlightDarkColor">@color/DefaultSecondaryHighlightDarkColor</item>
+		<item name="tertiaryHighlightLightColor">@color/DefaultTertiaryHighlightLightColor</item>
+		<item name="tertiaryHighlightColor">@color/DefaultTertiaryHighlightColor</item>
+		<item name="tertiaryHighlightDarkColor">@color/DefaultTertiaryHighlightDarkColor</item>
+		
+		<item name="primaryLightColor">@color/DefaultPrimaryLightColor</item>
+		<item name="primaryColor">@color/DefaultPrimaryColor</item>
+		<item name="primaryDarkColor">@color/DefaultPrimaryDarkColor</item>
+		<item name="secondaryLightColor">@color/DefaultSecondaryLightColor</item>
+		<item name="secondaryColor">@color/DefaultSecondaryColor</item>
+		<item name="secondaryDarkColor">@color/DefaultSecondaryDarkColor</item>
+		<item name="tertiaryLightColor">@color/DefaultTertiaryLightColor</item>
+		<item name="tertiaryColor">@color/DefaultTertiaryColor</item>
+		<item name="tertiaryDarkColor">@color/DefaultTertiaryDarkColor</item>
+		
+		<item name="primaryShadowLightColor">@color/DefaultPrimaryShadowLightColor</item>
+		<item name="primaryShadowColor">@color/DefaultPrimaryShadowColor</item>
+		<item name="primaryShadowDarkColor">@color/DefaultPrimaryShadowDarkColor</item>
+		<item name="secondaryShadowLightColor">@color/DefaultSecondaryShadowLightColor</item>
+		<item name="secondaryShadowColor">@color/DefaultSecondaryShadowColor</item>
+		<item name="secondaryShadowDarkColor">@color/DefaultSecondaryShadowDarkColor</item>
+		<item name="tertiaryShadowLightColor">@color/DefaultTertiaryShadowLightColor</item>
+		<item name="tertiaryShadowColor">@color/DefaultTertiaryShadowColor</item>
+		<item name="tertiaryShadowDarkColor">@color/DefaultTertiaryShadowDarkColor</item>
+	    
+	    <!-- Backgrounds -->
+		<item name="buttonPrimaryBackground">@drawable/default_primary_button</item>
+		<item name="buttonPrimaryLightBackground">@drawable/default_primary_light_button</item>	
+		<item name="buttonPrimaryDarkBackground">@drawable/default_primary_dark_button</item>
+		<item name="buttonPrimaryDarkRoundBackground">@drawable/default_primary_dark_round_button</item>
+		<item name="buttonTertiaryBackground">@drawable/default_tertiary_button</item>
 		<item name="remoteBackground">@drawable/default_remote_background</item>			
 	</style>
 	    
 	<style name="DefaultTheme.Light">
-		<item name="buttonBackground">@drawable/default_light_grey_button</item>
-		<item name="buttonLightBackground">@drawable/default_white_button</item>	
-		<item name="buttonDarkBackground">@drawable/default_grey_button</item>
-		<item name="remoteBackground">@drawable/default_white_remote_background</item>	
+
 	</style>
 	    
 </resources>

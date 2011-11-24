@@ -29,8 +29,8 @@ public class RemoteActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "Activity start");
-        
         this.setTheme(R.style.DefaultTheme);
+        
 
         //setContentView(R.layout.main);        
         //Context context = this.getApplicationContext();

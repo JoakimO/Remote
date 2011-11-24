@@ -3,28 +3,28 @@
     <item android:state_pressed="true">
         <shape>
             <gradient
-                android:startColor="#FF151515"
-                android:centerColor="#FF050505"
-                android:endColor="#FF353535"
+                android:startColor="@color/DefaultPrimaryDarkColor"
+                android:centerColor="@color/DefaultPrimaryShadowDarkColor"
+                android:endColor="@color/DefaultPrimaryHighlightDarkColor"
                 android:type="linear"
                 android:angle="270" />
                         
             <stroke
                 android:width="1dp"
-                android:color="#FF101010"/>
+                android:color="@color/DefaultPrimaryShadowDarkColor"/>
         </shape>
     </item>
     <item>
         <shape>
             <gradient
-                android:startColor="#80202020"
-                android:centerColor="#80101010"
-                android:endColor="#80404040"
+                android:startColor="@color/DefaultPrimaryDarkColor"
+                android:centerColor="@color/DefaultPrimaryShadowDarkColor"
+                android:endColor="@color/DefaultPrimaryHighlightDarkColor"
                 android:type="linear"
                 android:angle="90" />
             <stroke
                 android:width="1dp"
-                android:color="#FF101010"/>
+                android:color="@color/DefaultPrimaryShadowDarkColor"/>
         </shape>
     </item>
  </selector>

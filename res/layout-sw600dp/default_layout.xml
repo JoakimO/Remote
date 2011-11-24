@@ -3,6 +3,7 @@
     xmlns:remote="http://schemas.android.com/apk/res/se.newbie.remote"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:baselineAligned="true"
     android:orientation="horizontal" >
 
     <LinearLayout
@@ -61,13 +62,11 @@
 			    android:layout_width="@dimen/standard_device_selector_width"
 			    android:layout_height="@dimen/standard_device_selector_height"
 			    remote:command="selectRemoteDevice"
-			    remote:device="Predefined"/>            
+			    remote:device="Predefined"/>  
+		
             
-	        
-            <include android:id="@+id/standard_include_remote" layout="@layout/standard_remote_layout" />
-            
-            <include android:id="@+id/standard_include_remote_numeric" layout="@layout/standard_remote_numeric_layout" />
-
+            <include android:id="@+id/standard_include_remote" layout="@layout/default_remote_layout" />
+            <include android:id="@+id/standard_include_remote_numeric" layout="@layout/default_remote_numeric_layout" />
 	        
     	</LinearLayout>   
     </LinearLayout>

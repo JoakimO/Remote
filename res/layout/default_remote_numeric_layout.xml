@@ -12,7 +12,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_alignParentTop="true"
 	    android:layout_centerHorizontal="true"	   
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num2"
 	    remote:device="Boxee-boxeebox"/>
 	        	            
@@ -24,7 +24,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_2_button"
 	    android:layout_centerHorizontal="true"
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num5"
 	    remote:device="Boxee-boxeebox"/>		 		
 	
@@ -36,7 +36,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_5_button"
 	    android:layout_centerHorizontal="true"
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num8"
 	    remote:device="Boxee-boxeebox"/>
 	
@@ -48,7 +48,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_8_button"
 	    android:layout_centerHorizontal="true"
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num0"
 	    remote:device="Boxee-boxeebox"/>			
 	    
@@ -60,7 +60,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_2_button"
 		android:layout_toLeftOf="@+id/standard_remote_5_button"
-		android:background="?buttonDarkBackground"		 		    
+		android:background="?buttonPrimaryDarkRoundBackground"		 		    
 	    remote:command="num4"
 	    remote:device="Boxee-boxeebox"/>		 		
 	
@@ -72,7 +72,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_2_button"
 	    android:layout_toRightOf="@+id/standard_remote_5_button"
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num6"
 	    remote:device="Boxee-boxeebox"/>		 		
 	
@@ -85,7 +85,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 		android:layout_toLeftOf="@+id/standard_remote_2_button"
 		android:layout_above="@+id/standard_remote_4_button"
-		android:background="?buttonDarkBackground"	
+		android:background="?buttonPrimaryDarkRoundBackground"	
 	    remote:command="num1"
 	    remote:device="Boxee-boxeebox"/>			 		
 	
@@ -97,7 +97,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_above="@+id/standard_remote_6_button"
 	    android:layout_toRightOf="@+id/standard_remote_2_button"
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num3"
 	    remote:device="Boxee-boxeebox"/>
 	
@@ -109,7 +109,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_4_button"
 	    android:layout_toLeftOf="@+id/standard_remote_8_button"
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num7"
 	    remote:device="Boxee-boxeebox"/>		 		
 			 		
@@ -121,7 +121,7 @@
 	    android:layout_height="@dimen/standard_button_height"
 	    android:layout_below="@+id/standard_remote_6_button"
 	    android:layout_toRightOf="@+id/standard_remote_8_button"
-	    android:background="?buttonDarkBackground"
+	    android:background="?buttonPrimaryDarkRoundBackground"
 	    remote:command="num9"
 	    remote:device="Boxee-boxeebox"
 	    />
