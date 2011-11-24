@@ -38,6 +38,7 @@ public class RemoteSpinner extends Spinner implements RemoteGUIComponent, Remote
         	addListener(RemoteApplication.getInstance().getRemoteView());
         	RemoteApplication.getInstance().getRemoteModel().addListener(this);
         }
+        Log.v(TAG, "Remote spinner initialized: " + command + ";" + device);
 	}	
 	
     private final void initAttributes(AttributeSet attrs) {
@@ -45,7 +46,8 @@ public class RemoteSpinner extends Spinner implements RemoteGUIComponent, Remote
 		CharSequence s = a.getString(R.styleable.remote_command);
 		command = s.toString();
 		s = a.getString(R.styleable.remote_device);
-		device = s.toString();		
+		device = s.toString();
+		
     }	
 
 	public void addListener(RemoteActionListener listener) {

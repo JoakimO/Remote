@@ -68,7 +68,7 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 	
 	public RemotePlayerStateImpl createState(JSONRPC2Response response) {
 		RemotePlayerStateImpl state = new RemotePlayerStateImpl();
-		
+		state.setIdentification(device.getIdentifier() + "-Player");
 		state.setPlaying(response.getBooleanResult("playing"));
 		if (state.isPlaying()) {
 			state.setPaused(response.getBooleanResult("paused"));
@@ -262,12 +262,14 @@ public class BoxeePlayerState implements JSONRPC2NotificationListener {
 				BoxeePlayer player = getActivePlayer();
 				if (player == BoxeePlayer.AudioPlayer) {
 					state = getAudioPlayerState();
+					
 				} else if (player == BoxeePlayer.VideoPlayer) {
 					state = getVideoPlayerState();
 				} else {
 					state = new RemotePlayerStateImpl();
 				}
-				remoteModel.setRemotePlayerState(device.getIdentifier(), state);
+				//remoteModel.setRemotePlayerState(device.getIdentifier(), state);
+				remoteModel.updateRemotePlayerState(state);
 			} catch (InterruptedException e) {
 				Log.e(TAG, e.getMessage());
 			}

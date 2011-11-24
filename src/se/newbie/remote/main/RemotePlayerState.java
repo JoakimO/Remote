@@ -50,4 +50,46 @@ public interface RemotePlayerState {
 	 * (System.currentTimeMillis() - getStateTime()) + getTime();
 	 */
 	public long getStateTime();
+	
+	/**
+	 * Returns the ownerdevice identification id.
+	 */
+	public String getDevice();
+
+	/**
+	 * This is the key the player will be registered with.
+	 */
+	public String getIdentification();
+
+	/**
+	 * This command will execute if the media is seekable and the seekbar 
+	 * has changed
+	 */
+	public String getSeekCommand();
+
+	/**
+	 * This command will execute if the media is playing and the pause button 
+	 * is pressed
+	 */
+	public String getPauseCommand();
+
+	/**
+	 * This command will execute if the media is paused and the play button
+	 * is pressed
+	 */
+	public String getPlayCommand();
+
+	/**
+	 * This command will execute if the media is skippable and the next button
+	 * is pressed.
+	 */
+	public String getNextCommand();
+
+
+	/**
+	 * This command will execute if the media is skippable and the previous button
+	 * is pressed.
+	 */
+	public String getPreviousCommand();	
+	
 }

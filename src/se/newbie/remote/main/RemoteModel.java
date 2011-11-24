@@ -1,6 +1,7 @@
 package se.newbie.remote.main;
 
 import java.util.List;
+import java.util.Set;
 
 import se.newbie.remote.device.RemoteDevice;
 
@@ -34,8 +35,23 @@ public interface RemoteModel {
 	 * This will notify the observers of the changes.
 	 */
 	public void setRemoteModelParameters(String device, String key, RemoteModelParameters params);
+
+	/**
+	 * Updates the playerState. 
+	 */
+	public void updateRemotePlayerState(RemotePlayerState playerState);
 	
-	public void setRemotePlayerState(String device, RemotePlayerState state);
+	/**
+	 * 
+	 */
+	public RemotePlayerState getRemotePlayerState(String identification);
+
+	/**
+	 * 
+	 */
+	public Set<String> getRemotePlayerStates();
 	
-	public RemotePlayerState getRemotePlayerState(String device);
+	//public void setRemotePlayerState(String device, RemotePlayerState state);
+	
+	//public RemotePlayerState getRemotePlayerState(String device);
 }

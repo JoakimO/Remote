@@ -1,8 +1,10 @@
 package se.newbie.remote.application;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import se.newbie.remote.R;
 import se.newbie.remote.main.RemoteView;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -24,6 +26,9 @@ public class RemoteActivity extends Activity {
 	private static final String TAG = "RemoteActivity";
 	RemoteView remoteView;
 	RemotePlayerView player;
+	
+	private List<RemoteActivityListener> listeners = new ArrayList<RemoteActivityListener>();
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,34 +36,27 @@ public class RemoteActivity extends Activity {
         Log.v(TAG, "Activity start");
         this.setTheme(R.style.DefaultTheme);
         
-
-        //setContentView(R.layout.main);        
-        //Context context = this.getApplicationContext();
-        
         RemoteApplication.getInstance().init(this);
         RemoteApplication.getInstance().getRemoteDeviceFactory().create();
+        addListener(RemoteApplication.getInstance());
         
         remoteView = RemoteApplication.getInstance().getRemoteView();
         
         setContentView(remoteView.createLayout(this));
-        
-        
-        
-    	/*FragmentManager fragmentManager = getFragmentManager();
-    	FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    	Fragment fragment = remoteView.createFragment(); 
-    	fragmentTransaction.add(R.id.main_panel, fragment);    	
-    	fragmentTransaction.commit();
-    	
-    	fragmentManager.executePendingTransactions();
-    	
-    	remoteView.setFragment(fragment);*/    	
+    }
+    
+    
+    public void addListener(RemoteActivityListener listener) {
+    	listeners.add(listener);
     }
     
     @Override
     public void onPause() {
     	Log.v(TAG, "onPause");
-    	RemoteApplication.getInstance().pause();
+    	for (RemoteActivityListener listener : listeners) {
+    		listener.pause();
+    	}
+    	//RemoteApplication.getInstance().pause();
         super.onPause();
     }
     
@@ -67,7 +65,12 @@ public class RemoteActivity extends Activity {
     public void onResume() {
     	Log.v(TAG, "onResume");
     	super.onResume();
-    	RemoteApplication.getInstance().resume();
+
+    	for (RemoteActivityListener listener : listeners) {
+    		listener.resume();
+    	}    	
+    	
+    	//RemoteApplication.getInstance().resume();
     	
     	/*Log.v(TAG, "Check if there was a fragment dialog in progress");
     	Fragment inProgressFragmentDialog = getFragmentManager().findFragmentByTag("remote_dialog");
@@ -96,15 +99,14 @@ public class RemoteActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.remote_menu, menu); 
 
-        player = new RemotePlayerView(this);
+        /*player = new RemotePlayerView(this);
         ActionBar actionBar = getActionBar();
         
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_USE_LOGO | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP);
         actionBar.setCustomView(player, params);
- 
-        RemoteApplication.getInstance().setRemotePlayerView(player);
-        RemoteApplication.getInstance().getRemoteModel().addListener(player);    
+
+        RemoteApplication.getInstance().getRemoteModel().addListener(player);*/    
         return super.onCreateOptionsMenu(menu);
     }    
     

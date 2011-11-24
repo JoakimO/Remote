@@ -1,13 +1,8 @@
 package se.newbie.remote.application;
 
 import se.newbie.remote.R;
-import se.newbie.remote.device.RemoteDevice;
-import se.newbie.remote.main.RemoteModel;
-import se.newbie.remote.main.RemoteModelListener;
 import se.newbie.remote.main.RemotePlayerState;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,16 +16,12 @@ import android.widget.SeekBar;
  * It is used to display the current playing progress with stop, play, pause and skip
  * buttons.
  */
-public class RemotePlayerView extends LinearLayout implements RemoteModelListener {
+public class RemotePlayerView extends LinearLayout {
 	private final static String TAG = "RemotePlayerView";
 	private View view;
 	
-	private Handler handler;
 	private RemotePlayerState state;
-	
 	private boolean isPlaying = true;
-	
-	private RemotePlayerViewThread thread;
 	private SeekBar		seekBar;
 	private ImageButton skipPrevious;
 	private ImageButton skipNext;
@@ -45,12 +36,9 @@ public class RemotePlayerView extends LinearLayout implements RemoteModelListene
 		Log.v(TAG, "Remote Player Action Bar Initializing...");
 		
 		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		view = inflater.inflate(R.layout.remote_player_action_bar_layout, this, false);
+		view = inflater.inflate(R.layout.default_remote_player_layout, this, false);
 		view.setVisibility(View.INVISIBLE);
 		this.addView(view);
-		
-		//LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		//this.setLayoutParams(params);
 		
 		seekBar = (SeekBar)view.findViewById(R.id.remote_player_action_bar_seek);
 		skipPrevious = (ImageButton)view.findViewById(R.id.remote_player_action_bar_skip_previous);
@@ -58,28 +46,24 @@ public class RemotePlayerView extends LinearLayout implements RemoteModelListene
 		play = (ImageButton)view.findViewById(R.id.remote_player_action_bar_play);
 		pause = (ImageButton)view.findViewById(R.id.remote_player_action_bar_pause);
 		stop = (ImageButton)view.findViewById(R.id.remote_player_action_bar_stop);
-		
-		
-    	handler = new Handler() { 
-            @Override
-            public void handleMessage(Message msg) {
-            	switch (msg.what) {
-            		case 0:
-            			handleUpdate();
-            			break;
-            		case 1:
-            			handleProgressUpdate();
-            			break;
-            	}
-            }
-        };		
 	}
 	
-	public void pause() {
-		isPlaying = false;
+
+	protected void tick() {
+		this.post(new Runnable() {
+			public void run() {
+				handleProgressUpdate();
+			}
+		});
 	}
 	
-	public void resume() {
+	protected void update(RemotePlayerState state) {
+		this.state = state;
+		this.post(new Runnable() {
+			public void run() {
+				handleUpdate();
+			}
+		});
 	}
 	
 	private void handleUpdate() {
@@ -97,7 +81,6 @@ public class RemotePlayerView extends LinearLayout implements RemoteModelListene
 				pause.invalidate();
 				visible = true;
 				isPlaying = true;
-				startTimerThread();
 			}
 		}		
 		if (visible) {
@@ -121,35 +104,5 @@ public class RemotePlayerView extends LinearLayout implements RemoteModelListene
 		}
 		seekBar.setProgress(progress);
 		seekBar.invalidate();
-	}
-	
-	private void startTimerThread() {
-		if (thread == null || (thread != null && !thread.isAlive())) {
-			thread = new RemotePlayerViewThread();
-			thread.start();
-		}
-	}
-
-	public void update(RemoteModel model) {
-		RemoteDevice device = model.getSelectedRemoteDevice();
-		if (device != null) {
-			state = model.getRemotePlayerState(device.getIdentifier());
-		}
-		handler.sendEmptyMessage(0);
-	}
-
-	
-	private class RemotePlayerViewThread extends Thread {
-		
-		public void run() {
-			try {
-				while (isPlaying) {
-					Thread.sleep(1000);
-					handler.sendEmptyMessage(1);
-				}
-			} catch (Exception e) {
-				Log.e(TAG, "Thread was interrupted");
-			}
-		}
 	}
 }

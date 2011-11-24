@@ -6,13 +6,12 @@ import se.newbie.remote.display.RemoteDisplayFactory;
 import se.newbie.remote.main.RemoteController;
 import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteView;
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
-public class RemoteApplication {
+public class RemoteApplication implements RemoteActivityListener {
 	private static final String TAG = "RemoteApplication";
 	
 	// This variable is only true while developing.
@@ -27,8 +26,7 @@ public class RemoteApplication {
 	private RemoteDeviceFactory remoteDeviceFactory;
 	private RemoteCommandFactory remoteCommandFactory;
 	private RemoteDisplayFactory remoteDisplayFactory;
-	private RemotePlayerView remotePlayerView;
-	
+		
 	protected RemoteApplication() {
 	}
 	
@@ -53,16 +51,10 @@ public class RemoteApplication {
 
 	public void pause() {
 		remoteDeviceFactory.pause();
-		if (remotePlayerView != null) {
-			remotePlayerView.pause();
-		}
 	}
 
 	public void resume() {
 		remoteDeviceFactory.resume();
-		if (remotePlayerView != null) {
-			remotePlayerView.resume();
-		}
 	}	
 
 	/**
@@ -104,7 +96,7 @@ public class RemoteApplication {
 		return this.activity.getApplicationContext();
 	}
 	
-	public Activity getActivity() {
+	public RemoteActivity getActivity() {
 		return activity;
 	}
 
@@ -158,14 +150,6 @@ public class RemoteApplication {
 
 	public void setRemoteDisplayFactory(RemoteDisplayFactory remoteDisplayFactory) {
 		this.remoteDisplayFactory = remoteDisplayFactory;
-	}
-
-	public RemotePlayerView getRemotePlayerView() {
-		return remotePlayerView;
-	}
-
-	public void setRemotePlayerView(RemotePlayerView remotePlayerView) {
-		this.remotePlayerView = remotePlayerView;
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceListener;
@@ -99,12 +100,28 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 		this.notifyObservers();	
 	}
 
-	public RemotePlayerState getRemotePlayerState(String device) {
+	public void updateRemotePlayerState(RemotePlayerState remotePlayerState) {
+		Log.v(TAG, "Update remote player state: " + remotePlayerState.getIdentification());
+		if (remotePlayerState.getIdentification() != null) {
+			remotePlayerStates.put(remotePlayerState.getIdentification(), remotePlayerState);
+		}
+		this.notifyObservers();	
+	}
+
+	public RemotePlayerState getRemotePlayerState(String identification) {
+		return remotePlayerStates.get(identification);
+	}
+
+	public Set<String> getRemotePlayerStates() {
+		return remotePlayerStates.keySet();
+	}
+
+	/*public RemotePlayerState getRemotePlayerState(String device) {
 		return remotePlayerStates.get(device);
 	}
 
 	public void setRemotePlayerState(String device, RemotePlayerState remotePlayerState) {
 		this.remotePlayerStates.put(device, remotePlayerState);
 		this.notifyObservers();	
-	}
+	}*/
 }

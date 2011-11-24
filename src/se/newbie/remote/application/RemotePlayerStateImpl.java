@@ -12,6 +12,14 @@ public class RemotePlayerStateImpl implements RemotePlayerState {
 	private long    duration;
 	private long	stateTime;
 	private long    time;
+	private String  device;
+	private String  identification;
+	private String  seekCommand;
+	private String  pauseCommand;
+	private String  playCommand;
+	private String  nextCommand;
+	private String  previousCommand;
+	
 	
 	public boolean isPlaying() {
 		return isPlaying;
@@ -66,5 +74,47 @@ public class RemotePlayerStateImpl implements RemotePlayerState {
 	}
 	public void setStateTime(long stateTime) {
 		this.stateTime = stateTime;
+	}
+	public String getDevice() {
+		return device;
+	}
+	public void setDevice(String device) {
+		this.device = device;
+	}
+	public String getIdentification() {
+		return identification;
+	}
+	public void setIdentification(String identification) {
+		this.identification = identification;
+	}
+	public String getSeekCommand() {
+		return seekCommand;
+	}
+	public void setSeekCommand(String seekCommand) {
+		this.seekCommand = seekCommand;
+	}
+	public String getPauseCommand() {
+		return pauseCommand;
+	}
+	public void setPauseCommand(String pauseCommand) {
+		this.pauseCommand = pauseCommand;
+	}
+	public String getPlayCommand() {
+		return playCommand;
+	}
+	public void setPlayCommand(String playCommand) {
+		this.playCommand = playCommand;
+	}
+	public String getNextCommand() {
+		return nextCommand;
+	}
+	public void setNextCommand(String nextCommand) {
+		this.nextCommand = nextCommand;
+	}
+	public String getPreviousCommand() {
+		return previousCommand;
+	}
+	public void setPreviousCommand(String previousCommand) {
+		this.previousCommand = previousCommand;
 	}
 }
