@@ -116,7 +116,7 @@
 		             android:background="?secondaryColor" > 		    
 			
 		            <se.newbie.remote.application.RemotePlayerViewCreator
-		                android:layout_width="wrap_content"
+		                android:layout_width="fill_parent"
 		                android:layout_height="wrap_content"
 		                android:orientation="vertical" />
 		            </LinearLayout> 		    

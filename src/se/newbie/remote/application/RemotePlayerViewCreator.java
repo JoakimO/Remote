@@ -46,9 +46,11 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 				this.post(new Runnable() {
 					public void run() {			
 						final RemotePlayerView newRemotePlayerView = new RemotePlayerView(RemoteApplication.getInstance().getContext());
-						//LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-						//newRemotePlayerView.setLayoutParams(params);						
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+						
+						newRemotePlayerView.setLayoutParams(params);						
 						remotePlayerViews.put(remotePlayerState.getIdentification(), newRemotePlayerView);
+						
 						addView(newRemotePlayerView);
 						newRemotePlayerView.update(remotePlayerState);
 						startTickThread();
