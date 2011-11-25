@@ -4,29 +4,63 @@
      android:id="@+id/linearLayout1"
      android:layout_width="fill_parent"
      android:layout_height="wrap_content"
-     android:layout_weight="0.00"
-     android:orientation="horizontal"
+     android:orientation="vertical"
+     android:background="#154578"
      >
-
-	<RelativeLayout 
+	<LinearLayout 	    
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:layout_weight="1.00"
-	    >	    
+	    android:layout_height="wrap_content"
+	    android:layout_centerInParent="true"
+	    android:orientation="horizontal"
+	    >
+	</LinearLayout>
+	<LinearLayout 	    
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_centerInParent="true"
+	    android:orientation="horizontal"
+	    >
+
+		<TextView
+		    android:id="@+id/remote_player_time_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.00"
+		    android:layout_centerVertical="true"
+		    android:text="TextView" />
+
 	    <se.newbie.remote.gui.RemoteSeekBar
 	        android:id="@+id/remote_player_action_bar_seek"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
+	        android:layout_weight="1.00"
 	        android:layout_centerVertical="true"
 	        remote:command="seek"
 	    	remote:device="Boxee-boxeebox"/>
-	</RelativeLayout>
-	
+	    
+		<TextView
+		    android:id="@+id/remote_player_duration_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerVertical="true"
+		    android:layout_weight="0.00"
+		    android:text="TextView" />	    
+	</LinearLayout>
+	    
+	<RelativeLayout 	    
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:orientation="horizontal"
+	    >	    
+	    	    
+	    
 	<RelativeLayout 	    
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"	    
-	    android:layout_weight="0.00"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:layout_centerInParent="true"
+	    android:orientation="horizontal"
 	    >	    
 	    
 	    <se.newbie.remote.gui.RemoteImageButton
@@ -35,7 +69,6 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
-	        android:layout_weight="1.00"
 	        android:background="@drawable/action_bar_button"
 	        android:src="@drawable/ic_act_prev"
 	       	remote:command="skipPrevious"
@@ -47,7 +80,6 @@
 	        android:layout_height="wrap_content"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_skip_previous"
-	        android:layout_weight="1.00"
 	        android:background="@drawable/action_bar_button"
 	        android:src="@drawable/ic_act_stop"
 	       	remote:command="stop"
@@ -59,7 +91,6 @@
 	        android:layout_height="wrap_content"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
-	        android:layout_weight="1.00"
 	        android:background="@drawable/action_bar_button"
 	        android:src="@drawable/ic_act_pause"
 	       	remote:command="play"
@@ -71,7 +102,6 @@
 	        android:layout_height="wrap_content"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
-	        android:layout_weight="1.00"
 	        android:background="@drawable/action_bar_button"
 	        android:src="@drawable/ic_act_play"
 	       	remote:command="play"
@@ -83,11 +113,10 @@
 	        android:layout_height="wrap_content"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_play"
-	        android:layout_weight="1.00"
 	        android:background="@drawable/action_bar_button"
 	        android:src="@drawable/ic_act_next"
 	       	remote:command="skipNext"
 	    	remote:device="Boxee-boxeebox"/>
-  
-	</RelativeLayout>	    
+  	</RelativeLayout>
+  	</RelativeLayout>
 </LinearLayout>

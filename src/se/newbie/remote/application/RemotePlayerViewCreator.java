@@ -39,13 +39,15 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 			final RemotePlayerState remotePlayerState = model.getRemotePlayerState(identification);
 			RemotePlayerView remotePlayerView = getRemotePlayerView(remotePlayerState);
 			if (remotePlayerView != null) {
-				Log.v(TAG, "Updating player");
+				Log.v(TAG, "Updating player: " + remotePlayerState.toString());
 				remotePlayerView.update(remotePlayerState);
 			} else {
-				Log.v(TAG, "Creating new player view");
+				Log.v(TAG, "Creating new player view: " + remotePlayerState.toString());
 				this.post(new Runnable() {
 					public void run() {			
 						final RemotePlayerView newRemotePlayerView = new RemotePlayerView(RemoteApplication.getInstance().getContext());
+						//LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+						//newRemotePlayerView.setLayoutParams(params);						
 						remotePlayerViews.put(remotePlayerState.getIdentification(), newRemotePlayerView);
 						addView(newRemotePlayerView);
 						newRemotePlayerView.update(remotePlayerState);
@@ -55,14 +57,22 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 			}
 		}
 		for (String identification : remotePlayerViews.keySet()) {
+			RemotePlayerView remotePlayerView = remotePlayerViews.get(identification);
 			if (!states.contains(identification)) {
-				RemotePlayerView remotePlayerView = remotePlayerViews.get(identification);
-				this.removeView(remotePlayerView);
+				Log.v(TAG, "Removing player view since the player have been removed");
+				removeRemotePlayerView(remotePlayerView);
 			}
 		}
 	}
-	
-	
+		
+	private void removeRemotePlayerView(final RemotePlayerView view) {
+		this.post(new Runnable() {
+			public void run() {			
+				remotePlayerViews.remove(view.getRemotePlayerState().getIdentification());
+				removeView(view);
+			}
+		});
+	}
 	
 	private RemotePlayerView getRemotePlayerView(final RemotePlayerState state) {
 		RemotePlayerView remotePlayerView = null;
@@ -76,11 +86,14 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 
 	public void resume() {
 		Log.v(TAG, "Resume");
+		startTickThread();
 	}
 
 	public void pause() {
 		Log.v(TAG, "Pause");
-		
+		if (thread != null && thread.isAlive()) {
+			thread.interrupt();
+		}
 	}
 	
 	protected void tick() {
@@ -110,7 +123,7 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 					tick();
 				}
 			} catch (Exception e) {
-				Log.e(TAG, "Thread was interrupted");
+				Log.e(TAG, "Thread error or thread was interrupted: " + e.getMessage());
 			}
 		}
 	}	

@@ -24,11 +24,16 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 		,muteToggle("XBMC", "ToggleMute")
 		,volumeUp("XBMC", "SetVolume")
 		,volumeDown("XBMC", "SetVolume")
-		,play("%player", "PlayPause")
-		,stop("%player", "Stop")
-		,skipNext("%player", "SkipNext")
-		,skipPrevious("%player", "SkipPrevious")
-		,seek("%player", "SeekPercentage")
+		,videoPlayerPlay("VideoPlayer", "PlayPause")
+		,videoPlayerStop("VideoPlayer", "Stop")
+		,videoPlayerSkipNext("VideoPlayer", "SkipNext")
+		,videoPlayerSkipPrevious("VideoPlayer", "SkipPrevious")
+		,videoPlayerSeek("VideoPlayer", "SeekPercentage")
+		,audioPlayerPlay("AudioPlayer", "PlayPause")
+		,audioPlayerStop("AudioPlayer", "Stop")
+		,audioPlayerSkipNext("AudioPlayer", "SkipNext")
+		,audioPlayerSkipPrevious("AudioPlayer", "SkipPrevious")
+		,audioPlayerSeek("AudioPlayer", "SeekPercentage")		
 		;
 		
 		private String namespace;
@@ -72,7 +77,12 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 				return setVolume(10);			
 			case volumeDown:
 				return setVolume(-10);				
-			case seek:
+			case videoPlayerSeek:
+				params = remoteModel.getRemoteModelParameters(boxeeRemoteDevice.getIdentifier(), command.name());
+				request = boxeeRemoteDevice.getConnection().createJSONRPC2Request(getMethod(command));
+				request.setParam("value", params.getIntParam("value"));
+				break;
+			case audioPlayerSeek:
 				params = remoteModel.getRemoteModelParameters(boxeeRemoteDevice.getIdentifier(), command.name());
 				request = boxeeRemoteDevice.getConnection().createJSONRPC2Request(getMethod(command));
 				request.setParam("value", params.getIntParam("value"));
@@ -120,11 +130,6 @@ public class BoxeeRemoteCommand implements RemoteCommand {
 	
 	public String getMethod(Command command) {
 		String method = command.getNamespace() + "." + command.getMethod();
-		if (boxeeRemoteDevice.getBoxeePlayerState() != null && 
-				boxeeRemoteDevice.getBoxeePlayerState().getActivePlayer() != null) {
-			String activePlayer = boxeeRemoteDevice.getBoxeePlayerState().getActivePlayer().name();
-			method = method.replace("%player", activePlayer);
-		}
 		Log.v(TAG, "Method: " + method);
 		return method;
 	}

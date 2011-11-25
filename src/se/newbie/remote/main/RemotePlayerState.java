@@ -32,6 +32,11 @@ public interface RemotePlayerState {
 	 */
 	public String getFile();
 	
+	/**
+	 * returns the title of the playing media. 
+	 */
+	public String getTitle();
+	
 	
 	/**
 	 * Returns the duration in milliseconds. 
@@ -52,7 +57,7 @@ public interface RemotePlayerState {
 	public long getStateTime();
 	
 	/**
-	 * Returns the ownerdevice identification id.
+	 * Returns the owner device identification id.
 	 */
 	public String getDevice();
 
@@ -78,6 +83,8 @@ public interface RemotePlayerState {
 	 * is pressed
 	 */
 	public String getPlayCommand();
+	
+	public String getStopCommand();
 
 	/**
 	 * This command will execute if the media is skippable and the next button

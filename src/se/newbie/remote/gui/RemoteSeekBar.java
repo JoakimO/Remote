@@ -91,6 +91,14 @@ public class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, Remote
 		});
 	}	
 	
+	public void setCommand(String command) {
+		this.command = command;
+	}
+	
+	public void setDevice(String device) {
+		this.device = device;
+	}	
+	
 	public String getCommand() {
 		return this.command;
 	}

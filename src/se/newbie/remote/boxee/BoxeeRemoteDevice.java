@@ -11,12 +11,12 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 	
 	private BoxeeRemoteDeviceDetails details;
 	private BoxeeRemoteDeviceConnection connection;
-	private BoxeePlayerState state;
+	private BoxeePlayerStates states;
 	
 	public BoxeeRemoteDevice(BoxeeRemoteDeviceDetails details) {
 		this.details = details;
 		this.connection = new BoxeeRemoteDeviceConnection(this);
-		this.state = new BoxeePlayerState(this);
+		this.states = new BoxeePlayerStates(this);
 	}
 	
 	public String getIdentifier() {
@@ -77,7 +77,7 @@ public class BoxeeRemoteDevice implements RemoteDevice {
 		return connection;
 	}
 
-	public BoxeePlayerState getBoxeePlayerState() {
-		return this.state;
+	public BoxeePlayerStates getBoxeePlayerStates() {
+		return this.states;
 	}
 }

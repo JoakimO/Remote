@@ -102,8 +102,14 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 
 	public void updateRemotePlayerState(RemotePlayerState remotePlayerState) {
 		Log.v(TAG, "Update remote player state: " + remotePlayerState.getIdentification());
+		
+			
 		if (remotePlayerState.getIdentification() != null) {
-			remotePlayerStates.put(remotePlayerState.getIdentification(), remotePlayerState);
+			if (!remotePlayerState.isPlaying()) {
+				remotePlayerStates.remove(remotePlayerState.getIdentification());
+			} else {
+				remotePlayerStates.put(remotePlayerState.getIdentification(), remotePlayerState);
+			}
 		}
 		this.notifyObservers();	
 	}
