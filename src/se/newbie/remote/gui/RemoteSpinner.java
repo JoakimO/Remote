@@ -39,12 +39,13 @@ public class RemoteSpinner extends Spinner implements RemoteGUIComponent, Remote
         	setOnItemSelectedListener(this);
         	addListener(RemoteApplication.getInstance().getRemoteView());
         	RemoteApplication.getInstance().getRemoteModel().addListener(this);
+        	update(RemoteApplication.getInstance().getRemoteModel());
         }
         Log.v(TAG, "Remote spinner initialized: " + command + ";" + device);
 	}	
 	
 	protected void onDetachedFromWindow() {
-		super.onDetachedFromWindow();
+		super.onDetachedFromWindow(); 
 		Log.v(TAG, "onDetachedFromwindow");
 		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
 		listeners = new ArrayList<RemoteActionListener>(); 
@@ -93,27 +94,30 @@ public class RemoteSpinner extends Spinner implements RemoteGUIComponent, Remote
 	public void onRemoteModelEvent(final RemoteModelEvent event) {
 		if (event.getEventType() == RemoteModelEventType.ParameterChanged && event.getSource() != this) {
 			Log.v(TAG,  "onRemoteModelEvent");
-			this.post(new Runnable() {
-				public void run() {
-					RemoteModel model = event.getRemoteModel();
-					RemoteModelParameters params = model.getRemoteModelParameters(getDevice(), getCommand());
-					if (params.containsParam("adapter")) {
-						BaseAdapter adapter = (BaseAdapter)params.getObjectParam("adapter");
-						if (getAdapter() == null || (getAdapter() != null && !getAdapter().equals(adapter))) {
-							Log.v(TAG, "setAdapter");
-							setAdapter(adapter);		
-						}
-					}
-					if (params.containsParam("selectionPosition")) {
-						int position = params.getIntParam("selectionPosition");
-						if (getSelectedItemPosition() != position) {
-							setSelection(position);
-						}
-					}				
-				}			
-			});
+			update(event.getRemoteModel());
 		}
 	}		
+	
+	private void update(final RemoteModel model) {
+		this.post(new Runnable() {
+			public void run() {
+				RemoteModelParameters params = model.getRemoteModelParameters(getDevice(), getCommand());
+				if (params.containsParam("adapter")) {
+					BaseAdapter adapter = (BaseAdapter)params.getObjectParam("adapter");
+					if (getAdapter() == null || (getAdapter() != null && !getAdapter().equals(adapter))) {
+						Log.v(TAG, "setAdapter");
+						setAdapter(adapter);		
+					}
+				}
+				if (params.containsParam("selectionPosition")) {
+					int position = params.getIntParam("selectionPosition");
+					if (getSelectedItemPosition() != position) {
+						setSelection(position);
+					}
+				}				
+			}			
+		});		
+	}
 
 	public String getCommand() {
 		return this.command;

@@ -147,7 +147,7 @@ public class RemotePlayerViewCreator extends LinearLayout implements
 		public void run() {
 			try {
 				while (isActive()) {
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					tick();
 				}
 			} catch (Exception e) {

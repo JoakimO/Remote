@@ -39,6 +39,7 @@ public class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, Remote
         	setOnSeekBarChangeListener(this);
 			addListener(RemoteApplication.getInstance().getRemoteView());
 			RemoteApplication.getInstance().getRemoteModel().addListener(this);
+			update(RemoteApplication.getInstance().getRemoteModel());
         }
 	}	
 	
@@ -94,15 +95,18 @@ public class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, Remote
 	public void onRemoteModelEvent(final RemoteModelEvent event) {
 		if (event.getEventType() == RemoteModelEventType.ParameterChanged && event.getSource() != this) {
 			Log.v(TAG, "onRemoteModelEvent");
-			this.post(new Runnable() {
-				public void run() {
-					RemoteModel remoteModel = event.getRemoteModel();
-					RemoteModelParameters params = remoteModel.getRemoteModelParameters(getDevice(), getCommand());
-					setProgress(params.getIntParam("value"));
-				}
-			});
+			update(event.getRemoteModel());
 		}
 	}	
+	
+	private void update(final RemoteModel remoteModel) {
+		this.post(new Runnable() {
+			public void run() {
+				RemoteModelParameters params = remoteModel.getRemoteModelParameters(getDevice(), getCommand());
+				setProgress(params.getIntParam("value"));
+			}
+		});		
+	}
 	
 	public void setCommand(String command) {
 		this.command = command;
