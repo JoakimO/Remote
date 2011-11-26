@@ -48,6 +48,10 @@ public class RemoteActivity extends Activity {
 	public void addListener(RemoteActivityListener listener) {
 		listeners.add(listener);
 	}
+	
+	public void removeListener(RemoteActivityListener listener) {
+		listeners.remove(listener);
+	}	
 
 	@Override
 	public void onPause() {

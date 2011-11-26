@@ -39,6 +39,7 @@ public class RemotePlayerViewCreator extends LinearLayout implements
 		super.onDetachedFromWindow();
 		Log.v(TAG, "onDetachedFromwindow");
 		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
+		RemoteApplication.getInstance().getActivity().removeListener(this);
 	}		
 
 	public void onRemoteModelEvent(RemoteModelEvent event) {
