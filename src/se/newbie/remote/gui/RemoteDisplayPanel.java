@@ -5,7 +5,9 @@ import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.display.RemoteDisplayFactory;
 import se.newbie.remote.main.RemoteModel;
-import se.newbie.remote.main.RemoteModelListener;
+import se.newbie.remote.main.RemoteModelEvent;
+import se.newbie.remote.main.RemoteModelEvent.RemoteModelEventType;
+import se.newbie.remote.main.RemoteModelEventListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,7 +18,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-public class RemoteDisplayPanel extends LinearLayout implements RemoteModelListener {
+public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEventListener {
 	private final static String TAG = "RemoteDisplayPanel";
 	
 	private String display;
@@ -92,10 +94,12 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelListe
 	 * New remote device was found, check if the display have been added otherwise
 	 * find out if this is a new device with the display we are looking for.
 	 */
-	public void update(RemoteModel remoteModel) {
-		if (getRemoteDisplay(this.display, this.device) == null) {
-			Log.v(TAG, "Try to create display for:" + display + ";" + device);
-			initDisplay();
+	public void onRemoteModelEvent(RemoteModelEvent event) {
+		if (event.getEventType() == RemoteModelEventType.RemoteDevicesChanged) {
+			if (getRemoteDisplay(this.display, this.device) == null) {
+				Log.v(TAG, "Try to create display for:" + display + ";" + device);
+				initDisplay();
+			}
 		}
 	}	
 }

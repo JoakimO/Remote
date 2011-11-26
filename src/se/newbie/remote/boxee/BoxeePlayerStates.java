@@ -153,7 +153,7 @@ public class BoxeePlayerStates implements JSONRPC2NotificationListener {
 						Log.e(TAG, e.getMessage());
 					}
 					RemoteApplication.getInstance().getRemoteModel()
-							.updateRemotePlayerState(state);
+							.updateRemotePlayerState(this, state);
 				}
 
 			};
@@ -173,7 +173,7 @@ public class BoxeePlayerStates implements JSONRPC2NotificationListener {
 			state.setDuration(-1);
 			state.setTime(-1);
 			RemoteApplication.getInstance().getRemoteModel()
-					.updateRemotePlayerState(state);
+					.updateRemotePlayerState(this, state);
 		}
 	}
 

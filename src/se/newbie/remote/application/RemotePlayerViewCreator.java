@@ -5,14 +5,16 @@ import java.util.Map;
 import java.util.Set;
 
 import se.newbie.remote.main.RemoteModel;
-import se.newbie.remote.main.RemoteModelListener;
+import se.newbie.remote.main.RemoteModelEvent;
+import se.newbie.remote.main.RemoteModelEvent.RemoteModelEventType;
+import se.newbie.remote.main.RemoteModelEventListener;
 import se.newbie.remote.main.RemotePlayerState;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-public class RemotePlayerViewCreator extends LinearLayout implements RemoteModelListener, RemoteActivityListener {
+public class RemotePlayerViewCreator extends LinearLayout implements RemoteModelEventListener, RemoteActivityListener {
 	private final static String TAG = "RemotePlayerViewCreator";
 	
 	private Map<String, RemotePlayerView> remotePlayerViews = new HashMap<String, RemotePlayerView>();
@@ -31,9 +33,15 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 		}
 	}
 
-	public void update(RemoteModel model) {
-		Log.v(TAG, "Model update");
-		
+	public void onRemoteModelEvent(RemoteModelEvent event) {
+		if (event.getEventType() == RemoteModelEventType.PlayerStateChanged) {
+			Log.v(TAG, "onRemoteModelEvent");
+			RemoteModel model = event.getRemoteModel();
+			update(model);
+		}
+	}
+	
+	private void update(RemoteModel model) {
 		Set<String> states = model.getRemotePlayerStates();
 		for (String identification : states) {
 			final RemotePlayerState remotePlayerState = model.getRemotePlayerState(identification);

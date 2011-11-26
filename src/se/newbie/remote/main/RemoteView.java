@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.view.View;
 
 
-public interface RemoteView extends RemoteModelListener, RemoteActionListener {
+public interface RemoteView extends RemoteModelEventListener, RemoteActionListener {
 	public void addListener(RemoteViewListener listener);
 	
 	public View createLayout(Activity activity);

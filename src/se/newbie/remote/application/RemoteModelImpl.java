@@ -9,7 +9,9 @@ import java.util.Set;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceListener;
 import se.newbie.remote.main.RemoteModel;
-import se.newbie.remote.main.RemoteModelListener;
+import se.newbie.remote.main.RemoteModelEvent;
+import se.newbie.remote.main.RemoteModelEvent.RemoteModelEventType;
+import se.newbie.remote.main.RemoteModelEventListener;
 import se.newbie.remote.main.RemoteModelParameters;
 import se.newbie.remote.main.RemotePlayerState;
 import android.content.Context;
@@ -18,7 +20,7 @@ import android.util.Log;
 public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	private static final String TAG = "RemoteModelImpl";
 	
-	private List<RemoteModelListener> listeners = new ArrayList<RemoteModelListener>();
+	private List<RemoteModelEventListener> listeners = new ArrayList<RemoteModelEventListener>();
 	private Mode mode = RemoteModel.Mode.Remote;
 
 	private RemoteDevice selectedRemoteDevice;
@@ -31,19 +33,21 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	public RemoteModelImpl(Context context) {
 	}
 	
-	public void notifyObservers() {
+	public void notifyObservers(Object source, RemoteModelEventType eventType) {
 		Log.v(TAG, "notifyObservers: " + listeners.size());
-		for (RemoteModelListener listener : listeners) {
+		RemoteModelEvent event = new RemoteModelEventImpl(source, eventType, this);
+		
+		for (RemoteModelEventListener listener : listeners) {
 			Log.v(TAG, "notifyObservers: " + listener.getClass());
-			listener.update(this);
+			listener.onRemoteModelEvent(event);
 		}
 	}
 	
-	public void addListener(RemoteModelListener listener) {
+	public void addListener(RemoteModelEventListener listener) {
 		this.listeners.add(listener);		
 	}
 	
-	public void removeListener(RemoteModelListener listener) {
+	public void removeListener(RemoteModelEventListener listener) {
 		this.listeners.remove(listener);
 	}
 	
@@ -51,9 +55,9 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 		return this.mode;
 	}	
 
-	public void setSelectedRemoteDevice(RemoteDevice selectedRemoteDevice) {
+	public void setSelectedRemoteDevice(Object source, RemoteDevice selectedRemoteDevice) {
 		this.selectedRemoteDevice = selectedRemoteDevice;
-		notifyObservers();
+		notifyObservers(source, RemoteModelEventType.SelectedDeviceChanged);
 	}
 
 	public RemoteDevice getSelectedRemoteDevice() {
@@ -61,9 +65,9 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	}
 	
 
-	public void setRemoteDevices(List<RemoteDevice> remoteDevices) {
+	public void setRemoteDevices(Object source, List<RemoteDevice> remoteDevices) {
 		this.remoteDevices = remoteDevices;
-		notifyObservers();
+		notifyObservers(source, RemoteModelEventType.RemoteDevicesChanged);
 	}
 	
 	public List<RemoteDevice> getRemoteDevices() {
@@ -73,7 +77,7 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	public void remoteDeviceInitialized(RemoteDevice device) {
 		Log.v(TAG, "Add remote device: " + device.getIdentifier());
 		this.remoteDevices.add(device);
-		this.notifyObservers();
+		this.notifyObservers(this, RemoteModelEventType.RemoteDevicesChanged);
 	}
 
 	public RemoteModelParameters getRemoteModelParameters(String device, String key) {
@@ -92,15 +96,15 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	/**
 	 * Sets the parameters and notifies the observers only if the parameters have changed.
 	 */
-	public void setRemoteModelParameters(String device, String key, RemoteModelParameters params) {
+	public void setRemoteModelParameters(Object source, String device, String key, RemoteModelParameters params) {
 		String internalKey = device + "-" + key;
 		
 		Log.v(TAG, "Model parameters changed : " + internalKey + ", " + params.toString());
 		remoteModelParameters.put(internalKey, params);
-		this.notifyObservers();	
+		this.notifyObservers(source, RemoteModelEventType.ParameterChanged);	
 	}
 
-	public void updateRemotePlayerState(RemotePlayerState remotePlayerState) {
+	public void updateRemotePlayerState(Object source, RemotePlayerState remotePlayerState) {
 		Log.v(TAG, "Update remote player state: " + remotePlayerState.getIdentification());
 		
 			
@@ -111,7 +115,7 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 				remotePlayerStates.put(remotePlayerState.getIdentification(), remotePlayerState);
 			}
 		}
-		this.notifyObservers();	
+		this.notifyObservers(source, RemoteModelEventType.PlayerStateChanged);	
 	}
 
 	public RemotePlayerState getRemotePlayerState(String identification) {
@@ -121,13 +125,4 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	public Set<String> getRemotePlayerStates() {
 		return remotePlayerStates.keySet();
 	}
-
-	/*public RemotePlayerState getRemotePlayerState(String device) {
-		return remotePlayerStates.get(device);
-	}
-
-	public void setRemotePlayerState(String device, RemotePlayerState remotePlayerState) {
-		this.remotePlayerStates.put(device, remotePlayerState);
-		this.notifyObservers();	
-	}*/
 }

@@ -36,6 +36,6 @@ public class RemoteControllerImpl implements RemoteController, RemoteViewListene
 		Log.v(TAG, "setSelectedRemoteDevice: " + device);
 		RemoteApplication remoteApplication = RemoteApplication.getInstance();
 		RemoteDevice remoteDevice = remoteApplication.getRemoteDeviceFactory().getRemoteDevice(device);
-		this.model.setSelectedRemoteDevice(remoteDevice);
+		this.model.setSelectedRemoteDevice(this, remoteDevice);
 	}
 }

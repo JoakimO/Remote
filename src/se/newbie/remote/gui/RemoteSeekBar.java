@@ -8,7 +8,9 @@ import se.newbie.remote.action.ClickRemoteAction;
 import se.newbie.remote.action.RemoteActionListener;
 import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.main.RemoteModel;
-import se.newbie.remote.main.RemoteModelListener;
+import se.newbie.remote.main.RemoteModelEvent;
+import se.newbie.remote.main.RemoteModelEvent.RemoteModelEventType;
+import se.newbie.remote.main.RemoteModelEventListener;
 import se.newbie.remote.main.RemoteModelParameters;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -20,7 +22,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 /**
  *
  */
-public class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, RemoteModelListener, OnSeekBarChangeListener  {
+public class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, RemoteModelEventListener, OnSeekBarChangeListener  {
 	private static final String TAG = "RemoteSeekBar";
 	
 	String command;
@@ -75,20 +77,24 @@ public class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, Remote
 		RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
 		RemoteModelParameters params = remoteModel.getRemoteModelParameters(getDevice(), getCommand());
 		params.putIntParam("value", value);
-		remoteModel.setRemoteModelParameters(getDevice(), getCommand(), params);
+		remoteModel.setRemoteModelParameters(this, getDevice(), getCommand(), params);
 		
 		ClickRemoteAction action = new ClickRemoteAction(getCommand(), getDevice());
 		actionPerformed(action);
 	}
 
-	public void update(final RemoteModel model) {
-		this.post(new Runnable() {
-			public void run() {
-				RemoteModel remoteModel = RemoteApplication.getInstance().getRemoteModel();
-				RemoteModelParameters params = remoteModel.getRemoteModelParameters(getDevice(), getCommand());
-				setProgress(params.getIntParam("value"));
-			}
-		});
+	
+	public void onRemoteModelEvent(final RemoteModelEvent event) {
+		if (event.getEventType() == RemoteModelEventType.ParameterChanged && event.getSource() != this) {
+			Log.v(TAG, "onRemoteModelEvent");
+			this.post(new Runnable() {
+				public void run() {
+					RemoteModel remoteModel = event.getRemoteModel();
+					RemoteModelParameters params = remoteModel.getRemoteModelParameters(getDevice(), getCommand());
+					setProgress(params.getIntParam("value"));
+				}
+			});
+		}
 	}	
 	
 	public void setCommand(String command) {

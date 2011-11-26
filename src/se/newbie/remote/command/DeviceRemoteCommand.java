@@ -3,13 +3,15 @@ package se.newbie.remote.command;
 import java.util.Map;
 
 import se.newbie.remote.main.RemoteModel;
-import se.newbie.remote.main.RemoteModelListener;
+import se.newbie.remote.main.RemoteModelEvent;
+import se.newbie.remote.main.RemoteModelEvent.RemoteModelEventType;
+import se.newbie.remote.main.RemoteModelEventListener;
 
 /**
  * This command executes the command depending on selected device.
  * Used for universal commands like "Play"-button
  */
-public class DeviceRemoteCommand implements RemoteCommand, RemoteModelListener {
+public class DeviceRemoteCommand implements RemoteCommand, RemoteModelEventListener {
 	private Map<String, RemoteCommand> commandMap;
 	String selectedDevice = null;
 	private String identifier;
@@ -37,8 +39,12 @@ public class DeviceRemoteCommand implements RemoteCommand, RemoteModelListener {
 		}
 		return status;
 	}
-	
-	public void update(RemoteModel remoteModel) {
-		selectedDevice = remoteModel.getSelectedRemoteDevice().getIdentifier();
+	public void onRemoteModelEvent(RemoteModelEvent event) {
+		if (event.getEventType() == RemoteModelEventType.SelectedDeviceChanged)
+		{
+			RemoteModel model = event.getRemoteModel();
+			selectedDevice = model.getSelectedRemoteDevice().getIdentifier();
+		}
+		
 	}
 }

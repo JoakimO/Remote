@@ -38,7 +38,7 @@ public class SelectRemoteDeviceRemoteCommand implements RemoteCommand,
 			RemoteDevice remoteDevice = (RemoteDevice) params
 					.getObjectParam("value");
 			if (!remoteDevice.equals(remoteModel.getSelectedRemoteDevice())) {
-				remoteModel.setSelectedRemoteDevice(remoteDevice);
+				remoteModel.setSelectedRemoteDevice(this, remoteDevice);
 			}
 			return 1;
 		}
@@ -64,7 +64,7 @@ public class SelectRemoteDeviceRemoteCommand implements RemoteCommand,
 			params.putObjectParam("selectionPosition", remoteDevices
 					.indexOf(remoteModel.getSelectedRemoteDevice()));
 		}
-		remoteModel.setRemoteModelParameters(device, IDENTIFIER, params);
+		remoteModel.setRemoteModelParameters(this, device, IDENTIFIER, params);
 	}
 
 }

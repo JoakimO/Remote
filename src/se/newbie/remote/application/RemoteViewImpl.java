@@ -7,6 +7,8 @@ import se.newbie.remote.R;
 import se.newbie.remote.action.RemoteAction;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.main.RemoteModel;
+import se.newbie.remote.main.RemoteModelEvent;
+import se.newbie.remote.main.RemoteModelEvent.RemoteModelEventType;
 import se.newbie.remote.main.RemoteView;
 import se.newbie.remote.main.RemoteViewListener;
 import android.app.Activity;
@@ -62,12 +64,15 @@ public class RemoteViewImpl implements RemoteView {
 	/**
 	 * Check if any new remote devices has been added.
 	 */
-	public void update(RemoteModel model) {
-		Log.v(TAG, "Update");
-		List<RemoteDevice> devices = model.getRemoteDevices();
-		for (RemoteDevice device : devices) {
-			if (!registeredDevices.contains(device.getIdentifier())) {
-				registeredDevices.add(device.getIdentifier());
+	public void onRemoteModelEvent(RemoteModelEvent event) {
+		if (event.getEventType() == RemoteModelEventType.RemoteDevicesChanged) {
+			Log.v(TAG, "onRemoteModelEvent");
+			RemoteModel model = event.getRemoteModel();
+			List<RemoteDevice> devices = model.getRemoteDevices();
+			for (RemoteDevice device : devices) {
+				if (!registeredDevices.contains(device.getIdentifier())) {
+					registeredDevices.add(device.getIdentifier());
+				}
 			}
 		}
 	}	
