@@ -3,6 +3,7 @@ package se.newbie.remote.tellduslive;
 import java.util.HashMap;
 
 import se.newbie.remote.command.RemoteCommand;
+import android.util.Log;
 
 public class TelldusLiveRemoteCommand implements RemoteCommand {
 	private final static String TAG = "TelldusLiveRemoteCommand";
@@ -52,6 +53,7 @@ public class TelldusLiveRemoteCommand implements RemoteCommand {
 	}
 	
 	private void sendCommand(String command, String deviceId) {
+		Log.v(TAG, "sendCommand: " + command + ";" + deviceId);
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("id", deviceId);
 		

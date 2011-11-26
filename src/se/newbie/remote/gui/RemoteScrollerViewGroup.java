@@ -41,7 +41,6 @@ public class RemoteScrollerViewGroup extends ViewGroup implements
 	}
 
 	private void init(Context context) {
-		final int count = getChildCount();
 		scroller = new Scroller(context);
 		touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 	}

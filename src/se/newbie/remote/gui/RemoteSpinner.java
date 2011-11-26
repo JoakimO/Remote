@@ -43,6 +43,13 @@ public class RemoteSpinner extends Spinner implements RemoteGUIComponent, Remote
         Log.v(TAG, "Remote spinner initialized: " + command + ";" + device);
 	}	
 	
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		Log.v(TAG, "onDetachedFromwindow");
+		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
+		listeners = new ArrayList<RemoteActionListener>(); 
+	}	
+	
     private final void initAttributes(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.remote);
 		CharSequence s = a.getString(R.styleable.remote_command);

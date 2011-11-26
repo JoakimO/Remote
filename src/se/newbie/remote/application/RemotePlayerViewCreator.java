@@ -14,24 +14,32 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-public class RemotePlayerViewCreator extends LinearLayout implements RemoteModelEventListener, RemoteActivityListener {
+public class RemotePlayerViewCreator extends LinearLayout implements
+		RemoteModelEventListener, RemoteActivityListener {
 	private final static String TAG = "RemotePlayerViewCreator";
-	
+
 	private Map<String, RemotePlayerView> remotePlayerViews = new HashMap<String, RemotePlayerView>();
 	private Thread thread;
-	
+
 	public RemotePlayerViewCreator(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		if (!this.isInEditMode()) {
+			Log.v(TAG, "New RemotePlayerViewCreator created.");
 			RemoteApplication application = RemoteApplication.getInstance();
 			application.getActivity().addListener(this);
-			
+
 			RemoteModel model = application.getRemoteModel();
 			update(model);
-	
+
 			model.addListener(this);
 		}
 	}
+	
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		Log.v(TAG, "onDetachedFromwindow");
+		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
+	}		
 
 	public void onRemoteModelEvent(RemoteModelEvent event) {
 		if (event.getEventType() == RemoteModelEventType.PlayerStateChanged) {
@@ -40,50 +48,61 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 			update(model);
 		}
 	}
-	
+
 	private void update(RemoteModel model) {
 		Set<String> states = model.getRemotePlayerStates();
 		for (String identification : states) {
-			final RemotePlayerState remotePlayerState = model.getRemotePlayerState(identification);
+			final RemotePlayerState remotePlayerState = model
+					.getRemotePlayerState(identification);
 			RemotePlayerView remotePlayerView = getRemotePlayerView(remotePlayerState);
 			if (remotePlayerView != null) {
 				Log.v(TAG, "Updating player: " + remotePlayerState.toString());
 				remotePlayerView.update(remotePlayerState);
 			} else {
-				Log.v(TAG, "Creating new player view: " + remotePlayerState.toString());
+				Log.v(TAG,
+						"Creating new player view: "
+								+ remotePlayerState.toString());
 				this.post(new Runnable() {
-					public void run() {			
-						final RemotePlayerView newRemotePlayerView = new RemotePlayerView(RemoteApplication.getInstance().getContext());
-						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-						
-						newRemotePlayerView.setLayoutParams(params);						
-						remotePlayerViews.put(remotePlayerState.getIdentification(), newRemotePlayerView);
-						
+					public void run() {
+						final RemotePlayerView newRemotePlayerView = new RemotePlayerView(
+								RemoteApplication.getInstance().getContext());
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+								LinearLayout.LayoutParams.FILL_PARENT,
+								LinearLayout.LayoutParams.WRAP_CONTENT);
+
+						newRemotePlayerView.setLayoutParams(params);
+						remotePlayerViews.put(
+								remotePlayerState.getIdentification(),
+								newRemotePlayerView);
+
 						addView(newRemotePlayerView);
 						newRemotePlayerView.update(remotePlayerState);
 						startTickThread();
 					}
-				});				
+				});
 			}
 		}
 		for (String identification : remotePlayerViews.keySet()) {
-			RemotePlayerView remotePlayerView = remotePlayerViews.get(identification);
+			RemotePlayerView remotePlayerView = remotePlayerViews
+					.get(identification);
 			if (!states.contains(identification)) {
-				Log.v(TAG, "Removing player view since the player have been removed");
+				Log.v(TAG,
+						"Removing player view since the player have been removed");
 				removeRemotePlayerView(remotePlayerView);
 			}
 		}
 	}
-		
+
 	private void removeRemotePlayerView(final RemotePlayerView view) {
 		this.post(new Runnable() {
-			public void run() {			
-				remotePlayerViews.remove(view.getRemotePlayerState().getIdentification());
+			public void run() {
+				remotePlayerViews.remove(view.getRemotePlayerState()
+						.getIdentification());
 				removeView(view);
 			}
 		});
 	}
-	
+
 	private RemotePlayerView getRemotePlayerView(final RemotePlayerState state) {
 		RemotePlayerView remotePlayerView = null;
 		if (remotePlayerViews.containsKey(state.getIdentification())) {
@@ -91,8 +110,6 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 		}
 		return remotePlayerView;
 	}
-	
-	
 
 	public void resume() {
 		Log.v(TAG, "Resume");
@@ -105,27 +122,27 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 			thread.interrupt();
 		}
 	}
-	
+
 	protected void tick() {
 		for (int i = 0; i < getChildCount(); i++) {
-			RemotePlayerView view = (RemotePlayerView)this.getChildAt(i);
+			RemotePlayerView view = (RemotePlayerView) this.getChildAt(i);
 			view.tick();
 		}
 	}
-	
+
 	protected boolean isActive() {
 		return this.remotePlayerViews.size() > 0;
 	}
-	
+
 	private void startTickThread() {
 		if (thread == null || (thread != null && !thread.isAlive())) {
 			thread = new RemotePlayerViewCreatorThread();
 			thread.start();
 		}
-	}	
-	
+	}
+
 	private class RemotePlayerViewCreatorThread extends Thread {
-		
+
 		public void run() {
 			try {
 				while (isActive()) {
@@ -133,9 +150,11 @@ public class RemotePlayerViewCreator extends LinearLayout implements RemoteModel
 					tick();
 				}
 			} catch (Exception e) {
-				Log.e(TAG, "Thread error or thread was interrupted: " + e.getMessage());
+				Log.e(TAG,
+						"Thread error or thread was interrupted: "
+								+ e.getMessage());
 			}
 		}
-	}	
+	}
 
 }

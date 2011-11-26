@@ -42,6 +42,13 @@ public class RemoteSeekBar extends SeekBar implements RemoteGUIComponent, Remote
         }
 	}	
 	
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		Log.v(TAG, "onDetachedFromwindow");
+		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
+		listeners = new ArrayList<RemoteActionListener>();
+	}
+	
     private final void initAttributes(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.remote);
 		CharSequence s = a.getString(R.styleable.remote_command);

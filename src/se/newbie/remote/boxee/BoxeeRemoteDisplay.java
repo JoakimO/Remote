@@ -18,7 +18,6 @@ public class BoxeeRemoteDisplay implements RemoteDisplay, JSONRPC2NotificationLi
 	private static final String TAG = "BoxeeRemoteDisplay";
    
 	private BoxeeRemoteDevice boxeeRemoteDevice;
-	private MediaItem mediaItem;
 	private Fragment fragment;
 	
 	protected enum InfoLabel {
@@ -103,7 +102,6 @@ public class BoxeeRemoteDisplay implements RemoteDisplay, JSONRPC2NotificationLi
 				} catch (Exception e) {
 					Log.e(TAG, e.getMessage());
 				}
-				mediaItem = newMediaItem;
 				updateFragment(newMediaItem);
 			}    		
     	};

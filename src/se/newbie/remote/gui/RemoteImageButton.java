@@ -39,6 +39,12 @@ public class RemoteImageButton extends ImageButton implements RemoteGUIComponent
         }
 	}	
 	
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		Log.v(TAG, "onDetachedFromwindow");
+		listeners = null;
+	}		
+	
     private final void initAttributes(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.remote);
 		CharSequence s = a.getString(R.styleable.remote_command);

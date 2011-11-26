@@ -36,6 +36,12 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 		}
     }		
 	
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		Log.v(TAG, "onDetachedFromwindow");
+		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
+	}		
+	
 	//protected void onFinishInflate () {
 	//	initDisplay();
 	//}
