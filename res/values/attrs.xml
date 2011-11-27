@@ -41,7 +41,19 @@
 		<attr name="secondaryShadowDarkColor" format="reference|color"/>
 		<attr name="tertiaryShadowLightColor" format="reference|color"/>
 		<attr name="tertiaryShadowColor" format="reference|color"/>
-		<attr name="tertiaryShadowDarkColor" format="reference|color"/>		
+		<attr name="tertiaryShadowDarkColor" format="reference|color"/>
+
+		<attr name="playerPlayIcon" format="reference"/>
+		<attr name="playerStopIcon" format="reference"/>
+		<attr name="playerPauseIcon" format="reference"/>
+		<attr name="playerNextIcon" format="reference"/>
+		<attr name="playerPreviousIcon" format="reference"/>
+		<attr name="playerTextStyle" format="reference"/>
+		<attr name="playerHeaderTextStyle" format="reference"/>
+		<attr name="playerProgressionTextStyle" format="reference"/>
+		<attr name="playerSeekBarStyle" format="reference"/>
+		
+						
 		
 	</declare-styleable>	
 </resources>

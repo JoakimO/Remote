@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    
-	<color name="DefaultPrimaryHighlightLightColor">#ff7f7f7f</color>
-	<color name="DefaultPrimaryHighlightColor">#ff5b5b5b</color>
-	<color name="DefaultPrimaryHighlightDarkColor">#ff373737</color>
-	<color name="DefaultSecondaryHighlightLightColor">#ff91a3b6</color>
-	<color name="DefaultSecondaryHighlightColor">#ff687582</color>
-	<color name="DefaultSecondaryHighlightDarkColor">#ff3f474e</color>
-	<color name="DefaultTertiaryHighlightLightColor">#ffb6a37f</color>
-	<color name="DefaultTertiaryHighlightColor">#ff82755b</color>
-	<color name="DefaultTertiaryHighlightDarkColor">#ff4e4737</color>
-	
-	<color name="DefaultPrimaryLightColor">#ff626262</color>
-	<color name="DefaultPrimaryColor">#ff464646</color>
-	<color name="DefaultPrimaryDarkColor">#ff2a2a2a</color>
-	<color name="DefaultSecondaryLightColor">#ff707e8c</color>
-	<color name="DefaultSecondaryColor">#ff505a64</color>
-	<color name="DefaultSecondaryDarkColor">#ff30363c</color>
-	<color name="DefaultTertiaryLightColor">#ff8c7e62</color>
-	<color name="DefaultTertiaryColor">#ff645a46</color>
-	<color name="DefaultTertiaryDarkColor">#ff3c362a</color>
-	
-	<color name="DefaultPrimaryShadowLightColor">#ff444444</color>
-	<color name="DefaultPrimaryShadowColor">#ff313131</color>
-	<color name="DefaultPrimaryShadowDarkColor">#ff1e1e1e</color>
-	<color name="DefaultSecondaryShadowLightColor">#ff4e5662</color>
-	<color name="DefaultSecondaryShadowColor">#ff383e46</color>
-	<color name="DefaultSecondaryShadowDarkColor">#ff22262a</color>
-	<color name="DefaultTertiaryShadowLightColor">#ff625644</color>
-	<color name="DefaultTertiaryShadowColor">#ff463e31</color>
-	<color name="DefaultTertiaryShadowDarkColor">#ff2a261e</color>
- 
-        
 	<style name="DefaultTheme" parent="android:style/Theme.Holo">
 	    <!-- Colors -->
 		<item name="primaryHighlightLightColor">@color/DefaultPrimaryHighlightLightColor</item>
@@ -70,11 +38,45 @@
 		<item name="buttonPrimaryDarkBackground">@drawable/default_primary_dark_button</item>
 		<item name="buttonPrimaryDarkRoundBackground">@drawable/default_primary_dark_round_button</item>
 		<item name="buttonTertiaryBackground">@drawable/default_tertiary_button</item>
-		<item name="remoteBackground">@drawable/default_remote_background</item>			
+		<item name="remoteBackground">@drawable/default_remote_background</item>	
+		
+		<!-- Player -->
+		<item name="playerPreviousIcon">@drawable/ic_act_prev</item>
+		<item name="playerStopIcon">@drawable/ic_act_stop</item>
+		<item name="playerPauseIcon">@drawable/ic_act_pause</item>
+		<item name="playerPlayIcon">@drawable/ic_act_play</item>
+		<item name="playerNextIcon">@drawable/ic_act_next</item>
+		<item name="playerTextStyle">@style/DefaultPlayerText</item>
+		<item name="playerHeaderTextStyle">@style/DefaultPlayerText.Header</item>
+		<item name="playerProgressionTextStyle">@style/DefaultPlayerText.Progression</item>
+		<item name="playerSeekBarStyle">@style/DefaultPlayerSeekBar</item>
+		
+		    
+		    	
 	</style>
+	
+	<style name="DefaultPlayerSeekBar" parent="android:Widget.ProgressBar.Horizontal">
+		<item name="android:progressDrawable">@drawable/default_player_seek_bar_background</item>
+		<item name="android:minHeight">10dip</item>
+		<item name="android:maxHeight">20dip</item>
+	</style>	    
+	    
+	
+    <style name="DefaultPlayerText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">?secondaryLightColor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="DefaultPlayerText.Progression">
+        <item name="android:textColor">?secondaryLightColor</item>
+    </style>	            	            
+        
+    <style name="DefaultPlayerText.Header">
+        <item name="android:textColor">?secondaryLightColor</item>
+        <item name="android:textSize">20sp</item>
+    </style>	            	    
 	    
 	<style name="DefaultTheme.Light">
 
 	</style>
-	    
 </resources>

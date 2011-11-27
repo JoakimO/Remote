@@ -17,8 +17,7 @@
         >
         <activity
             android:label="@string/app_name"
-            android:name=".application.RemoteActivity"
-            
+            android:name=".application.RemoteActivity"            
             android:logo="@drawable/ic_launcher"
              >
             <intent-filter >

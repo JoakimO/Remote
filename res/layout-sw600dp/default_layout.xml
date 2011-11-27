@@ -113,12 +113,13 @@
 		             android:layout_width="fill_parent"
 		             android:layout_height="wrap_content"
 		             android:orientation="vertical"
-		             android:background="?secondaryColor" > 		    
+		             > 		    
 			
 		            <se.newbie.remote.application.RemotePlayerViewCreator
 		                android:layout_width="fill_parent"
 		                android:layout_height="wrap_content"
-		                android:orientation="vertical" />
+		                android:orientation="vertical"
+		                 />
 		            </LinearLayout> 		    
 	 		    
 	        </se.newbie.remote.gui.RemoteSlidingDrawer>	  

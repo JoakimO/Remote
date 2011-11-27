@@ -5,6 +5,7 @@
      android:layout_width="fill_parent"
      android:layout_height="wrap_content"
      android:orientation="vertical"
+     android:background="?secondaryColor"
      >
 	<LinearLayout 	    
 	    android:layout_width="fill_parent"
@@ -26,7 +27,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_weight="0.00"
 		    android:layout_centerVertical="true"
-		    android:text="TextView" />
+		    style="?playerProgressionTextStyle"
+		    android:text="00:00" />
 
 	    <se.newbie.remote.gui.RemoteSeekBar
 	        android:id="@+id/remote_player_action_bar_seek"
@@ -34,6 +36,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1.00"
 	        android:layout_centerVertical="true"
+	        style="?playerSeekBarStyle"
 	        remote:command="seek"
 	    	remote:device="Boxee-boxeebox"/>
 	    
@@ -43,7 +46,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_centerVertical="true"
 		    android:layout_weight="0.00"
-		    android:text="TextView" />	    
+		    style="?playerProgressionTextStyle"
+		    android:text="00:00" />	    
 	</LinearLayout>
 	    
 	<RelativeLayout 	    
@@ -69,7 +73,7 @@
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
 	        android:background="@drawable/action_bar_button"
-	        android:src="@drawable/ic_act_prev"
+	        android:src="?playerPreviousIcon"
 	       	remote:command="skipPrevious"
 	    	remote:device="Boxee-boxeebox"/>	        
 	
@@ -80,7 +84,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_skip_previous"
 	        android:background="@drawable/action_bar_button"
-	        android:src="@drawable/ic_act_stop"
+	        android:src="?playerStopIcon"
 	       	remote:command="stop"
 	    	remote:device="Boxee-boxeebox"/>
 	    
@@ -91,7 +95,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
 	        android:background="@drawable/action_bar_button"
-	        android:src="@drawable/ic_act_pause"
+	        android:src="?playerPauseIcon"
 	       	remote:command="play"
 	    	remote:device="Boxee-boxeebox"/>
 	    
@@ -102,7 +106,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_stop"
 	        android:background="@drawable/action_bar_button"
-	        android:src="@drawable/ic_act_play"
+	        android:src="?playerPlayIcon"
 	       	remote:command="play"
 	    	remote:device="Boxee-boxeebox"/>
 	
@@ -113,7 +117,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/remote_player_action_bar_play"
 	        android:background="@drawable/action_bar_button"
-	        android:src="@drawable/ic_act_next"
+	        android:src="?playerNextIcon"
 	       	remote:command="skipNext"
 	    	remote:device="Boxee-boxeebox"/>
   	</RelativeLayout>

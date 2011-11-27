@@ -34,13 +34,13 @@ public class RemotePlayerViewCreator extends LinearLayout implements
 			model.addListener(this);
 		}
 	}
-	
+
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
 		Log.v(TAG, "onDetachedFromwindow");
 		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
 		RemoteApplication.getInstance().getActivity().removeListener(this);
-	}		
+	}
 
 	public void onRemoteModelEvent(RemoteModelEvent event) {
 		if (event.getEventType() == RemoteModelEventType.PlayerStateChanged) {
@@ -66,11 +66,10 @@ public class RemotePlayerViewCreator extends LinearLayout implements
 				this.post(new Runnable() {
 					public void run() {
 						final RemotePlayerView newRemotePlayerView = new RemotePlayerView(
-								RemoteApplication.getInstance().getContext());
+								getContext());
 						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 								LinearLayout.LayoutParams.FILL_PARENT,
 								LinearLayout.LayoutParams.WRAP_CONTENT);
-
 						newRemotePlayerView.setLayoutParams(params);
 						remotePlayerViews.put(
 								remotePlayerState.getIdentification(),
