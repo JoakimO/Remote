@@ -57,8 +57,12 @@
 	
 	<style name="DefaultPlayerSeekBar" parent="android:Widget.ProgressBar.Horizontal">
 		<item name="android:progressDrawable">@drawable/default_player_seek_bar_background</item>
-		<item name="android:minHeight">10dip</item>
-		<item name="android:maxHeight">20dip</item>
+		<item name="android:indeterminateDrawable">?secondaryDarkColor</item>
+		<item name="android:indeterminateOnly">false</item>
+        <item name="android:thumb">@drawable/ic_act_next</item>
+        <item name="android:thumbOffset">2dp</item>
+		<item name="android:minHeight">4dp</item>
+		<item name="android:maxHeight">6dp</item>
 	</style>	    
 	    
 	
@@ -68,11 +72,11 @@
     </style>
 
     <style name="DefaultPlayerText.Progression">
-        <item name="android:textColor">?secondaryLightColor</item>
+        <item name="android:textColor">#FFFFFFFF</item>
     </style>	            	            
         
     <style name="DefaultPlayerText.Header">
-        <item name="android:textColor">?secondaryLightColor</item>
+        <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:textSize">20sp</item>
     </style>	            	    
 	    

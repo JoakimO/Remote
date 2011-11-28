@@ -104,7 +104,7 @@
 			        android:id="@+id/default_layout_player_drawer_handle"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:src="@drawable/ic_launcher"
+			        android:src="@drawable/ic_rmt_up"
 			        android:scaleType="center"
 			        android:background="?secondaryColor"/>
 	 		    
@@ -120,7 +120,7 @@
 		                android:layout_height="wrap_content"
 		                android:orientation="vertical"
 		                 />
-		            </LinearLayout> 		    
+		         </LinearLayout> 		    
 	 		    
 	        </se.newbie.remote.gui.RemoteSlidingDrawer>	  
         </LinearLayout>  

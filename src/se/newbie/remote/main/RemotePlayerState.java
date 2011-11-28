@@ -35,7 +35,7 @@ public interface RemotePlayerState {
 	/**
 	 * returns the title of the playing media. 
 	 */
-	public String getTitle();
+	public String getLabel();
 	
 	
 	/**

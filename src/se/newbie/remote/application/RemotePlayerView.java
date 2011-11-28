@@ -30,6 +30,8 @@ public class RemotePlayerView extends LinearLayout {
 	private RemoteImageButton stop;
 	private TextView time;
 	private TextView duration;
+	private TextView device;
+	private TextView label;
 
 	public RemotePlayerView(Context context) {
 		super(context);
@@ -58,6 +60,8 @@ public class RemotePlayerView extends LinearLayout {
 				.findViewById(R.id.remote_player_action_bar_stop);
 		time = (TextView) view.findViewById(R.id.remote_player_time_text);
 		duration = (TextView) view.findViewById(R.id.remote_player_duration_text);
+		label = (TextView) view.findViewById(R.id.remote_player_label_text);
+		device = (TextView) view.findViewById(R.id.remote_player_device_text);
 	}
 
 	protected void tick() {
@@ -105,6 +109,8 @@ public class RemotePlayerView extends LinearLayout {
 			stop.setCommand(state.getStopCommand());
 			
 			duration.setText(formatTime(state.getDuration()));
+			device.setText(state.getDevice());
+			label.setText(state.getLabel());
 
 			if (state.isPlaying()) {
 				if (state.isPaused()) {

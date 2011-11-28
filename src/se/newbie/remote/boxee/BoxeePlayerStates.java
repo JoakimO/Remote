@@ -82,7 +82,7 @@ public class BoxeePlayerStates implements JSONRPC2NotificationListener {
 					state.setPreviousAvailable(responseState
 							.getBoolean("can-play-previous"));
 					state.setSeekable(responseState.getBoolean("seekable"));
-					state.setTitle(responseState.getString("label"));
+					state.setLabel(responseState.getString("label"));
 				} catch (JSONException e) {
 					Log.w(TAG, "Could not read player state");
 				}

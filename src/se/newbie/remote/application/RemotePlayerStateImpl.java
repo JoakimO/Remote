@@ -9,7 +9,7 @@ public class RemotePlayerStateImpl implements RemotePlayerState {
 	private boolean isPreviousAvailable;
 	private boolean isSeekable;
 	private String  file;
-	private String  title;
+	private String  label;
 	private long    duration;
 	private long	stateTime;
 	private long    time;
@@ -119,12 +119,6 @@ public class RemotePlayerStateImpl implements RemotePlayerState {
 	public void setPreviousCommand(String previousCommand) {
 		this.previousCommand = previousCommand;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
 	public String getStopCommand() {
 		return stopCommand;
 	}
@@ -139,7 +133,7 @@ public class RemotePlayerStateImpl implements RemotePlayerState {
 		+ ";isPreviousAvailable: " + isPreviousAvailable
 		+ ";isSeekable: " + isSeekable
 		+ ";file: " + file
-		+ ";title: " + title
+		+ ";label: " + label
 		+ ";duration: " + duration
 		+ ";stateTime: " + stateTime
 		+ ";time: " + time
@@ -151,5 +145,11 @@ public class RemotePlayerStateImpl implements RemotePlayerState {
 		+ ";stopCommand: " + stopCommand
 		+ ";nextCommand: " + nextCommand
 		+ ";previousCommand: " + previousCommand;
+	}
+	public String getLabel() {
+		return label;
+	}
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }
