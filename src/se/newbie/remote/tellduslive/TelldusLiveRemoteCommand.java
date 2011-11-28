@@ -57,7 +57,7 @@ public class TelldusLiveRemoteCommand implements RemoteCommand {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("id", deviceId);
 		
-		device.getConnection().request(command, params);
+		device.getConnection().request(command, params, null);
 	}
 
 }

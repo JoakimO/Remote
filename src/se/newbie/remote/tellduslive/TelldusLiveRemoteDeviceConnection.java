@@ -3,6 +3,7 @@ package se.newbie.remote.tellduslive;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -12,8 +13,6 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import se.newbie.remote.application.RemoteApplication;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 public class TelldusLiveRemoteDeviceConnection {
@@ -22,18 +21,6 @@ public class TelldusLiveRemoteDeviceConnection {
 	private TelldusLiveRemoteDevice device;
 
 	private static final String RESOURCE_DOMAIN = "https://api.telldus.com/json";
-	
-	private Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			Log.v(TAG, "Opening login dialog...");
-			TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog.newInstance((TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails());
-			if (dialog != null) {
-				RemoteApplication.getInstance().showDialog(dialog);
-			}					
-
-		}
-	};		
 	
 	public TelldusLiveRemoteDeviceConnection(TelldusLiveRemoteDevice device) {
 		this.device = device;
@@ -46,7 +33,7 @@ public class TelldusLiveRemoteDeviceConnection {
         
 	}
 	
-	public void request(final String resource, final Map<String, String> params) {
+	public void request(final String resource, final Map<String, String> params, final TelldusLiveResponseHandler responseHandler) {
         new Thread() {
         	public void run() {		
 				OAuthRequest request = new OAuthRequest(Verb.GET, RESOURCE_DOMAIN + resource);
@@ -66,13 +53,16 @@ public class TelldusLiveRemoteDeviceConnection {
 						service.signRequest(accessToken, request);
 						Response response = request.send();
 						Log.v(TAG, response.getBody());
+						if (responseHandler != null) {
+							responseHandler.onResponse(new JSONObject(response.getBody()));
+						}
 					} else {
 						Log.w(TAG, "Trying to send request without access token");
-						handler.sendEmptyMessage(0);	
+						showDialog();	
 					}
-				} catch (Exception e) {
+				} catch (Exception e) { 
 					Log.v(TAG, "Error during request: " + e.getMessage());
-					handler.sendEmptyMessage(0);
+					showDialog();
 				}
         	}
         }.start();
@@ -100,10 +90,27 @@ public class TelldusLiveRemoteDeviceConnection {
 	public String getAuthorizationUrl(Token requestToken) {
 		return service.getAuthorizationUrl(requestToken);
 	}
-		
+	
+	public void showDialog() {
+		RemoteApplication.getInstance().getActivity().runOnUiThread(new Runnable(){
+			public void run() {
+				Log.v(TAG, "Opening login dialog...");
+				TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog.newInstance((TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails());
+				if (dialog != null) {
+					RemoteApplication.getInstance().showDialog(dialog);
+				}					
+			}
+		});
+	}		
+
+	
+	public interface TelldusLiveResponseHandler {
+		public void onResponse(JSONObject json);
+	}
 	
 	
 	public interface TelldusLiveTokenResponseHandler {
 		public void onResponse(Token token);
-	}
+	}	
+	
 }
