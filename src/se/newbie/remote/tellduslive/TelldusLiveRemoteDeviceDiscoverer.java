@@ -12,6 +12,7 @@ import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceDetails;
 import se.newbie.remote.device.RemoteDeviceDiscoverer;
 import se.newbie.remote.device.RemoteDeviceFactory;
+import se.newbie.remote.display.RemoteDisplayFactory;
 import se.newbie.remote.tellduslive.TelldusLiveRemoteCommand.Command;
 import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiveResponseHandler;
 import se.newbie.remote.tellduslive.database.TelldusLiveClientAdapter;
@@ -69,8 +70,12 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 		commands.add(new TelldusLiveRemoteCommand(device, Command.turnOff, "41321"));
 		
 		RemoteApplication remoteApplication = RemoteApplication.getInstance();
-		remoteApplication.getRemoteCommandFactory().registerCommands(device.getIdentifier(), commands);		
 		
+		RemoteDisplayFactory displayFactory = remoteApplication.getRemoteDisplayFactory();
+		TelldusLiveMainRemoteDisplay remoteDisplay = new TelldusLiveMainRemoteDisplay(device);
+		displayFactory.registerDisplay(device.getIdentifier(), remoteDisplay);		
+
+		remoteApplication.getRemoteCommandFactory().registerCommands(device.getIdentifier(), commands);		
 		return device;
 	}
 	
