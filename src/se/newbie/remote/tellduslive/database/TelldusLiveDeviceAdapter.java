@@ -12,7 +12,7 @@ public class TelldusLiveDeviceAdapter {
 	public static final String KEY_NAME = "name";
 	public static final String KEY_STATE = "state";
 	public static final String KEY_STATE_VALUE = "state_value";
-	public static final String KEY_METHOD = "method";
+	public static final String KEY_METHODS = "methods";
 	public static final String KEY_CLIENT = "client";
 	public static final String KEY_CLIENT_NAME = "client_name";
 	public static final String KEY_ONLINE = "online";
@@ -20,7 +20,7 @@ public class TelldusLiveDeviceAdapter {
 	
 	private static final String DB_TABLE = "teldus_live_device";
 	
-	private static final String[] TABLE_FIELDS = new String[] { KEY_ROWID, KEY_DEVICE_ID, KEY_NAME, KEY_STATE, KEY_STATE_VALUE, KEY_METHOD, KEY_CLIENT, KEY_CLIENT_NAME, KEY_ONLINE, KEY_EDITABLE};
+	private static final String[] TABLE_FIELDS = new String[] { KEY_ROWID, KEY_DEVICE_ID, KEY_NAME, KEY_STATE, KEY_STATE_VALUE, KEY_METHODS, KEY_CLIENT, KEY_CLIENT_NAME, KEY_ONLINE, KEY_EDITABLE};
 	
 	private Context context;
 	private SQLiteDatabase db;
@@ -40,13 +40,13 @@ public class TelldusLiveDeviceAdapter {
 		dbHelper.close();
 	}	
 	
-	private ContentValues createContentValues(long deviceId, String name, long state, long stateValue, long method, String client, String clientName, String online, long editable) {
+	private ContentValues createContentValues(long deviceId, String name, long state, String stateValue, String methods, String client, String clientName, String online, long editable) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_DEVICE_ID, deviceId);
 		values.put(KEY_NAME, name);
 		values.put(KEY_STATE, state);
 		values.put(KEY_STATE_VALUE, stateValue);
-		values.put(KEY_METHOD, method);
+		values.put(KEY_METHODS, methods);
 		values.put(KEY_CLIENT, client);
 		values.put(KEY_CLIENT_NAME, clientName);
 		values.put(KEY_ONLINE, online);
@@ -54,13 +54,13 @@ public class TelldusLiveDeviceAdapter {
 		return values;
 	}	
 
-	public long createTelldusLiveDevice(long deviceId, String name, long state, long stateValue, long method, String client, String clientName, String online, long editable) {
-		ContentValues values = createContentValues(deviceId, name, state, stateValue, method, client, clientName, online, editable);
+	public long createTelldusLiveDevice(long deviceId, String name, long state, String stateValue, String methods, String client, String clientName, String online, long editable) {
+		ContentValues values = createContentValues(deviceId, name, state, stateValue, methods, client, clientName, online, editable);
 		return db.insert(DB_TABLE, null, values);
 	}
 	
-	public boolean updateTelldusLiveDevice(long rowId, long deviceId, String name, long state, long stateValue, long method, String client, String clientName, String online, long editable) {
-		ContentValues values = createContentValues(deviceId, name, state, stateValue, method, client, clientName, online, editable);
+	public boolean updateTelldusLiveDevice(long rowId, long deviceId, String name, long state, String stateValue, String methods, String client, String clientName, String online, long editable) {
+		ContentValues values = createContentValues(deviceId, name, state, stateValue, methods, client, clientName, online, editable);
 		return db.update(DB_TABLE, values, KEY_ROWID + "=" + rowId, null) > 0;
 	}	
 	
