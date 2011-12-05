@@ -28,6 +28,13 @@ public class RemoteCommandFactory {
 		return remoteCommand;
 	}	
 	
+	/**
+	 * Unregister all commands for the given device
+	 */
+	public void unregisterCommand(String device) {
+		this.commands.remove(device);
+	}
+	
 	public void unregisterCommand(String device, RemoteCommand remoteCommand) {
 		List<RemoteCommand> list = getDeviceCommands(device);
 		list.remove(remoteCommand);

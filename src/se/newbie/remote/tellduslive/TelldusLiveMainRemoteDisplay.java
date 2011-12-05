@@ -9,10 +9,11 @@ import android.view.View;
 
 public class TelldusLiveMainRemoteDisplay implements RemoteDisplay {
 	private final static String TAG = "TelldusLiveMainRemoteDisplay";
-	private final static String IDENTIFIER = "MainDisplay";
+	protected final static String IDENTIFIER = "MainDisplay";
 
 	private TelldusLiveRemoteDevice device;
 	private Fragment fragment;
+	private TelldusLiveDeviceListView deviceListView;
 	
 	public TelldusLiveMainRemoteDisplay(TelldusLiveRemoteDevice device) {
 		this.device = device;		
@@ -25,11 +26,18 @@ public class TelldusLiveMainRemoteDisplay implements RemoteDisplay {
 	public Fragment createFragment() {
 		return new TelldusLiveMainRemoteDisplayFragment();
 	}
+	
+	public void invalidate() {
+		Log.v(TAG, "Invalidate display");
+		if (deviceListView != null) {
+			deviceListView.update();
+		}
+	}
 
 	public void setFragment(Fragment fragment) {
 		this.fragment = fragment;
 		View view = this.fragment.getView();
-		TelldusLiveDeviceListView deviceListView = (TelldusLiveDeviceListView)view.findViewById(R.id.telldus_live_device_list);
+		deviceListView = (TelldusLiveDeviceListView)view.findViewById(R.id.telldus_live_device_list);
 		if (deviceListView != null) {
 			Log.v(TAG, "Update display");
 			deviceListView.setDevice(device.getIdentifier());

@@ -49,6 +49,9 @@ public class BoxeeBrowserRemoteDisplay implements RemoteDisplay {
 		this.device = device;
 	}
 	
+	public void invalidate() {
+	}
+	
     //@Override
     //public void onResume() {
     //	Log.v(TAG, "onResume");

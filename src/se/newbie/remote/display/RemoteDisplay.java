@@ -47,4 +47,9 @@ public interface RemoteDisplay {
 	 * update it's views.
 	 */
 	public void setFragment(Fragment fragment);
+	
+	/**
+	 * Triggers the remote display to redraw it's components.
+	 */
+	public void invalidate();
 }

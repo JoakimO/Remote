@@ -1,19 +1,14 @@
 package se.newbie.remote.tellduslive;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import se.newbie.remote.application.RemoteApplication;
-import se.newbie.remote.command.RemoteCommand;
 import se.newbie.remote.device.RemoteDevice;
 import se.newbie.remote.device.RemoteDeviceDetails;
 import se.newbie.remote.device.RemoteDeviceDiscoverer;
 import se.newbie.remote.device.RemoteDeviceFactory;
 import se.newbie.remote.display.RemoteDisplayFactory;
-import se.newbie.remote.tellduslive.TelldusLiveRemoteCommand.Command;
 import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiveResponseHandler;
 import se.newbie.remote.tellduslive.database.TelldusLiveClientAdapter;
 import se.newbie.remote.tellduslive.database.TelldusLiveDeviceAdapter;
@@ -63,19 +58,12 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 		
 		device = new TelldusLiveRemoteDevice(details);
 		
-		//new TelldusLiveRemoteDeviceDiscovererThread(device).start();
-		
-		List<RemoteCommand> commands = new ArrayList<RemoteCommand>();
-		commands.add(new TelldusLiveRemoteCommand(device, Command.turnOn, "41321"));
-		commands.add(new TelldusLiveRemoteCommand(device, Command.turnOff, "41321"));
-		
 		RemoteApplication remoteApplication = RemoteApplication.getInstance();
-		
 		RemoteDisplayFactory displayFactory = remoteApplication.getRemoteDisplayFactory();
 		TelldusLiveMainRemoteDisplay remoteDisplay = new TelldusLiveMainRemoteDisplay(device);
-		displayFactory.registerDisplay(device.getIdentifier(), remoteDisplay);		
+		displayFactory.registerDisplay(device.getIdentifier(), remoteDisplay);	
+	
 
-		remoteApplication.getRemoteCommandFactory().registerCommands(device.getIdentifier(), commands);		
 		return device;
 	}
 	
