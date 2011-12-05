@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:remote="http://schemas.android.com/apk/res/se.newbie.remote"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -28,11 +29,12 @@
 
     </RelativeLayout>
 
-    <se.newbie.remote.tellduslive.gui.DeviceListView
+    <se.newbie.remote.tellduslive.gui.TelldusLiveDeviceListView
         android:id="@+id/telldus_live_device_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1.00"
+        remote:device="TelldusLive"
         />
         
 </LinearLayout>

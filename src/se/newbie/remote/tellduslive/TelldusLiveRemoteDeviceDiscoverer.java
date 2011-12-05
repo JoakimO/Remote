@@ -63,7 +63,7 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 		
 		device = new TelldusLiveRemoteDevice(details);
 		
-		new TelldusLiveRemoteDeviceDiscovererThread(device).start();
+		//new TelldusLiveRemoteDeviceDiscovererThread(device).start();
 		
 		List<RemoteCommand> commands = new ArrayList<RemoteCommand>();
 		commands.add(new TelldusLiveRemoteCommand(device, Command.turnOn, "41321"));

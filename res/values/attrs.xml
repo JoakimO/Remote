@@ -53,7 +53,7 @@
 		<attr name="playerProgressionTextStyle" format="reference"/>
 		<attr name="playerSeekBarStyle" format="reference"/>
 		
-						
+		<attr name="telldusLiveDeviceListItemStyle" format="reference"/>				
 		
 	</declare-styleable>	
 </resources>

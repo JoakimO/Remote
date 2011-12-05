@@ -51,7 +51,8 @@
 		<item name="playerProgressionTextStyle">@style/DefaultPlayerText.Progression</item>
 		<item name="playerSeekBarStyle">@style/DefaultPlayerSeekBar</item>
 		
-		    
+		<!-- Telldus Live -->    
+		<item name="telldusLiveDeviceListItemStyle">@style/DefaultPlayerText.Header</item>
 		    	
 	</style>
 	
