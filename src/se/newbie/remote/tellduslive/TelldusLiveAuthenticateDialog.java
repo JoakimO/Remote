@@ -64,24 +64,34 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		Activity activity = RemoteApplication.getInstance().getActivity();
 		Uri uri = activity.getIntent().getData();  
 		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) {  
-			final Verifier verifier = new Verifier ( uri.getQueryParameter("oauth_verifier") );
-			
-			final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
-			
-			Log.v(TAG, "Requesting access token...");
-			connection.getAccessToken(requestToken, verifier, new TelldusLiveTokenResponseHandler() {
-				public void onResponse(Token token) {
-					Log.v(TAG, "Token received: " + token);
-					
-					TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
-					details.setAccessToken(token);
-					device.setRemoteDeviceDetails(details);					
-					RemoteApplication.getInstance().getRemoteDeviceFactory().updateRemoteDeviceDetails(details);
-					RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_succeeded));
-			    	isInUse = false;
-			    	requestToken = null;					
-				}
-			});
+			String oauthVerifier = uri.getQueryParameter("oauth_verifier");
+			if (oauthVerifier != null) {
+				final Verifier verifier = new Verifier ( oauthVerifier );
+				
+				final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
+				
+				Log.v(TAG, "Requesting access token...");
+				connection.getAccessToken(requestToken, verifier, new TelldusLiveTokenResponseHandler() {
+					public void onResponse(Token token) {
+						Log.v(TAG, "Token received: " + token);
+						if (token != null) {
+							TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
+							details.setAccessToken(token);
+							device.setRemoteDeviceDetails(details);					
+							RemoteApplication.getInstance().getRemoteDeviceFactory().updateRemoteDeviceDetails(details);
+							RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_succeeded));
+						} else {
+							RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_failed));
+						}
+				    	isInUse = false;
+				    	requestToken = null;					
+					}
+				});
+			} else {
+				RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_failed));
+		    	isInUse = false;
+		    	requestToken = null;				
+			}
 		}		
 	}
 	
