@@ -48,6 +48,7 @@ public class RemoteModelImpl implements RemoteModel, RemoteDeviceListener  {
 	}
 	
 	public void removeListener(RemoteModelEventListener listener) {
+		Log.v(TAG, "Remove listener : " + listeners.contains(listener));
 		this.listeners.remove(listener);
 	}
 	

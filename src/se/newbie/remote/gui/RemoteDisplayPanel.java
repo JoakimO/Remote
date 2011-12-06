@@ -4,7 +4,6 @@ import se.newbie.remote.R;
 import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.display.RemoteDisplayFactory;
-import se.newbie.remote.main.RemoteModel;
 import se.newbie.remote.main.RemoteModelEvent;
 import se.newbie.remote.main.RemoteModelEvent.RemoteModelEventType;
 import se.newbie.remote.main.RemoteModelEventListener;
@@ -41,10 +40,8 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 	
 	protected void init() {
 		if (!this.isInEditMode()) {
-			initDisplay();
-			RemoteModel model = RemoteApplication.getInstance().getRemoteModel();
-			if (model != null ) {
-				model.addListener(this);
+			if (!initDisplay()) {
+				RemoteApplication.getInstance().getRemoteModel().addListener(this);
 			}
 		}
 	}
@@ -77,12 +74,14 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 	/**
 	 * This will add the given display fragment to this panel, if it exists.
 	 */
-	private void initDisplay() {
+	private boolean initDisplay() {
+		boolean displayFound = false;
 		if (getDisplay() != null && getDevice() != null) {
 			final RemoteDisplay display = getRemoteDisplay(this.getDisplay(), this.getDevice());
 			if (display != null) {
 				final int id = this.getId();
 				Log.v(TAG, "Display found :" + display + ";" + getDevice());
+				displayFound = true;
 				Log.v(TAG, "Removing display panel from model listening");
 				RemoteApplication.getInstance().getRemoteModel().removeListener(this);				
 				this.post(new Thread() {
@@ -104,6 +103,7 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 				});
 			}	
 		}
+		return displayFound;
 	}
 	
 	/**
