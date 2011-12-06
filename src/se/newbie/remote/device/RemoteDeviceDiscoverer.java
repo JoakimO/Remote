@@ -1,7 +1,5 @@
 package se.newbie.remote.device;
 
-
-
 public interface RemoteDeviceDiscoverer {
 	
 	/**
@@ -18,7 +16,7 @@ public interface RemoteDeviceDiscoverer {
     /**
      * This method is invoked when the service is starting or resuming from pause.
      */
-    public void resume(); 
+    public void resume();  
 	
 	/**
 	 * This method will try to parse the given details, if it could
@@ -33,4 +31,23 @@ public interface RemoteDeviceDiscoverer {
 	 * This method will create a remote device from the given details. 
 	 */
 	public RemoteDevice createRemoteDevice(RemoteDeviceDetails details);
+	
+	/**
+	 * Signals if this device is enabled. Users have the ability to turn on and off each remote device.
+	 *
+	 * All devices are by default not enabled.
+	 *
+	 * Best practice is to have a preference on the preference fragment to enable and disable the device.
+	 *
+	 * <CheckBoxPreference
+	 *   android:key="is_[device]_enabled"
+	 *   android:title="@string/title_toggle_enabled"
+	 *   android:summary="@string/summary_title_toggle_enabled" /> 
+	 *
+	 * SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
+	 * return preferences.getBoolean("is_[device]_enabled", false);
+	 *
+	 */
+	public boolean isEnabled();
+	
 }

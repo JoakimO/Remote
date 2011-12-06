@@ -7,4 +7,7 @@
     <header android:fragment="se.newbie.remote.boxee.BoxeePreferenceFragment"
             android:title="@string/title_boxee"
             android:summary="@string/summary_title_boxee" />
+    <header android:fragment="se.newbie.remote.tellduslive.TelldusLivePreferenceFragment"
+            android:title="@string/title_telldus_live"
+            android:summary="@string/summary_title_telldus_live" />    
 </preference-headers>

@@ -13,7 +13,9 @@ import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiv
 import se.newbie.remote.tellduslive.database.TelldusLiveClientAdapter;
 import se.newbie.remote.tellduslive.database.TelldusLiveDeviceAdapter;
 import se.newbie.remote.tellduslive.database.TelldusLiveJobAdapter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer {
@@ -66,6 +68,11 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 
 		return device;
 	}
+	
+	public boolean isEnabled() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
+		return preferences.getBoolean("is_tellduslive_enabled", false);
+	}	
 	
 	class TelldusLiveRemoteDeviceDiscovererThread extends Thread {
 		private static final String TAG = "TelldusLiveRemoteDeviceDiscovererThread";

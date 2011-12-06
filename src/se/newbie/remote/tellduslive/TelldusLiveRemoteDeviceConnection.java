@@ -33,6 +33,11 @@ public class TelldusLiveRemoteDeviceConnection {
         
 	}
 	
+	public boolean isConnected() {
+		TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
+		return (details.getAccessToken() != null) ? true : false;		
+	}		
+	
 	public void request(final String resource, final Map<String, String> params, final TelldusLiveResponseHandler responseHandler) {
         new Thread() {
         	public void run() {		

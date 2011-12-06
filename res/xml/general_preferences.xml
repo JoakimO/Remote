@@ -3,10 +3,5 @@
     <PreferenceCategory
             android:title="@string/title_general">
 
-        <CheckBoxPreference
-                android:key="is_broadcast"
-                android:title="@string/title_toggle_broadcast"
-                android:summary="@string/summary_title_toggle_broadcast" />
-
     </PreferenceCategory>
 </PreferenceScreen>

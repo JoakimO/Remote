@@ -57,12 +57,14 @@ public class TelldusLiveDeviceListView extends ListView {
 	}
 
 	public void update() {
-		RemoteDeviceFactory factory = RemoteApplication.getInstance()
-				.getRemoteDeviceFactory();
-		TelldusLiveRemoteDevice telldusLiveRemoteDevice = (TelldusLiveRemoteDevice) factory
-				.getRemoteDevice(device);
-		devices = telldusLiveRemoteDevice.getTelldusLiveDevices();
-		updateView();
+		if (device != null) {
+			RemoteDeviceFactory factory = RemoteApplication.getInstance()
+					.getRemoteDeviceFactory();
+			TelldusLiveRemoteDevice telldusLiveRemoteDevice = (TelldusLiveRemoteDevice) factory
+					.getRemoteDevice(device);
+			devices = telldusLiveRemoteDevice.getTelldusLiveDevices();
+			updateView();
+		}
 	}
 
 	public String getDevice() {

@@ -54,9 +54,12 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 	}
 
 	public void resume() {
-		Log.v(TAG, "Resume");		
-		synchronizeDevices(this);
+		Log.v(TAG, "Resume");	
+		if (connection.isConnected()) {	
+			synchronizeDevices(this);
+		}
 	}
+
 
 	public boolean update(RemoteDeviceDetails details) {
 		boolean b = false;
