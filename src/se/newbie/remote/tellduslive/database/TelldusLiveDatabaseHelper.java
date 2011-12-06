@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class TelldusLiveDatabaseHelper  extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "telldus_live";
 
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 1;
 
 	public TelldusLiveDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

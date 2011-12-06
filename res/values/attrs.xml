@@ -4,6 +4,7 @@
 		<attr name="command" format="string"/>
 		<attr name="device" format="string"/>
 		<attr name="display" format="string"/>
+		<attr name="target" format="reference"/>
 	</declare-styleable>
 	<declare-styleable name="defaultTheme">
 		<attr name="buttonPrimaryBackground" format="reference"/>

@@ -32,8 +32,7 @@ public class TelldusLiveDeviceListView extends ListView {
 		super(context, attrs);
 		Log.v(TAG, "Create TelldusLive device list");
 		initAttributes(attrs);
-		adapter = new TelldusLiveDeviceAdapter(context,
-				R.layout.telldus_live_device_list_adapter_item, device);
+		adapter = new TelldusLiveDeviceAdapter(context,	R.layout.telldus_live_device_list_adapter_item);
 		this.setAdapter(adapter);
 	}
 
@@ -73,6 +72,7 @@ public class TelldusLiveDeviceListView extends ListView {
 
 	public void setDevice(String device) {
 		this.device = device;
+		this.adapter.setRemoteDeviceIdentifier(device);
 	}
 
 	class TelldusLiveDeviceAdapter extends BaseAdapter {
@@ -82,11 +82,9 @@ public class TelldusLiveDeviceListView extends ListView {
 		private Context context;
 		private String remoteDeviceIdentifier;
 
-		public TelldusLiveDeviceAdapter(Context context, int resource,
-				String remoteDeviceIdentifier) {
+		public TelldusLiveDeviceAdapter(Context context, int resource) {
 			this.resource = resource;
 			this.context = context;
-			this.remoteDeviceIdentifier = remoteDeviceIdentifier;
 		}
 
 		public int getCount() {
@@ -144,6 +142,14 @@ public class TelldusLiveDeviceListView extends ListView {
 			}
 
 			return view;
+		}
+
+		public String getRemoteDeviceIdentifier() {
+			return remoteDeviceIdentifier;
+		}
+
+		public void setRemoteDeviceIdentifier(String remoteDeviceIdentifier) {
+			this.remoteDeviceIdentifier = remoteDeviceIdentifier;
 		}
 	}
 

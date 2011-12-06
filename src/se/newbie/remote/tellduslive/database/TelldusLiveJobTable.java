@@ -31,6 +31,7 @@ public class TelldusLiveJobTable {
 	public static void onUpgrade(SQLiteDatabase database, int oldVersion,
 			int newVersion) {
 		Log.v(TAG, "Updating database from " + oldVersion + " to " + newVersion);
-		database.execSQL(DATABASE_CREATE);
+		//database.execSQL("DROP TABLE IF EXISTS teldus_live_job");
+		//database.execSQL(DATABASE_CREATE);
 	}
 }

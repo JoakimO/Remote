@@ -25,15 +25,35 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 	private String device;
 
 	//private RemoteDisplay remoteDisplay;
+	protected RemoteDisplayPanel(int id, Context context, String device, String display) {
+		super(context);
+		this.setId(id);
+		this.device = device;
+		this.display = display;
+		init();
+	}
 	
 	public RemoteDisplayPanel(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttributes(attrs);
-		initDisplay();
-		RemoteModel model = RemoteApplication.getInstance().getRemoteModel();
-		if (model != null ) {
-			model.addListener(this);
+        init();
+    }		
+	
+	protected void init() {
+		if (!this.isInEditMode()) {
+			initDisplay();
+			RemoteModel model = RemoteApplication.getInstance().getRemoteModel();
+			if (model != null ) {
+				model.addListener(this);
+			}
 		}
+	}
+	
+	
+    private final void initAttributes( AttributeSet attrs) {
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.remote);
+		display = a.getString(R.styleable.remote_display);
+		device = a.getString(R.styleable.remote_device);
     }		
 	
 	protected void onDetachedFromWindow() {
@@ -41,10 +61,6 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 		Log.v(TAG, "onDetachedFromwindow");
 		RemoteApplication.getInstance().getRemoteModel().removeListener(this);
 	}		
-	
-	//protected void onFinishInflate () {
-	//	initDisplay();
-	//}
 	
 	private RemoteDisplay getRemoteDisplay(String display, String device) {
 		RemoteDisplay remoteDisplay = null;
@@ -57,24 +73,18 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 		}
 		return remoteDisplay;
 	}
-	
-    private final void initAttributes( AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.remote);
-		CharSequence s = a.getString(R.styleable.remote_display);
-		display = s.toString();
-		s = a.getString(R.styleable.remote_device);
-		device = s.toString();		
-    }	
 
 	/**
 	 * This will add the given display fragment to this panel, if it exists.
 	 */
 	private void initDisplay() {
-		if (display != null && device != null) {
-			final RemoteDisplay display = getRemoteDisplay(this.display, this.device);
+		if (getDisplay() != null && getDevice() != null) {
+			final RemoteDisplay display = getRemoteDisplay(this.getDisplay(), this.getDevice());
 			if (display != null) {
 				final int id = this.getId();
-				Log.v(TAG, "Display found :" + display + ";" + device);
+				Log.v(TAG, "Display found :" + display + ";" + getDevice());
+				Log.v(TAG, "Removing display panel from model listening");
+				RemoteApplication.getInstance().getRemoteModel().removeListener(this);				
 				this.post(new Thread() {
 					public void run() {
 						Log.v(TAG, "Adding display " + display + " to " + id);
@@ -102,10 +112,26 @@ public class RemoteDisplayPanel extends LinearLayout implements RemoteModelEvent
 	 */
 	public void onRemoteModelEvent(RemoteModelEvent event) {
 		if (event.getEventType() == RemoteModelEventType.RemoteDevicesChanged) {
-			if (getRemoteDisplay(this.display, this.device) == null) {
-				Log.v(TAG, "Try to create display for:" + display + ";" + device);
+			if (getRemoteDisplay(this.getDisplay(), this.getDevice()) == null) {
+				Log.v(TAG, "Try to create display for:" + getDisplay() + ";" + getDevice());
 				initDisplay();
 			}
 		}
+	}
+
+	public String getDisplay() {
+		return display;
+	}
+
+	public void setDisplay(String display) {
+		this.display = display;
+	}
+
+	public String getDevice() {
+		return device;
+	}
+
+	public void setDevice(String device) {
+		this.device = device;
 	}	
 }

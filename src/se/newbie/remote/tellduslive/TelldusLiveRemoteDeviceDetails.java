@@ -26,7 +26,7 @@ public class TelldusLiveRemoteDeviceDetails implements RemoteDeviceDetails {
 	private String accessSecret;
 
 	public TelldusLiveRemoteDeviceDetails() {
-		identifier = UUID.randomUUID().toString();
+		identifier = TelldusLiveRemoteDeviceDiscoverer.APPLICATION + "-" + UUID.randomUUID().toString();
 	}
 
 	public TelldusLiveRemoteDeviceDetails(String details) throws Exception {

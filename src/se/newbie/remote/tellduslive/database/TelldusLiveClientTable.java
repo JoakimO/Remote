@@ -25,5 +25,7 @@ public class TelldusLiveClientTable {
 	public static void onUpgrade(SQLiteDatabase database, int oldVersion,
 			int newVersion) {
 		Log.v(TAG, "Updating database from " + oldVersion + " to " + newVersion);
+		//database.execSQL("DROP TABLE IF EXISTS teldus_live_client");
+		//database.execSQL(DATABASE_CREATE);
 	}
 }

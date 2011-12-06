@@ -56,8 +56,8 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer {
 							&& prefs.getBoolean("is_boxee_broadcast", true)
 							&& !boxeeDiscovererThread.isAlive()) {
 						Log.v(TAG, "Starting broadcast thread");
-						boxeeDiscovererThread = new BoxeeDiscovererThread();
-						boxeeDiscovererThread.start();
+						//boxeeDiscovererThread = new BoxeeDiscovererThread();
+						//boxeeDiscovererThread.start();
 					}
 				}
 			}
@@ -75,8 +75,8 @@ public class BoxeeRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer {
 		if (isBroadcast()
 				&& !(boxeeDiscovererThread != null && boxeeDiscovererThread
 						.isAlive())) {
-			boxeeDiscovererThread = new BoxeeDiscovererThread();
-			boxeeDiscovererThread.start();
+			//boxeeDiscovererThread = new BoxeeDiscovererThread();
+			//boxeeDiscovererThread.start();
 		}
 	}
 

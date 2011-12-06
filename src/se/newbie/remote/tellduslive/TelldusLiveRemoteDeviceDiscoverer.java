@@ -21,8 +21,7 @@ import android.util.Log;
 public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer {
 	public static final String TAG = "TelldusLiveRemoteDeviceDiscoverer";
 	public final static String APPLICATION = "TelldusLive";
-	
-	private TelldusLiveRemoteDevice device;
+	private boolean isCreateNewInstance = true;
 	
 	RemoteDeviceFactory remoteDeviceFactory;
 	
@@ -40,16 +39,18 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 
 	public void resume() {
 		Log.v(TAG, "Resume");
-		if (device == null) {
+
+		// Start up a new device if telldus is enabled and no other telldus devices is created.
+		if (isEnabled() && isCreateNewInstance) {
 			remoteDeviceFactory.initRemoteDevice(this, new TelldusLiveRemoteDeviceDetails());
-		}
-		
+		} 
 	}
 
 	public RemoteDeviceDetails createRemoteDeviceDetails(String details) {
 		RemoteDeviceDetails remoteDeviceDetails = null;
 		try {
 			remoteDeviceDetails = new TelldusLiveRemoteDeviceDetails(details);
+			isCreateNewInstance = false;
 		} catch (Exception e) {
 			Log.v(TAG, "Failed to create device details: " + details);
 		}
@@ -57,21 +58,24 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 	}
 
 	public RemoteDevice createRemoteDevice(RemoteDeviceDetails details) {
-		
-		device = new TelldusLiveRemoteDevice(details);
+		TelldusLiveRemoteDevice device = new TelldusLiveRemoteDevice(details);
 		
 		RemoteApplication remoteApplication = RemoteApplication.getInstance();
 		RemoteDisplayFactory displayFactory = remoteApplication.getRemoteDisplayFactory();
 		TelldusLiveMainRemoteDisplay remoteDisplay = new TelldusLiveMainRemoteDisplay(device);
 		displayFactory.registerDisplay(device.getIdentifier(), remoteDisplay);	
 	
-
+		//Prompt for authentication if not connected.
+		if (!device.getConnection().isConnected()) {
+			device.getConnection().showDialog();
+		}
+		
 		return device;
 	}
 	
 	public boolean isEnabled() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemoteApplication.getInstance().getContext());
-		return preferences.getBoolean("is_tellduslive_enabled", false);
+		return preferences.getBoolean("is_telldus_live_enabled", false);
 	}	
 	
 	class TelldusLiveRemoteDeviceDiscovererThread extends Thread {

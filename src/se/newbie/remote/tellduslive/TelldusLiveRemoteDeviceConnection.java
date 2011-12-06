@@ -21,36 +21,37 @@ public class TelldusLiveRemoteDeviceConnection {
 	private TelldusLiveRemoteDevice device;
 
 	private static final String RESOURCE_DOMAIN = "https://api.telldus.com/json";
-	
+
 	public TelldusLiveRemoteDeviceConnection(TelldusLiveRemoteDevice device) {
 		this.device = device;
-        service = new ServiceBuilder()
-        .provider(TelldusLiveAPI.class)
-        .apiKey("FEHUVEW84RAFR5SP22RABURUPHAFRUNU")
-        .apiSecret("ZUXEVEGA9USTAZEWRETHAQUBUR69U6EF")
-        .callback("callback://remoteApplication")
-        .build();
-        
+		service = new ServiceBuilder().provider(TelldusLiveAPI.class)
+				.apiKey("FEHUVEW84RAFR5SP22RABURUPHAFRUNU")
+				.apiSecret("ZUXEVEGA9USTAZEWRETHAQUBUR69U6EF")
+				.callback("callback://remoteApplication").build();
+
 	}
-	
+
 	public boolean isConnected() {
-		TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
-		return (details.getAccessToken() != null) ? true : false;		
-	}		
-	
-	public void request(final String resource, final Map<String, String> params, final TelldusLiveResponseHandler responseHandler) {
-        new Thread() {
-        	public void run() {		
+		TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails) device.getRemoteDeviceDetails();
+		return (details.getAccessToken() != null) ? true : false; 
+	}
+
+	public void request(final String resource,
+			final Map<String, String> params,
+			final TelldusLiveResponseHandler responseHandler) {
+		new Thread() {
+			public void run() {
 				OAuthRequest request = new OAuthRequest(Verb.GET, RESOURCE_DOMAIN + resource);
 				request.setConnectTimeout(9, TimeUnit.SECONDS);
 				request.setReadTimeout(3, TimeUnit.SECONDS);
-				
-				TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
+
+				TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails) device
+						.getRemoteDeviceDetails();
 				if (params != null) {
 					for (String key : params.keySet()) {
 						request.addQuerystringParameter(key, params.get(key));
-					}					
-				}				
+					}
+				}
 				try {
 					Token accessToken = details.getAccessToken();
 					Log.v(TAG, "Sending request: " + request.getUrl() + "; Token: " + accessToken);
@@ -63,59 +64,67 @@ public class TelldusLiveRemoteDeviceConnection {
 						}
 					} else {
 						Log.w(TAG, "Trying to send request without access token");
-						showDialog();	
+						showDialog();
 					}
-				} catch (Exception e) { 
+				} catch (Exception e) {
 					Log.v(TAG, "Error during request: " + e.getMessage());
 					showDialog();
 				}
-        	}
-        }.start();
+			}
+		}.start();
 	}
-	
+
 	public void getRequestToken(final TelldusLiveTokenResponseHandler handler) {
-        new Thread() {
-        	public void run() {
-        		Token requestToken =  service.getRequestToken();
-        		handler.onResponse(requestToken);
-        	}
-        }.start();
-		
+		new Thread() {
+			public void run() {
+				Token requestToken = service.getRequestToken();
+				handler.onResponse(requestToken);
+			}
+		}.start();
+
 	}
-	
-	public void getAccessToken(final Token requestToken, final Verifier verifier, final TelldusLiveTokenResponseHandler handler) {
-        new Thread() {
-        	public void run() {
-        		Token accessToken = service.getAccessToken(requestToken, verifier); 
-				handler.onResponse(accessToken);
-        	}
-        }.start();		
-	}	
-	
+
+	public void getAccessToken(final Token requestToken,
+			final Verifier verifier,
+			final TelldusLiveTokenResponseHandler handler) {
+		new Thread() {
+			public void run() {
+				try {
+					Token accessToken = service.getAccessToken(requestToken,
+							verifier);
+					handler.onResponse(accessToken);
+				} catch (Exception e) {
+					handler.onResponse(null);
+				}
+			}
+		}.start();
+	}
+
 	public String getAuthorizationUrl(Token requestToken) {
 		return service.getAuthorizationUrl(requestToken);
 	}
-	
-	public void showDialog() {
-		RemoteApplication.getInstance().getActivity().runOnUiThread(new Runnable(){
-			public void run() {
-				Log.v(TAG, "Opening login dialog...");
-				TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog.newInstance((TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails());
-				if (dialog != null) {
-					RemoteApplication.getInstance().showDialog(dialog);
-				}					
-			}
-		});
-	}		
 
-	
+	public void showDialog() {
+		RemoteApplication.getInstance().getActivity()
+				.runOnUiThread(new Runnable() {
+					public void run() {
+						Log.v(TAG, "Opening login dialog...");
+						TelldusLiveAuthenticateDialog dialog = TelldusLiveAuthenticateDialog
+								.newInstance((TelldusLiveRemoteDeviceDetails) device
+										.getRemoteDeviceDetails());
+						if (dialog != null) {
+							RemoteApplication.getInstance().showDialog(dialog);
+						}
+					}
+				});
+	}
+
 	public interface TelldusLiveResponseHandler {
 		public void onResponse(JSONObject json);
 	}
-	
-	
+
 	public interface TelldusLiveTokenResponseHandler {
 		public void onResponse(Token token);
-	}	
-	
+	}
+
 }

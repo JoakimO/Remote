@@ -29,7 +29,7 @@ public class TelldusLiveDeviceTable {
 		Log.v(TAG, "Updating database from " + oldVersion + " to " + newVersion);
 		
 		
-		database.execSQL("DROP TABLE IF EXISTS teldus_live_device");
-		database.execSQL(DATABASE_CREATE);
+		//database.execSQL("DROP TABLE IF EXISTS teldus_live_device");
+		//database.execSQL(DATABASE_CREATE);
 	}
 }

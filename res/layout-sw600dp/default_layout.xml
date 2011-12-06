@@ -21,37 +21,46 @@
 		        android:layout_weight="1.00"
 		        android:orientation="vertical" >
 		
-		        <se.newbie.remote.gui.RemoteScrollerViewGroup
-		            android:id="@+id/remote_scroller_view_group"
-		            android:layout_width="fill_parent"
-		            android:layout_height="fill_parent"
-		            android:layout_weight="1.00" >
-		
-		            <se.newbie.remote.gui.RemoteDisplayPanel
-		                android:id="@+id/standard_remote_browser"
-		                android:layout_width="fill_parent"
-		                android:layout_height="fill_parent"
-		                android:layout_weight="1.00"
-		                remote:device="Boxee-boxeebox"
-		                remote:display="browser" />
-		
-		            <se.newbie.remote.gui.RemoteDisplayPanel
-		                android:id="@+id/standard_display_layout"
-		                android:layout_width="fill_parent"
-		                android:layout_height="fill_parent"
-		                android:layout_weight="1.00"
-		                remote:device="Boxee-boxeebox"
-		                remote:display="currentlyPlaying" />
-		            
-		            <se.newbie.remote.gui.RemoteDisplayPanel
-		                android:id="@+id/telldus_live_main_display_layout"
-		                android:layout_width="fill_parent"
-		                android:layout_height="fill_parent"
-		                android:layout_weight="1.00"
-		                remote:device="TelldusLive"
-		                remote:display="MainDisplay" />		            
-		            
-		        </se.newbie.remote.gui.RemoteScrollerViewGroup>
+	            <se.newbie.remote.gui.RemoteDisplayPanelCreator
+	                android:id="@+id/standard_remote_display_panel_creator"
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:layout_weight="1.00"
+	                remote:target="@+id/remote_scroller_view_group"
+	                remote:display="MainDisplay"
+	                >		        
+			        <se.newbie.remote.gui.RemoteScrollerViewGroup
+			            android:id="@+id/remote_scroller_view_group"
+			            android:layout_width="fill_parent"
+			            android:layout_height="fill_parent"
+			            android:layout_weight="1.00" >
+			
+			           <!--  <se.newbie.remote.gui.RemoteDisplayPanel
+			                android:id="@+id/standard_remote_browser"
+			                android:layout_width="fill_parent"
+			                android:layout_height="fill_parent"
+			                android:layout_weight="1.00"
+			                remote:device="Boxee-boxeebox"
+			                remote:display="browser" />
+			
+			            <se.newbie.remote.gui.RemoteDisplayPanel
+			                android:id="@+id/standard_display_layout"
+			                android:layout_width="fill_parent"
+			                android:layout_height="fill_parent"
+			                android:layout_weight="1.00"
+			                remote:device="Boxee-boxeebox"
+			                remote:display="currentlyPlaying" />
+			            
+			            <se.newbie.remote.gui.RemoteDisplayPanel
+			                android:id="@+id/telldus_live_main_display_layout"
+			                android:layout_width="fill_parent"
+			                android:layout_height="fill_parent"
+			                android:layout_weight="1.00"
+			                remote:device="TelldusLive"
+			                remote:display="MainDisplay" />		-->            
+			            
+			        </se.newbie.remote.gui.RemoteScrollerViewGroup>
+		        </se.newbie.remote.gui.RemoteDisplayPanelCreator>
 		    </LinearLayout>
 		
 		    <LinearLayout
