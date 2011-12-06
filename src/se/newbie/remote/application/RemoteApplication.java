@@ -10,6 +10,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.provider.Settings.Secure;
 import android.util.Log;
+import android.widget.Toast;
 
 public class RemoteApplication implements RemoteActivityListener {
 	private static final String TAG = "RemoteApplication";
@@ -166,5 +167,15 @@ public class RemoteApplication implements RemoteActivityListener {
 	 */
 	public String getApplicationId() {
 		return "FiRemote";
+	}
+	
+	public void showToast(final String s) {
+		activity.runOnUiThread(new Runnable(){
+			public void run() {
+				int duration = Toast.LENGTH_SHORT;
+				Toast toast = Toast.makeText(activity.getApplicationContext(), s, duration);
+				toast.show();
+			}
+		});
 	}
 }

@@ -49,14 +49,7 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		Uri uri = activity.getIntent().getData(); 
 		Log.v(TAG, "Activity: " + activity.getIntent() + ";Data: " + uri);
 
-		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) { 
-			dialog = new TelldusLiveAuthenticateDialog();
-			Bundle args = new Bundle();
-			args.putString("details", details.serialize());
-			dialog.setArguments(args);
-			dialog.authInProgress = true;
-			
-		} else if (!isInUse) { 
+		if (!isInUse) { 
 			isInUse = true;
 			dialog = new TelldusLiveAuthenticateDialog();
 			dialog.authInProgress = false;
@@ -66,6 +59,31 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		}
 		return dialog;
 	}	
+	
+	public static void requestAccessToken(final TelldusLiveRemoteDevice device) {
+		Activity activity = RemoteApplication.getInstance().getActivity();
+		Uri uri = activity.getIntent().getData();  
+		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) {  
+			final Verifier verifier = new Verifier ( uri.getQueryParameter("oauth_verifier") );
+			
+			final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
+			
+			Log.v(TAG, "Requesting access token...");
+			connection.getAccessToken(requestToken, verifier, new TelldusLiveTokenResponseHandler() {
+				public void onResponse(Token token) {
+					Log.v(TAG, "Token received: " + token);
+					
+					TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
+					details.setAccessToken(token);
+					device.setRemoteDeviceDetails(details);					
+					RemoteApplication.getInstance().getRemoteDeviceFactory().updateRemoteDeviceDetails(details);
+					RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_succeeded));
+			    	isInUse = false;
+			    	requestToken = null;					
+				}
+			});
+		}		
+	}
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -89,30 +107,6 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
     public void onResume() { 
 		super.onResume();
 		Log.v(TAG, "onResume");
-		Activity activity = RemoteApplication.getInstance().getActivity();
-		Uri uri = activity.getIntent().getData();  
-		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) {  
-			final Verifier verifier = new Verifier ( uri.getQueryParameter("oauth_verifier") );
-			
-			final TelldusLiveRemoteDevice device = (TelldusLiveRemoteDevice)RemoteApplication.getInstance()
-					.getRemoteDeviceFactory().getRemoteDevice(details.getIdentifier());
-			
-			final TelldusLiveRemoteDeviceConnection connection = device.getConnection();
-			
-			Log.v(TAG, "Requesting access token...");
-			connection.getAccessToken(requestToken, verifier, new TelldusLiveTokenResponseHandler() {
-				public void onResponse(Token token) {
-					Log.v(TAG, "Token received: " + token);
-					
-					TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
-					details.setAccessToken(token);
-					device.setRemoteDeviceDetails(details);					
-					RemoteApplication.getInstance().getRemoteDeviceFactory().updateRemoteDeviceDetails(details);
-					
-					handler.sendEmptyMessage(0);
-				}
-			});
-		}
     } 	
     
     @Override

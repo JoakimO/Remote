@@ -38,6 +38,8 @@
 	    
 	<string name="boxee_pair_dialog_message">Boxee needs to be paired with the remote. Write the digits displayed from your Boxee in the field below and then click Next.\n\nThis is a one time operation and to remove the pairing go to your boxee / settings / devices and click remove on the android remote.</string>    
 	<string name="telldus_authentication_dialog_message">You need to create a access token with Telldus to use this function. The application won\'t save your password but only the access token which will be created. This token will then be used over multiple sessions.\n\nBy pressing continue you will be send to the internet browser and directed to login.telldus.com where you log in as normal.</string>
+	<string name="telldus_live_authentication_succeeded">Telldus Live was added successfully</string>    
+	    
 	    
 	<string name="button_continue">Continue</string>
 	<string name="button_next">Next</string>

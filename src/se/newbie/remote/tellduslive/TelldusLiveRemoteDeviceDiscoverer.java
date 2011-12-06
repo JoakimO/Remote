@@ -13,8 +13,10 @@ import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiv
 import se.newbie.remote.tellduslive.database.TelldusLiveClientAdapter;
 import se.newbie.remote.tellduslive.database.TelldusLiveDeviceAdapter;
 import se.newbie.remote.tellduslive.database.TelldusLiveJobAdapter;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -64,12 +66,14 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 		RemoteDisplayFactory displayFactory = remoteApplication.getRemoteDisplayFactory();
 		TelldusLiveMainRemoteDisplay remoteDisplay = new TelldusLiveMainRemoteDisplay(device);
 		displayFactory.registerDisplay(device.getIdentifier(), remoteDisplay);	
-	
-		//Prompt for authentication if not connected.
-		if (!device.getConnection().isConnected()) {
+
+		Activity activity = RemoteApplication.getInstance().getActivity();
+		Uri uri = activity.getIntent().getData();  
+		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) { 
+			TelldusLiveAuthenticateDialog.requestAccessToken(device);
+		}else if (!device.getConnection().isConnected()) {
 			device.getConnection().showDialog();
 		}
-		
 		return device;
 	}
 	
