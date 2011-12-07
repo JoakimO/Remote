@@ -126,14 +126,17 @@ public class TelldusLiveDeviceListView extends ListView {
 			TelldusLiveActionButton onButton = (TelldusLiveActionButton) view
 					.findViewById(R.id.telldus_live_device_list_item_on);
 			onButton.setDevice(remoteDeviceIdentifier);
-			onButton.setCommand(TelldusLiveRemoteCommand.Command.turnOn.name()
-					+ "-" + device.getId());
+			onButton.setCommand(TelldusLiveRemoteCommand.Command.turnOn.name() + "-" + device.getId());
 
 			TelldusLiveActionButton offButton = (TelldusLiveActionButton) view
 					.findViewById(R.id.telldus_live_device_list_item_off);
 			offButton.setDevice(remoteDeviceIdentifier);
-			offButton.setCommand(TelldusLiveRemoteCommand.Command.turnOff
-					.name() + "-" + device.getId());
+			offButton.setCommand(TelldusLiveRemoteCommand.Command.turnOff.name() + "-" + device.getId());
+			
+			TelldusLiveActionButton learnButton = (TelldusLiveActionButton) view
+					.findViewById(R.id.telldus_live_device_list_item_learn);
+			learnButton.setDevice(remoteDeviceIdentifier);
+			learnButton.setCommand(TelldusLiveRemoteCommand.Command.learn.name() + "-" + device.getId());			
 
 			Log.v(TAG, "Device: " + device.getId() + ";State: " + device.getState());
 			

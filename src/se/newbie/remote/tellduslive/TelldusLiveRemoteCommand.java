@@ -18,6 +18,7 @@ public class TelldusLiveRemoteCommand implements RemoteCommand {
 		, up
 		, turnOff
 		, turnOn
+		, learn
 	}
 	
 	private TelldusLiveRemoteDevice device;
@@ -50,7 +51,10 @@ public class TelldusLiveRemoteCommand implements RemoteCommand {
 			break;
 		case bell :
 			sendCommand("/device/bell", telldusLiveDeviceId);
-			break;			
+			break;		
+		case learn :
+			sendCommand("/device/learn", telldusLiveDeviceId);
+			break;				
 		}
 		return 1;
 	}

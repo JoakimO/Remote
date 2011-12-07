@@ -144,6 +144,7 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 							if (deviceId > 0) {
 								commands.add(new TelldusLiveRemoteCommand(device, Command.turnOn, deviceId.toString()));
 								commands.add(new TelldusLiveRemoteCommand(device, Command.turnOff, deviceId.toString()));
+								commands.add(new TelldusLiveRemoteCommand(device, Command.learn, deviceId.toString()));
 								telldusLiveDevices.put(deviceId, new TelldusLiveDevice(deviceObject));
 							}
 						}
