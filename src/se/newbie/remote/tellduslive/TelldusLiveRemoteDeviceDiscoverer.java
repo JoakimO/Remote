@@ -9,6 +9,7 @@ import se.newbie.remote.device.RemoteDeviceDetails;
 import se.newbie.remote.device.RemoteDeviceDiscoverer;
 import se.newbie.remote.device.RemoteDeviceFactory;
 import se.newbie.remote.display.RemoteDisplayFactory;
+import se.newbie.remote.tellduslive.TelldusLiveAuthenticateDialog.TelldusLiveAccessResponseHandler;
 import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiveResponseHandler;
 import se.newbie.remote.tellduslive.database.TelldusLiveClientAdapter;
 import se.newbie.remote.tellduslive.database.TelldusLiveDeviceAdapter;
@@ -60,7 +61,7 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 	}
 
 	public RemoteDevice createRemoteDevice(RemoteDeviceDetails details) {
-		TelldusLiveRemoteDevice device = new TelldusLiveRemoteDevice(details);
+		final TelldusLiveRemoteDevice device = new TelldusLiveRemoteDevice(details);
 		
 		RemoteApplication remoteApplication = RemoteApplication.getInstance();
 		RemoteDisplayFactory displayFactory = remoteApplication.getRemoteDisplayFactory();
@@ -70,7 +71,15 @@ public class TelldusLiveRemoteDeviceDiscoverer implements RemoteDeviceDiscoverer
 		Activity activity = RemoteApplication.getInstance().getActivity();
 		Uri uri = activity.getIntent().getData();  
 		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) { 
-			TelldusLiveAuthenticateDialog.requestAccessToken(device);
+			TelldusLiveAuthenticateDialog.requestAccessToken(device, new TelldusLiveAccessResponseHandler() {
+				public void onSuccess() {
+					device.resume();
+				}
+				
+				public void onFailure() {
+					device.getConnection().showDialog();
+				}
+			});
 		}else if (!device.getConnection().isConnected()) {
 			device.getConnection().showDialog();
 		}

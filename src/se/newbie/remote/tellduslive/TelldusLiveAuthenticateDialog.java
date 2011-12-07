@@ -60,7 +60,7 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 		return dialog;
 	}	
 	
-	public static void requestAccessToken(final TelldusLiveRemoteDevice device) {
+	public static void requestAccessToken(final TelldusLiveRemoteDevice device, final TelldusLiveAccessResponseHandler handler) {
 		Activity activity = RemoteApplication.getInstance().getActivity();
 		Uri uri = activity.getIntent().getData();  
 		if (activity.getIntent() != null && (uri != null && uri.toString().startsWith("callback://remoteApplication"))) {  
@@ -74,23 +74,33 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 				connection.getAccessToken(requestToken, verifier, new TelldusLiveTokenResponseHandler() {
 					public void onResponse(Token token) {
 						Log.v(TAG, "Token received: " + token);
+				    	isInUse = false;
+				    	requestToken = null;
+				    	
 						if (token != null) {
 							TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
 							details.setAccessToken(token);
 							device.setRemoteDeviceDetails(details);					
 							RemoteApplication.getInstance().getRemoteDeviceFactory().updateRemoteDeviceDetails(details);
 							RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_succeeded));
+					    	if (handler != null) {
+					    		handler.onSuccess();
+					    	}
 						} else {
 							RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_failed));
+					    	if (handler != null) {
+					    		handler.onFailure();
+					    	}							
 						}
-				    	isInUse = false;
-				    	requestToken = null;					
 					}
 				});
 			} else {
 				RemoteApplication.getInstance().showToast(RemoteApplication.getInstance().getContext().getString(R.string.telldus_live_authentication_failed));
 		    	isInUse = false;
-		    	requestToken = null;				
+		    	requestToken = null;	
+		    	if (handler != null) {
+		    		handler.onFailure();
+		    	}
 			}
 		}		
 	}
@@ -166,4 +176,10 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
     	requestToken = null;
     	this.dismiss();
     }    
+    
+    protected interface TelldusLiveAccessResponseHandler {
+    	public void onSuccess();
+    	public void onFailure();
+    }
 }
+
