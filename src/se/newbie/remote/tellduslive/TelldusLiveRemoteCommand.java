@@ -2,7 +2,10 @@ package se.newbie.remote.tellduslive;
 
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 import se.newbie.remote.command.RemoteCommand;
+import se.newbie.remote.tellduslive.TelldusLiveRemoteDeviceConnection.TelldusLiveResponseHandler;
 import android.util.Log;
 
 public class TelldusLiveRemoteCommand implements RemoteCommand {
@@ -52,12 +55,19 @@ public class TelldusLiveRemoteCommand implements RemoteCommand {
 		return 1;
 	}
 	
-	private void sendCommand(String command, String deviceId) {
+	private void sendCommand(final String command, final String deviceId) {
 		Log.v(TAG, "sendCommand: " + command + ";" + deviceId);
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("id", deviceId);
 		
-		device.getConnection().request(command, params, null);
+		device.getConnection().request(command, params, new TelldusLiveResponseHandler() {
+			public void onResponse(JSONObject json) {
+				//Check if command was executed successfully and invalidate the device.
+				if (json != null && json.has("status") && json.optString("status").equals("success")) {
+					device.invalidateTelldusLiveDevice(Long.parseLong(deviceId));
+				}				
+			}
+		});
 	}
 
 }

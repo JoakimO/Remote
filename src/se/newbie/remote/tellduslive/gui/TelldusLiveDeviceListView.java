@@ -45,7 +45,7 @@ public class TelldusLiveDeviceListView extends ListView {
 	private void updateView() {
 		this.post(new Runnable() {
 			public void run() {
-				Log.v(TAG, "Update TelldusLive device list");
+				Log.v(TAG, "Update TelldusLive device list: " + devices.size());
 				adapter.clear();
 				if (devices != null) {
 					adapter.addDevices(devices);
@@ -57,6 +57,7 @@ public class TelldusLiveDeviceListView extends ListView {
 
 	public void update() {
 		if (device != null) {
+			Log.v(TAG, "Update device list");
 			RemoteDeviceFactory factory = RemoteApplication.getInstance()
 					.getRemoteDeviceFactory();
 			TelldusLiveRemoteDevice telldusLiveRemoteDevice = (TelldusLiveRemoteDevice) factory
@@ -76,7 +77,8 @@ public class TelldusLiveDeviceListView extends ListView {
 	}
 
 	class TelldusLiveDeviceAdapter extends BaseAdapter {
-
+		private static final String TAG = "TelldusLiveDeviceAdapter"; 
+		
 		private List<TelldusLiveDevice> devices = new ArrayList<TelldusLiveDevice>();
 		private int resource;
 		private Context context;
@@ -133,6 +135,8 @@ public class TelldusLiveDeviceListView extends ListView {
 			offButton.setCommand(TelldusLiveRemoteCommand.Command.turnOff
 					.name() + "-" + device.getId());
 
+			Log.v(TAG, "Device: " + device.getId() + ";State: " + device.getState());
+			
 			ImageView stateImage = (ImageView) view
 					.findViewById(R.id.telldus_live_device_list_item_state);
 			if ((device.getState() & TelldusLiveDevice.METHOD_ON) == TelldusLiveDevice.METHOD_ON) {

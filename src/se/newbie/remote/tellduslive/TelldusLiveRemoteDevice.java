@@ -77,9 +77,45 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 		return connection;
 	}
 	
+	private void synchronizeDevice(final TelldusLiveRemoteDevice device, final Long telldusLiveDeviceId) {
+		device.getConnection();
+		Map<String, String> params = new HashMap<String, String>();	
+
+		params.put(
+				"supportedMethods",
+				Integer.toString(TelldusLiveDevice.METHOD_ON
+						| TelldusLiveDevice.METHOD_OFF
+						| TelldusLiveDevice.METHOD_DIM
+						| TelldusLiveDevice.METHOD_LEARN
+						| TelldusLiveDevice.METHOD_EXECUTE
+						| TelldusLiveDevice.METHOD_UP
+						| TelldusLiveDevice.METHOD_DOWN
+						| TelldusLiveDevice.METHOD_STOP));	
+		params.put("id", Long.toString(telldusLiveDeviceId));
+		
+		connection.request("/device/info", params, new TelldusLiveResponseHandler() {
+			public void onResponse(JSONObject json) {
+				try {
+					Log.v(TAG, "Device response: " + json.toString());
+					RemoteApplication remoteApplication = RemoteApplication.getInstance();
+
+					Long deviceId = json.optLong("id", -1);
+					if (deviceId > 0) {
+						device.setTelldusLiveDevice(new TelldusLiveDevice(json));
+					}
+					RemoteDisplay display = remoteApplication.getRemoteDisplayFactory().getRemoteDisplay(TelldusLiveMainRemoteDisplay.IDENTIFIER, device.getIdentifier());
+					if (display != null) {
+						display.invalidate();
+					}
+				} catch (Exception e) {
+					Log.e(TAG,  "Error on getting device data: " + e.getMessage());
+				}
+			}
+		});				
+	}
+	
 	private void synchronizeDevices(final TelldusLiveRemoteDevice device) {
 		device.getConnection();
-		
 		Map<String, String> params = new HashMap<String, String>();
 
 		params.put(
@@ -120,7 +156,7 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 						display.invalidate();
 					}
 				} catch (Exception e) {
-					Log.e(TAG,  "Error on getting client data: " + e.getMessage());
+					Log.e(TAG,  "Error on getting devices data: " + e.getMessage());
 				}
 			}
 		});		
@@ -129,6 +165,11 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 	protected void setTelldusLiveDeviceMap(
 			Map<Long, TelldusLiveDevice> telldusLiveDevices) {
 		this.telldusLiveDeviceMap = telldusLiveDevices;
+	}
+	
+	protected void setTelldusLiveDevice(TelldusLiveDevice device) {
+		Log.v(TAG, "Set device: " + device.toString());
+		this.telldusLiveDeviceMap.put((long)device.getId(), device);
 	}
 
 	public List<TelldusLiveDevice> getTelldusLiveDevices() {
@@ -139,5 +180,9 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 			}
 		}
 		return telldusLiveDevices;
+	}
+	
+	public void invalidateTelldusLiveDevice(Long id) {
+		synchronizeDevice(this, id);
 	}
 }
