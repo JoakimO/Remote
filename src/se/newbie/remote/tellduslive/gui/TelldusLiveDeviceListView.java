@@ -125,18 +125,57 @@ public class TelldusLiveDeviceListView extends ListView {
 
 			TelldusLiveActionButton onButton = (TelldusLiveActionButton) view
 					.findViewById(R.id.telldus_live_device_list_item_on);
-			onButton.setDevice(remoteDeviceIdentifier);
-			onButton.setCommand(TelldusLiveRemoteCommand.Command.turnOn.name() + "-" + device.getId());
+			if ((device.getMethods() & TelldusLiveDevice.METHOD_ON) == TelldusLiveDevice.METHOD_ON) {
+				onButton.setDevice(remoteDeviceIdentifier);
+				onButton.setCommand(TelldusLiveRemoteCommand.Command.turnOn.name() + "-" + device.getId());
+			} else {
+				onButton.setVisibility(INVISIBLE);
+			}				
 
 			TelldusLiveActionButton offButton = (TelldusLiveActionButton) view
 					.findViewById(R.id.telldus_live_device_list_item_off);
-			offButton.setDevice(remoteDeviceIdentifier);
-			offButton.setCommand(TelldusLiveRemoteCommand.Command.turnOff.name() + "-" + device.getId());
+			if ((device.getMethods() & TelldusLiveDevice.METHOD_OFF) == TelldusLiveDevice.METHOD_OFF) {
+				offButton.setDevice(remoteDeviceIdentifier);
+				offButton.setCommand(TelldusLiveRemoteCommand.Command.turnOff.name() + "-" + device.getId());
+			} else {
+				offButton.setVisibility(INVISIBLE);
+			}
 			
 			TelldusLiveActionButton learnButton = (TelldusLiveActionButton) view
 					.findViewById(R.id.telldus_live_device_list_item_learn);
-			learnButton.setDevice(remoteDeviceIdentifier);
-			learnButton.setCommand(TelldusLiveRemoteCommand.Command.learn.name() + "-" + device.getId());			
+			if ((device.getMethods() & TelldusLiveDevice.METHOD_LEARN) == TelldusLiveDevice.METHOD_LEARN) {
+				learnButton.setDevice(remoteDeviceIdentifier);
+				learnButton.setCommand(TelldusLiveRemoteCommand.Command.learn.name() + "-" + device.getId());
+			} else {
+				learnButton.setVisibility(INVISIBLE);
+			}
+			
+			TelldusLiveActionButton bellButton = (TelldusLiveActionButton) view
+					.findViewById(R.id.telldus_live_device_list_item_bell);
+			if ((device.getMethods() & TelldusLiveDevice.METHOD_BELL) == TelldusLiveDevice.METHOD_BELL) {
+				bellButton.setDevice(remoteDeviceIdentifier);
+				bellButton.setCommand(TelldusLiveRemoteCommand.Command.bell.name() + "-" + device.getId());
+			} else {
+				bellButton.setVisibility(INVISIBLE);
+			}
+			
+			TelldusLiveActionButton upButton = (TelldusLiveActionButton) view
+					.findViewById(R.id.telldus_live_device_list_item_up);
+			if ((device.getMethods() & TelldusLiveDevice.METHOD_UP) == TelldusLiveDevice.METHOD_UP) {
+				upButton.setDevice(remoteDeviceIdentifier);
+				upButton.setCommand(TelldusLiveRemoteCommand.Command.up.name() + "-" + device.getId());
+			} else {
+				upButton.setVisibility(INVISIBLE);
+			}
+			
+			TelldusLiveActionButton downButton = (TelldusLiveActionButton) view
+					.findViewById(R.id.telldus_live_device_list_item_down);
+			if ((device.getMethods() & TelldusLiveDevice.METHOD_DOWN) == TelldusLiveDevice.METHOD_DOWN) {
+				downButton.setDevice(remoteDeviceIdentifier);
+				downButton.setCommand(TelldusLiveRemoteCommand.Command.down.name() + "-" + device.getId());
+			} else {
+				downButton.setVisibility(INVISIBLE);
+			}									
 
 			Log.v(TAG, "Device: " + device.getId() + ";State: " + device.getState());
 			

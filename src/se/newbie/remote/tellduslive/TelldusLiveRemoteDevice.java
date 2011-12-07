@@ -85,6 +85,7 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 				"supportedMethods",
 				Integer.toString(TelldusLiveDevice.METHOD_ON
 						| TelldusLiveDevice.METHOD_OFF
+						| TelldusLiveDevice.METHOD_BELL
 						| TelldusLiveDevice.METHOD_DIM
 						| TelldusLiveDevice.METHOD_LEARN
 						| TelldusLiveDevice.METHOD_EXECUTE
@@ -101,11 +102,12 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 
 					Long deviceId = json.optLong("id", -1);
 					if (deviceId > 0) {
-						device.setTelldusLiveDevice(new TelldusLiveDevice(json));
-					}
-					RemoteDisplay display = remoteApplication.getRemoteDisplayFactory().getRemoteDisplay(TelldusLiveMainRemoteDisplay.IDENTIFIER, device.getIdentifier());
-					if (display != null) {
-						display.invalidate();
+						if (device.setTelldusLiveDevice(new TelldusLiveDevice(json))) {
+							RemoteDisplay display = remoteApplication.getRemoteDisplayFactory().getRemoteDisplay(TelldusLiveMainRemoteDisplay.IDENTIFIER, device.getIdentifier());
+							if (display != null) {
+								display.invalidate();
+							}
+						}
 					}
 				} catch (Exception e) {
 					Log.e(TAG,  "Error on getting device data: " + e.getMessage());
@@ -122,6 +124,7 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 				"supportedMethods",
 				Integer.toString(TelldusLiveDevice.METHOD_ON
 						| TelldusLiveDevice.METHOD_OFF
+						| TelldusLiveDevice.METHOD_BELL
 						| TelldusLiveDevice.METHOD_DIM
 						| TelldusLiveDevice.METHOD_LEARN
 						| TelldusLiveDevice.METHOD_EXECUTE
@@ -142,9 +145,7 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 							JSONObject deviceObject = array.getJSONObject(i);
 							Long deviceId = deviceObject.optLong("id", -1);
 							if (deviceId > 0) {
-								commands.add(new TelldusLiveRemoteCommand(device, Command.turnOn, deviceId.toString()));
-								commands.add(new TelldusLiveRemoteCommand(device, Command.turnOff, deviceId.toString()));
-								commands.add(new TelldusLiveRemoteCommand(device, Command.learn, deviceId.toString()));
+								commands.addAll(createCommands(device, deviceObject));
 								telldusLiveDevices.put(deviceId, new TelldusLiveDevice(deviceObject));
 							}
 						}
@@ -163,14 +164,53 @@ public class TelldusLiveRemoteDevice implements RemoteDevice {
 		});		
 	}
 
+	protected List<RemoteCommand> createCommands(TelldusLiveRemoteDevice device, JSONObject object) {
+		List<RemoteCommand> commands = new ArrayList<RemoteCommand>();
+		
+		Long deviceId = object.optLong("id");
+		int methods = object.optInt("methods", 0);
+		
+		if ((methods & TelldusLiveDevice.METHOD_ON) == TelldusLiveDevice.METHOD_ON) {
+			commands.add(new TelldusLiveRemoteCommand(device, Command.turnOn, deviceId.toString()));
+		}
+		if ((methods & TelldusLiveDevice.METHOD_OFF) == TelldusLiveDevice.METHOD_OFF) {
+			commands.add(new TelldusLiveRemoteCommand(device, Command.turnOff, deviceId.toString()));
+		}
+		if ((methods & TelldusLiveDevice.METHOD_DIM) == TelldusLiveDevice.METHOD_DIM) {
+			commands.add(new TelldusLiveRemoteCommand(device, Command.dim, deviceId.toString()));
+		}
+		if ((methods & TelldusLiveDevice.METHOD_LEARN) == TelldusLiveDevice.METHOD_LEARN) {
+			commands.add(new TelldusLiveRemoteCommand(device, Command.learn, deviceId.toString()));
+		}
+		if ((methods & TelldusLiveDevice.METHOD_BELL) == TelldusLiveDevice.METHOD_BELL) {
+			commands.add(new TelldusLiveRemoteCommand(device, Command.bell, deviceId.toString()));
+		}
+		if ((methods & TelldusLiveDevice.METHOD_UP) == TelldusLiveDevice.METHOD_UP) {
+			commands.add(new TelldusLiveRemoteCommand(device, Command.up, deviceId.toString()));
+		}
+		if ((methods & TelldusLiveDevice.METHOD_DOWN) == TelldusLiveDevice.METHOD_DOWN) {
+			commands.add(new TelldusLiveRemoteCommand(device, Command.down, deviceId.toString()));
+		}		
+		return commands;
+	}
+	
+
+	
 	protected void setTelldusLiveDeviceMap(
 			Map<Long, TelldusLiveDevice> telldusLiveDevices) {
 		this.telldusLiveDeviceMap = telldusLiveDevices;
 	}
 	
-	protected void setTelldusLiveDevice(TelldusLiveDevice device) {
+	protected boolean setTelldusLiveDevice(TelldusLiveDevice device) {
+		boolean b = true;
+		if (telldusLiveDeviceMap.containsKey((long)device.getId()) &&
+				device.compare(telldusLiveDeviceMap.get((long)device.getId()))) {
+			b = false;
+		}
+		
 		Log.v(TAG, "Set device: " + device.toString());
 		this.telldusLiveDeviceMap.put((long)device.getId(), device);
+		return b;
 	}
 
 	public List<TelldusLiveDevice> getTelldusLiveDevices() {

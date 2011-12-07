@@ -39,6 +39,16 @@ public class TelldusLiveDevice {
 		isEditable = jsonObject.optBoolean("editable", false);		
 	}
 	
+	public boolean compare(TelldusLiveDevice otherDevice) {
+		boolean b = true;
+		b &= (id == otherDevice.id); 
+		b &= (name.equals(otherDevice.name));
+		b &= (state == otherDevice.state);
+		b &= (stateValue.equals(otherDevice.stateValue));
+		b &= (methods == otherDevice.methods);
+		return b;
+	}
+	
 	public int getId() {
 		return id;
 	}
