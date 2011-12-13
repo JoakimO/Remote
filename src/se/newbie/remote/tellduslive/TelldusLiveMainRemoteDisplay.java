@@ -1,11 +1,13 @@
 package se.newbie.remote.tellduslive;
 
 import se.newbie.remote.R;
+import se.newbie.remote.application.RemoteApplication;
 import se.newbie.remote.display.RemoteDisplay;
 import se.newbie.remote.tellduslive.gui.TelldusLiveDeviceListView;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 public class TelldusLiveMainRemoteDisplay implements RemoteDisplay {
 	private final static String TAG = "TelldusLiveMainRemoteDisplay";
@@ -43,5 +45,13 @@ public class TelldusLiveMainRemoteDisplay implements RemoteDisplay {
 			deviceListView.setDevice(device.getIdentifier());
 			deviceListView.update();
 		}
+		
+		Button addDeviceButton = (Button)view.findViewById(R.id.telldus_live_add_device_button);
+		addDeviceButton.setOnClickListener(new View.OnClickListener() {
+    		public void onClick(View v) {
+    			TelldusLiveRemoteDeviceDetails details = (TelldusLiveRemoteDeviceDetails)device.getRemoteDeviceDetails();
+    			RemoteApplication.getInstance().showDialog(TelldusLiveAddDeviceDialog.newInstance(details));	
+    		}
+    	}); 
 	}
 }

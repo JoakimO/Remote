@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="TelldusLiveDeviceTypes">
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Chacon\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:chacon\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"Chacon\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:chacon\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"Chacon\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:chacon\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Bell\", \"group\" : \"Chacon\", \"protocol\" : \"arctech\", \"model\" : \"bell:chacon\", \"widget\" : 4}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"CoCo Technologies\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:coco\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"CoCo Technologies\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:coco\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"CoCo Technologies\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:coco\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Bell\", \"group\" : \"CoCo Technologies\", \"protocol\" : \"arctech\", \"model\" : \"bell:coco\", \"widget\" : 4}</item>
+        <item>{\"name\" : \"Self Learning\", \"group\" : \"Conrad\", \"protocol\" : \"risingsun\", \"model\" : \"selflearning:conrad\", \"widget\" : 12}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Elro\", \"protocol\" : \"sartano\", \"model\" : \"codeswitch:elro\", \"widget\" : 2}</item>
+        <item>{\"name\" : \"Code Switch - System AB600\", \"group\" : \"Elro\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:elro-ab600\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"GAO\", \"protocol\" : \"risingsun\", \"model\" : \"codeswitch:gao\", \"widget\" : 10}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"GAO\", \"protocol\" : \"everflourish\", \"model\" : \"selflearning-switch:gao\", \"widget\" : 11}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Goobay\", \"protocol\" : \"yidong\", \"model\" : \"goobay:goobay\", \"widget\" : 13}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"HomeEasy\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:homeeasy\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"HomeEasy\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:homeeasy\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"HomeEasy\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:homeeasy\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"HQ\", \"protocol\" : \"fuhaote\", \"model\" : \"codeswitch:fuhaote\", \"widget\" : 2}</item>
+        <!--<item>{\"name\" : \"Koppla\", \"group\" : \"IKEA\", \"protocol\" : \"ikea\", \"model\" : \"selflearning:ikea\", \"widget\" : 3}</item>-->
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Intertechno\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:intertechno\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"Intertechno\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:intertechno\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"Intertechno\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:intertechno\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Bell\", \"group\" : \"Intertechno\", \"protocol\" : \"arctech\", \"model\" : \"bell:intertechno\", \"widget\" : 4}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Kappa\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:kappa\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"Kappa\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:kappa\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"Kappa\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:kappa\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Bell\", \"group\" : \"Kappa\", \"protocol\" : \"arctech\", \"model\" : \"bell:kappa\", \"widget\" : 4}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Kjell o Company\", \"protocol\" : \"risingsun\", \"model\" : \"codeswitch:kjelloco\", \"widget\" : 5}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"KlikAanKlikUit\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:klikaanklikuit\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"KlikAanKlikUit\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:klikaanklikuit\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"KlikAanKlikUit\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:klikaanklikuit\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Bell\", \"group\" : \"KlikAanKlikUit\", \"protocol\" : \"arctech\", \"model\" : \"bell:klikaanklikuit\", \"widget\" : 4}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Nexa\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:nexa\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"Nexa\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:nexa\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"Nexa\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:nexa\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Bell\", \"group\" : \"Nexa\", \"protocol\" : \"arctech\", \"model\" : \"bell:nexa\", \"widget\" : 4}</item>
+        <item>{\"name\" : \"Self Learning\", \"group\" : \"Otio\", \"protocol\" : \"risingsun\", \"model\" : \"selflearning:otio\", \"widget\" : 12}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Proove\", \"protocol\" : \"arctech\", \"model\" : \"codeswitch:proove\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Self Learning on/off\", \"group\" : \"Proove\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-switch:proove\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"Proove\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:proove\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Bell\", \"group\" : \"Proove\", \"protocol\" : \"arctech\", \"model\" : \"bell:proove\", \"widget\" : 4}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Rusta\", \"protocol\" : \"zke-2603\", \"model\" : \"codeswitch:rusta\", \"widget\" : 2}</item>
+        <item>{\"name\" : \"Self Learning dimmer\", \"group\" : \"Rusta\", \"protocol\" : \"arctech\", \"model\" : \"selflearning-dimmer:rusta\", \"widget\" : 8}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Sartano\", \"protocol\" : \"sartano\", \"model\" : \"codeswitch:sartano\", \"widget\" : 2}</item>
+        <item>{\"name\" : \"Self Learning\", \"group\" : \"UPM\", \"protocol\" : \"upm\", \"model\" : \"selflearning:upm\", \"widget\" : 9}</item>
+        <item>{\"name\" : \"Code Switch\", \"group\" : \"Waveman\", \"protocol\" : \"waveman\", \"model\" : \"codeswitch:waveman\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"X10\", \"group\" : \"Code Switch\", \"protocol\" : \"x10\", \"model\" : \"codeswitch:x10\", \"widget\" : 1}</item>
+        <item>{\"name\" : \"Blinds\", \"group\" : \"Hasta\", \"protocol\" : \"hasta\", \"model\" : \"selflearning:hasta\", \"widget\" : 16}</item>
+        <!--<item>{\"name\" : \"Projector screen\", \"group\" : \"Roxcore\", \"protocol\" : \"brateck\", \"model\" : \"codeswitch:roxcore\", \"widget\" : 6}</item>-->
+    </array>
+</resources>

@@ -11,8 +11,6 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,17 +25,6 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 	
 	private boolean authInProgress = false;
 	private TelldusLiveRemoteDeviceDetails details; 
-	
-	private Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-				case 0:
-					dismissDialog();
-					break;
-			}
-		}
-	};	
 	
 	private TelldusLiveAuthenticateDialog() {
 		super();
@@ -109,13 +96,12 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "onCreate");
-		
 		String s = getArguments().getString("details");
 		try {
 			details = new TelldusLiveRemoteDeviceDetails(s);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
-		}		
+		}
 	}
     
 	@Override
@@ -133,7 +119,7 @@ public class TelldusLiveAuthenticateDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
     	
-        View view = inflater.inflate(R.layout.telldus_authentication_dialog, container, false);
+        View view = inflater.inflate(R.layout.telldus_live_authentication_dialog, container, false);
 
         // Watch for button clicks.
         Button continueButton = (Button)view.findViewById(R.id.telldus_authentication_dialog_continue_button);

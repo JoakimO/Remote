@@ -27,8 +27,16 @@
             android:layout_toRightOf="@+id/imageView1"
             android:text="Telldus Live" />
 
+
+
     </RelativeLayout>
 
+    <Button
+          android:id="@+id/telldus_live_add_device_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/telldus_live_add_device" />        
+        
     <se.newbie.remote.tellduslive.gui.TelldusLiveDeviceListView
         android:id="@+id/telldus_live_device_list"
         android:layout_width="fill_parent"

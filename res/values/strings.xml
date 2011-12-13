@@ -41,7 +41,16 @@
 
 	<string name="telldus_live_authentication_succeeded">Telldus Live was added successfully</string>
 	<string name="telldus_live_authentication_failed">Telldus Live authentication failed</string>    
+	
 	    
+	<string name="telldus_live_add_device">Add</string>	    
+	<string name="telldus_live_add_device_name">Name</string>
+	<string name="telldus_live_add_device_type">Type</string>
+	<string name="telldus_live_add_device_type_prompt">Choose device type</string>
+	
+	<string name="telldus_live_add_device_cancel_button">Cancel</string>
+	<string name="telldus_live_add_device_submit_button">Submit</string>	    
+
 	    
 	<string name="button_continue">Continue</string>
 	<string name="button_next">Next</string>

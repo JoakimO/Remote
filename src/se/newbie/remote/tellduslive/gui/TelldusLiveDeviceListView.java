@@ -129,7 +129,7 @@ public class TelldusLiveDeviceListView extends ListView {
 				onButton.setDevice(remoteDeviceIdentifier);
 				onButton.setCommand(TelldusLiveRemoteCommand.Command.turnOn.name() + "-" + device.getId());
 			} else {
-				onButton.setVisibility(INVISIBLE);
+				onButton.setVisibility(GONE);
 			}				
 
 			TelldusLiveActionButton offButton = (TelldusLiveActionButton) view
@@ -138,7 +138,7 @@ public class TelldusLiveDeviceListView extends ListView {
 				offButton.setDevice(remoteDeviceIdentifier);
 				offButton.setCommand(TelldusLiveRemoteCommand.Command.turnOff.name() + "-" + device.getId());
 			} else {
-				offButton.setVisibility(INVISIBLE);
+				offButton.setVisibility(GONE);
 			}
 			
 			TelldusLiveActionButton learnButton = (TelldusLiveActionButton) view
@@ -147,7 +147,7 @@ public class TelldusLiveDeviceListView extends ListView {
 				learnButton.setDevice(remoteDeviceIdentifier);
 				learnButton.setCommand(TelldusLiveRemoteCommand.Command.learn.name() + "-" + device.getId());
 			} else {
-				learnButton.setVisibility(INVISIBLE);
+				learnButton.setVisibility(GONE);
 			}
 			
 			TelldusLiveActionButton bellButton = (TelldusLiveActionButton) view
@@ -156,7 +156,7 @@ public class TelldusLiveDeviceListView extends ListView {
 				bellButton.setDevice(remoteDeviceIdentifier);
 				bellButton.setCommand(TelldusLiveRemoteCommand.Command.bell.name() + "-" + device.getId());
 			} else {
-				bellButton.setVisibility(INVISIBLE);
+				bellButton.setVisibility(GONE);
 			}
 			
 			TelldusLiveActionButton upButton = (TelldusLiveActionButton) view
@@ -165,7 +165,7 @@ public class TelldusLiveDeviceListView extends ListView {
 				upButton.setDevice(remoteDeviceIdentifier);
 				upButton.setCommand(TelldusLiveRemoteCommand.Command.up.name() + "-" + device.getId());
 			} else {
-				upButton.setVisibility(INVISIBLE);
+				upButton.setVisibility(GONE);
 			}
 			
 			TelldusLiveActionButton downButton = (TelldusLiveActionButton) view
@@ -174,7 +174,7 @@ public class TelldusLiveDeviceListView extends ListView {
 				downButton.setDevice(remoteDeviceIdentifier);
 				downButton.setCommand(TelldusLiveRemoteCommand.Command.down.name() + "-" + device.getId());
 			} else {
-				downButton.setVisibility(INVISIBLE);
+				downButton.setVisibility(GONE);
 			}									
 
 			Log.v(TAG, "Device: " + device.getId() + ";State: " + device.getState());
