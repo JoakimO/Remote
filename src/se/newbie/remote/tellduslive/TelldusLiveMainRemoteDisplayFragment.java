@@ -19,8 +19,10 @@ public class TelldusLiveMainRemoteDisplayFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 		Log.v(TAG, "onCreate");
-		
 		view = inflater.inflate(R.layout.telldus_live_main_display_layout, container, false);
+		
+		
+		
 		return view;
 	}
 	
@@ -28,5 +30,5 @@ public class TelldusLiveMainRemoteDisplayFragment extends Fragment {
 	public void onSaveInstanceState(Bundle outState) {
 	  super.onSaveInstanceState(outState);
 	  //outState.putString("BoxeeRemoteDisplayFragment.remoteDevice", boxeeRemoteDevice.getIdentifier());
-	}   	
+	}   
 }

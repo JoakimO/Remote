@@ -40,9 +40,10 @@ public class TelldusLiveMainRemoteDisplay implements RemoteDisplay {
 		this.fragment = fragment;
 		View view = this.fragment.getView();
 		deviceListView = (TelldusLiveDeviceListView)view.findViewById(R.id.telldus_live_device_list);
+		
 		if (deviceListView != null) {
-			Log.v(TAG, "Update display");
 			deviceListView.setDevice(device.getIdentifier());
+			Log.v(TAG, "Update display");			
 			deviceListView.update();
 		}
 		

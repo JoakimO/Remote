@@ -1,5 +1,9 @@
 package se.newbie.remote.tellduslive;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class TelldusLiveDevice {
@@ -23,6 +27,7 @@ public class TelldusLiveDevice {
 	private String clientName;
 	private boolean isOnline;
 	private boolean isEditable;
+	private Map<String, String> params = new HashMap<String, String>();
 
 	public TelldusLiveDevice() {
 	}
@@ -37,6 +42,16 @@ public class TelldusLiveDevice {
 		clientName = jsonObject.optString("clientName", null);
 		isOnline = jsonObject.optBoolean("online", false);
 		isEditable = jsonObject.optBoolean("editable", false);		
+		
+		if (jsonObject.has("parameter")) {
+			JSONArray params = jsonObject.optJSONArray("parameter");
+			if (params != null) {
+				for (int i = 0; i < params.length(); i++) {
+					JSONObject param = params.optJSONObject(i);
+					this.params.put(param.optString("name"), param.optString("value"));
+				}
+			}
+		}		
 	}
 	
 	public boolean compare(TelldusLiveDevice otherDevice) {
@@ -120,4 +135,21 @@ public class TelldusLiveDevice {
 	public void setEditable(boolean isEditable) {
 		this.isEditable = isEditable;
 	}
+	
+	public boolean containsParam(String key) {
+		return params.containsKey(key);
+	}
+
+	public String getParam(String key) {
+		return params.get(key);
+	}
+
+	public void setParam(String key, String value) {
+		params.put(key, value);
+	}
+
+	public void setParams(Map<String, String> params) {
+		this.params = params;
+	}	
+	
 }

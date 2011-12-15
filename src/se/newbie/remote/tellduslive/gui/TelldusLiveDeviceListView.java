@@ -14,11 +14,14 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 public class TelldusLiveDeviceListView extends ListView {
@@ -33,7 +36,30 @@ public class TelldusLiveDeviceListView extends ListView {
 		Log.v(TAG, "Create TelldusLive device list");
 		initAttributes(attrs);
 		adapter = new TelldusLiveDeviceAdapter(context,	R.layout.telldus_live_device_list_adapter_item);
-		this.setAdapter(adapter);
+		setAdapter(adapter);
+
+		this.setLongClickable(true);
+		this.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
+				Log.v(TAG, "onItemLongClick");
+		        PopupMenu popup = new PopupMenu(RemoteApplication.getInstance().getActivity(), view);
+		        
+		        popup.getMenuInflater().inflate(R.menu.telldus_live_device_list_context_menu, popup.getMenu());
+		        
+		        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+		            public boolean onMenuItemClick(MenuItem item) {
+		            	RemoteApplication.getInstance().showToast("Clicked popup menu item " + item.getTitle());
+		                return true;
+		            }
+		        });
+
+		        popup.show();
+		        
+		        return true;
+			}
+		
+		});		
+		
 	}
 
 	private final void initAttributes(AttributeSet attrs) {
@@ -55,6 +81,7 @@ public class TelldusLiveDeviceListView extends ListView {
 		});
 	}
 
+
 	public void update() {
 		if (device != null) {
 			Log.v(TAG, "Update device list");
@@ -74,6 +101,7 @@ public class TelldusLiveDeviceListView extends ListView {
 	public void setDevice(String device) {
 		this.device = device;
 		this.adapter.setRemoteDeviceIdentifier(device);
+		
 	}
 
 	class TelldusLiveDeviceAdapter extends BaseAdapter {
@@ -176,8 +204,6 @@ public class TelldusLiveDeviceListView extends ListView {
 			} else {
 				downButton.setVisibility(GONE);
 			}									
-
-			Log.v(TAG, "Device: " + device.getId() + ";State: " + device.getState());
 			
 			ImageView stateImage = (ImageView) view
 					.findViewById(R.id.telldus_live_device_list_item_state);
@@ -186,7 +212,13 @@ public class TelldusLiveDeviceListView extends ListView {
 			} else {
 				stateImage.setImageResource(R.drawable.ic_light_off);
 			}
-
+			view.setOnLongClickListener(new OnLongClickListener() {
+				
+				public boolean onLongClick(View v) {
+					Log.v(TAG, "click!!");
+					return false;
+				}
+			});
 			return view;
 		}
 

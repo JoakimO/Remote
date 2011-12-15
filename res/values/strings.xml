@@ -54,7 +54,10 @@
 	    
 	<string name="button_continue">Continue</string>
 	<string name="button_next">Next</string>
-	<string name="button_cancel">Cancel</string>	 
+	<string name="button_cancel">Cancel</string>
+	
+	<string name="edit">Edit</string>
+	<string name="delete">Delete</string>	 
 
 	
 </resources>
